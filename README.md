@@ -8,7 +8,7 @@ You can clone the repository wherever you want (I like to keep it in `~/.dotfile
 
 ```bash
 cd ~
-git clone https://github.com/olliegilbey/dotfiles.git .dotfiles
+git clone git@github.com:olliegilbey/dotfiles.git .dotfiles
 cd .dotfiles
 source bootstrap.sh
 ```
