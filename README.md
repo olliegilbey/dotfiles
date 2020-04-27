@@ -1,4 +1,4 @@
-# Ollies’ dotfiles
+# Ollie's dotfiles
 
 ## Installation
 
