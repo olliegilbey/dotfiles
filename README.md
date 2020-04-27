@@ -8,7 +8,7 @@ You can clone the repository wherever you want (I like to keep it in `~/.dotfile
 
 ```bash
 cd ~
-git clone https://github.com/alexisvincent/dotfiles.git .dotfiles
+git clone https://github.com/olliegilbey/dotfiles.git .dotfiles
 cd .dotfiles
 source bootstrap.sh
 ```
@@ -49,7 +49,7 @@ GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 git config --global user.email "$GIT_AUTHOR_EMAIL"
 ```
 
-You could also use `~/.extra` to override settings, functions and aliases from my dotfiles repository. It’s probably better to [fork this repository](https://github.com/alexisvincent/dotfiles/fork) instead, though.
+You could also use `~/.extra` to override settings, functions and aliases from my dotfiles repository. It’s probably better to [fork this repository](https://github.com/olliegilbey/dotfiles/fork) instead, though.
 
 
 ### Install Homebrew formulae
