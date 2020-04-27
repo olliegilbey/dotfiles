@@ -35,10 +35,10 @@ source $HOME/.aliases
 set shell=bash\ -i
 
 # The next line updates PATH for the Google Cloud SDK.
-source '/Applications/google-cloud-sdk/path.zsh.inc'
+# source '/Applications/google-cloud-sdk/path.zsh.inc'
 
 # The next line enables shell command completion for gcloud.
-source '/Applications/google-cloud-sdk/completion.zsh.inc'
+# source '/Applications/google-cloud-sdk/completion.zsh.inc'
 
 #export BOOT_CLOJURE_VERSION=1.9.0
 #export BOOT_VERSION=2.8.0-SNAPSHOT
@@ -53,3 +53,4 @@ source '/Applications/google-cloud-sdk/completion.zsh.inc'
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
+source /home/olliegilbey/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
