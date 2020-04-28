@@ -4,3 +4,6 @@ Desktop.ini
 trash/*
 src/.vim/bundle/*
 src/.vim/Fonts
+src/.atom/
+!src/.atom/styles.less
+!src/.atom/init.coffee
