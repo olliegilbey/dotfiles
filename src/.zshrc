@@ -13,7 +13,7 @@ ZSH_THEME="bira"
 DISABLE_AUTO_UPDATE="false"
 
 # Plugins
-plugins=(git-extras osx zsh-syntax-highlighting yarn zsh-completions brew wd python vi-mode colorize docker docker-compose)
+plugins=(git-extras osx yarn zsh-completions brew wd python vi-mode colorize docker docker-compose zsh-syntax-highlighting)
 
 # For zsh-completions
 autoload -U compinit && compinit
@@ -53,4 +53,3 @@ set shell=bash\ -i
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
-source /home/olliegilbey/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
