@@ -31,6 +31,9 @@ PATH=$PATH:$HOME/.nvm/versions/node/v7.3.0/bin
 
 PATH=$PATH:$HOME/.krew/bin
 
+PATH=$PATH:/usr/local/go
+PATH=$PATH:/documents/go
+
 export PATH=$PATH
 
 export NPM_CONFIG_PREFIX=$HOME/.npm-global
@@ -65,7 +68,8 @@ export GREP_OPTIONS='--color=auto';
 export HOMEBREW_TEMP=/usr/local/homebrew_temp
 
 # Go Path
-export GOPATH=$HOME/.go
+# export GOPATH=$HOME/.go
+export GOPATH=$HOME/documents/go
 
 # Stop tmux renameing windows
 DISABLE_AUTO_TITLE=true
