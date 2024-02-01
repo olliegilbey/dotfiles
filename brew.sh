@@ -40,6 +40,7 @@ brew install bash-completion
 brew install gh
 # Distributed version control system to track changes in source code.
 brew install git
+brew install lazygit
 # Useful git extensions that make some common Git tasks easier to perform.
 brew install git-extras
 # The Go programming language
@@ -66,6 +67,8 @@ brew install tree
 brew install vim
 # Network utility to retrieve files from the web.
 brew install wget
+# Finds files, used by LazyVim, alternative to find. But faster and written in Rust.
+brew install fd
 
 # Conditionally install tools based on the operating system
 case "$OSTYPE" in

@@ -48,3 +48,7 @@ export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PA
 # Starship Prompt
 eval "$(starship init zsh)"
 
+
+# fnm
+export PATH="/Users/olivergilbey/Library/Application Support/fnm:$PATH"
+eval "`fnm env`"
