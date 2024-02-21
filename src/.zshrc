@@ -48,6 +48,13 @@ export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PA
 # Starship Prompt
 eval "$(starship init zsh)"
 
+# Change cd to zoxide
+eval "$(zoxide init --cmd cd zsh)"
+
+
+# fnm
+export PATH="/Users/olivergilbey/Library/Application Support/fnm:$PATH"
+eval "`fnm env`"
 
 # fnm
 export PATH="/Users/olivergilbey/Library/Application Support/fnm:$PATH"

@@ -69,6 +69,10 @@ brew install vim
 brew install wget
 # Finds files, used by LazyVim, alternative to find. But faster and written in Rust.
 brew install fd
+# zoxide to change cd command to the more powerful one https://www.youtube.com/watch?v=aghxkpyRVDY
+brew install zoxide
+# fuzzy finder to work with zoxide based on above video
+brew install fzf
 
 # Conditionally install tools based on the operating system
 case "$OSTYPE" in
