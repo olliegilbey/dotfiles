@@ -55,7 +55,3 @@ eval "$(zoxide init --cmd cd zsh)"
 # fnm
 export PATH="/Users/olivergilbey/Library/Application Support/fnm:$PATH"
 eval "`fnm env`"
-
-# fnm
-export PATH="/Users/olivergilbey/Library/Application Support/fnm:$PATH"
-eval "`fnm env`"

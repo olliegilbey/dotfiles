@@ -6,6 +6,10 @@ echo "Starting the installation process..."
 echo "Requesting administrative privileges..."
 # Request the user's password at the start of the script
 sudo -v
+echo "Creating homebrew_temp and updating permissions for it..."
+sudo mkdir -p /usr/local/homebrew_temp
+sudo chown -R $(whoami) /usr/local/homebrew_temp
+
 
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
 while true; do
