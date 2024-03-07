@@ -77,6 +77,8 @@ brew install fd
 brew install zoxide
 # fuzzy finder to work with zoxide based on above video
 brew install fzf
+# 1Password CLI
+brew install 1password-cli
 
 # Conditionally install tools based on the operating system
 case "$OSTYPE" in
