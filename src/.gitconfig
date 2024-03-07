@@ -1,6 +1,7 @@
 [user]
 	email = olliegilbey@gmail.com
-	name = Oliver Gilbey
+	name = Ollie Gilbey
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFo+DKyoRY0oCvDlhJsoFTRc0mJ6zHMFOZmjg+6gNRF2
 
 [url "git@github.com:"]
 #    insteadOf = https://github.com/
@@ -31,3 +32,9 @@
 	editor = nvim
 [credential]
 	helper = cache
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[commit]
+	gpgsign = true
