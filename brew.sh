@@ -10,7 +10,6 @@ echo "Creating homebrew_temp and updating permissions for it..."
 sudo mkdir -p /usr/local/homebrew_temp
 sudo chown -R $(whoami) /usr/local/homebrew_temp
 
-
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
 while true; do
 	sudo -n true
@@ -44,6 +43,7 @@ brew install bash-completion
 brew install gh
 # Distributed version control system to track changes in source code.
 brew install git
+brew install jq
 brew install lazygit
 # Useful git extensions that make some common Git tasks easier to perform.
 brew install git-extras
