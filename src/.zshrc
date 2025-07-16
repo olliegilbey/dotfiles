@@ -55,3 +55,23 @@ eval "$(zoxide init --cmd cd zsh)"
 # fnm
 export PATH="/Users/olivergilbey/Library/Application Support/fnm:$PATH"
 eval "`fnm env`"
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
+export PATH=$PATH:$(go env GOPATH)/bin
+export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$(go env GOPATH)/bin
+export PATH=$PATH:$HOME/go/bin
+export l5rpc=https://rpc.lavenderfive.com:443/cosmoshub
+
+# bun completions
+[ -s "/Users/olivergilbey/.bun/_bun" ] && source "/Users/olivergilbey/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias ctp='cargo test --color=always 2>&1 | tee /dev/tty | sed "s/\x1b\[[0-9;]*m//g" | pbcopy'
+alias crp="RUST_BACKTRACE=1 cargo run --color=always 2> >(tee error.log | sed \"s/\[[0-9;]*m//g\" | pbcopy)"
+export PATH=~/.npm-global/bin:$PATH
+alias claude="/Users/olivergilbey/.claude/local/claude"
+alias csvlint="/opt/homebrew/lib/ruby/gems/3.4.0/bin/csvlint"
