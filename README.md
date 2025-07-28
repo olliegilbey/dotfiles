@@ -1,22 +1,53 @@
-# Ollie's dotfiles
+# 🛠️ Ollie's Modern Development Environment
 
-## Installation
+> **Sensible defaults for productive development** - A modern take on dotfiles with bleeding-edge tooling
 
-### Using Git and the bootstrap script
+## About
 
-You can clone the repository wherever you want (I like to keep it in `~/.dotfiles`). The bootstrapper script will pull in the latest version and copy the files to your home folder.
+This repository contains my personal development environment configuration, inspired by [Mathias Bynens' legendary dotfiles](https://github.com/mathiasbynens/dotfiles) - the OG of sensible macOS defaults. Built on that foundational philosophy, this has become my own take on productive development environments.
+
+**Key Features:**
+- 🛠️ **Modern Toolchain**: Bleeding-edge development tools and package managers
+- 🤖 **AI-Ready**: Integrated settings for modern AI development workflows  
+- ⚡ **Performance Optimized**: Latest stable versions with speed improvements
+- 📦 **Complete Setup**: One-command installation for new machines
+- 🔄 **Cross-Platform Ready**: Portable configuration that travels with you
+
+## Quick Start
+
+### Complete Environment Setup
+
+Clone the repository and run the main setup script:
 
 ```bash
 cd ~
 git clone git@github.com:olliegilbey/dotfiles.git .dotfiles
 cd .dotfiles
-source bootstrap.sh
 ```
 
-To update, `cd` into your local `dotfiles` repository and then:
+```bash
+./init.sh
+```
+
+### Script Structure
+
+- **`init.sh`** - Main setup script (runs bootstrap + installs everything)
+- **`bootstrap.sh`** - Creates symlinks from `src/` to your home directory  
+- **`brew.sh`** - Installs Homebrew packages and tools
+- **`language_installs.sh`** - Sets up programming language toolchains
+
+### Updates
+
+To update your dotfiles after making changes:
 
 ```bash
-source bootstrap.sh
+./bootstrap.sh
+```
+
+For a complete refresh (new tools, etc.):
+
+```bash
+./init.sh
 ```
 
 
