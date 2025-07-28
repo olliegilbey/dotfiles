@@ -79,6 +79,8 @@ brew install zoxide
 brew install fzf
 # 1Password CLI
 brew install 1password-cli
+# uv - Modern Python package manager and project manager (replaces pip, pipenv, poetry)
+brew install uv
 
 # Conditionally install tools based on the operating system
 case "$OSTYPE" in

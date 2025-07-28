@@ -23,7 +23,6 @@ plugins=(
   docker-compose
   zsh-syntax-highlighting
   history
-  pipenv
   compleat
   zsh-autosuggestions
 )
@@ -58,9 +57,6 @@ eval "`fnm env`"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
 export PATH=$PATH:$(go env GOPATH)/bin
-export PATH=$PATH:$HOME/go/bin
-export PATH=$PATH:$(go env GOPATH)/bin
-export PATH=$PATH:$HOME/go/bin
 export l5rpc=https://rpc.lavenderfive.com:443/cosmoshub
 
 # bun completions
@@ -75,3 +71,14 @@ alias crp="RUST_BACKTRACE=1 cargo run --color=always 2> >(tee error.log | sed \"
 export PATH=~/.npm-global/bin:$PATH
 alias claude="/Users/olivergilbey/.claude/local/claude"
 alias csvlint="/opt/homebrew/lib/ruby/gems/3.4.0/bin/csvlint"
+alias python=python3
+
+# uv - Modern Python package manager
+eval "$(uv generate-shell-completion zsh)"
+export UV_PYTHON_PREFERENCE=only-managed
+
+# fnm
+FNM_PATH="/opt/homebrew/opt/fnm/bin"
+if [ -d "$FNM_PATH" ]; then
+  eval "`fnm env`"
+fi
