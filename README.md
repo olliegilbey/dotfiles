@@ -1,91 +1,162 @@
-# 🛠️ Ollie's Modern Development Environment
+# Modern macOS Dotfiles
 
-> **Sensible defaults for productive development** - A modern take on dotfiles with bleeding-edge tooling
-
-## About
-
-This repository contains my personal development environment configuration, inspired by [Mathias Bynens' legendary dotfiles](https://github.com/mathiasbynens/dotfiles) - the OG of sensible macOS defaults. Built on that foundational philosophy, this has become my own take on productive development environments.
-
-**Key Features:**
-- 🛠️ **Modern Toolchain**: Bleeding-edge development tools and package managers
-- 🤖 **AI-Ready**: Integrated settings for modern AI development workflows  
-- ⚡ **Performance Optimized**: Latest stable versions with speed improvements
-- 📦 **Complete Setup**: One-command installation for new machines
-- 🔄 **Cross-Platform Ready**: Portable configuration that travels with you
+A practical development environment setup with modern tooling and AI-first workflows.
 
 ## Quick Start
 
-### Complete Environment Setup
-
-Clone the repository and run the main setup script:
-
 ```bash
-cd ~
-git clone git@github.com:olliegilbey/dotfiles.git .dotfiles
-cd .dotfiles
-```
+# Clone the repository
+git clone git@github.com:olliegilbey/dotfiles.git ~/dotfiles
+cd ~/dotfiles
 
-```bash
+# Run complete setup
 ./init.sh
 ```
 
-### Script Structure
+## Essential Setup Steps
 
-- **`init.sh`** - Main setup script (runs bootstrap + installs everything)
-- **`bootstrap.sh`** - Creates symlinks from `src/` to your home directory  
-- **`brew.sh`** - Installs Homebrew packages and tools
-- **`language_installs.sh`** - Sets up programming language toolchains
-
-### Updates
-
-To update your dotfiles after making changes:
+### 1. Configure Your Git Identity (Required)
 
 ```bash
-./bootstrap.sh
+cp git-config-local.template ~/.config/git/config.local
+# Edit ~/.config/git/config.local with your name, email, and signing key
 ```
 
-For a complete refresh (new tools, etc.):
+### 2. Verify Everything Works
 
 ```bash
+dotfiles-health
+```
+
+## Customization Guide
+
+These are the key files you'll want to customize for your needs:
+
+### Package Management
+- **`Brewfile`** - Add/remove packages (`brew install` automatically adds new ones)
+- **`.mise.toml`** - Language versions (Node.js, Go, Python)
+
+### Shell Configuration  
+- **`src/.aliases`** - Custom commands and shortcuts
+- **`src/.zshrc`** - Shell behavior and environment variables
+
+### Application Configs
+- **`src/.config/nvim/`** - NeoVim editor configuration
+- **`src/.config/git/config`** - Git settings (public only)
+
+### Quick Commands
+```bash
+# Add new packages (automatically tracked in Brewfile)
+brew install package-name
+
+# Update everything
 ./init.sh
+
+# Health check
+dotfiles-health
+
+# Regenerate this README
+./update-readme.sh
+
+# Update alias descriptions for startup tips
+./update-alias-descriptions.sh
 ```
 
+## Alias Tips & Cheatsheet
 
-### Install Dependencies
+The setup includes a smart alias reminder system that shows 2 random aliases on terminal startup.
+
+### Customizing Alias Tips
+1. **Edit descriptions**: `alias-descriptions.txt`
+2. **Format**: `alias_name::description`
+3. **Only aliases with descriptions** appear in startup tips
+
 ```bash
-# Download oh-my-zsh (It will update itself)
-git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-
-# Download Dein Plugin Manager (It will manage itself)
-git clone https://github.com/Shougo/dein.vim ~/.vim/bundle/repos/github.com/Shougo/dein.vim
+# Example entries in alias-descriptions.txt
+ll::Enhanced ls with icons, git status, and detailed info
+lg::Launch lazygit for terminal Git UI
+dev::Quick jump to development directory
 ```
 
-### Install Font
-Find your font at https://github.com/ryanoasis/nerd-fonts and download
+The system auto-detects new aliases but you need to add descriptions manually to enable them in the tips.
 
-### Add custom commands without creating a new fork
+---
 
-If `~/.extra` exists, it will be sourced along with the other files. You can use this to add a few custom commands without the need to fork this entire repository, or to add commands you don’t want to commit to a public repository.
+<!-- GENERATED_CONTENT_STARTS_HERE -->
 
-My `~/.extra` looks something like this:
+## 🔧 Language Toolchains
+
+Managed for consistent versions across environments:
+
+- **node** - lts (via mise)
+- **go** - latest (via mise)
+- **python** - latest (via mise)
+
+- **rust** - latest stable (via rustup)
+
+## 📦 Package Environment
+
+Currently managing **28 packages**, **2 casks**, and **1 taps** via Brewfile.
+
+### Development Languages
+
+- **go** - Go programming language
+- **lua** - Lightweight, high-performance programming language
+- **rust-analyzer** - Language server for Rust
+
+### Modern Command-Line Tools
+
+- **bash** - POSIX shell - required for script compatibility
+- **bat** - Enhanced cat with syntax highlighting and git integration
+- **delta** - Enhanced git diff viewer with syntax highlighting
+- **eza** - Modern ls replacement with icons, git status, and better defaults
+- **fd** - Fast file finder alternative to find (used by LazyVim)
+- **fzf** - Fuzzy finder for command-line (works with zoxide)
+- **ripgrep** - Recursive line-oriented search tool (extremely fast)
+- **zoxide** - Smart cd replacement with frecency algorithm
+- **zsh** - Your primary shell
+
+### Editors
+
+- **neovim** - Modern text editor, enhancement from Vim
+- **vim** - Highly configurable and robust text editor
+
+### Version Control
+
+- **gh** - GitHub CLI for command-line GitHub interaction
+- **git-extras** - Useful git extensions for common tasks
+- **git** - Distributed version control system
+- **lazygit** - Terminal UI for Git operations
+
+### Package Managers & Runtimes
+
+- **bun** - Modern JavaScript runtime and package manager (faster than npm/node)
+- **mise** - Universal version manager (replaces nvm, rbenv, pyenv, etc.)
+- **uv** - Modern Python package manager (replaces pip, pipenv, poetry)
+
+### System Utilities
+
+- **findutils** - File and directory search tools
+- **imagemagick** - Image manipulation utilities
+- **nmap** - Network exploration tool and security scanner
+- **wget** - Network utility to retrieve files from the web
+
+### Other Tools
+
+- **bash-completion** - Bash autocompletion
+- **jq** - JSON processor
+- **tree** - Recursive directory listing command
+
+## 🏥 Health Check
+
+Run `dotfiles-health` to verify your environment:
 
 ```bash
-# Git credentials
-# Not in the repository, to prevent people from accidentally committing under my name
-GIT_AUTHOR_NAME="Ollie Gilbey"
-GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-git config --global user.name "$GIT_AUTHOR_NAME"
-GIT_AUTHOR_EMAIL="<INSERT_EMAIL>"
-GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-git config --global user.email "$GIT_AUTHOR_EMAIL"
+dotfiles-health
 ```
 
-You could also use `~/.extra` to override settings, functions and aliases from my dotfiles repository. It’s probably better to [fork this repository](https://github.com/olliegilbey/dotfiles/fork) instead, though.
+This validates all tools, language runtimes, and configurations.
 
+---
 
-### Install Homebrew formulae
-
-Install [Homebrew](http://brew.sh/) formulae (after installing Homebrew, of course):
-```bash
-./brew.sh
-```
+*Last updated: 2025-08-02 12:02:57*

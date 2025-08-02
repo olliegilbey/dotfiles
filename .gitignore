@@ -7,3 +7,8 @@ src/.vim/Fonts
 src/.atom/
 !src/.atom/styles.less
 !src/.atom/init.coffee
+
+# Claude configuration
+.claude/temp-*
+# Ignore Raycast extension source maps
+src/.config/raycast/extensions/**/*.js.map

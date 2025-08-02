@@ -18,10 +18,10 @@
 
 ### Primary Tools & Environment
 - **Terminal-First Workflow**: NeoVim with LazyVim distribution, terminal-based development
-- **macOS Development**: Darwin 24.5.0 with Homebrew package management
-- **Shell Environment**: Zsh with Oh My Zsh, Starship prompt, and extensive plugin ecosystem
-- **Editor**: NeoVim as primary editor (`$EDITOR="nvim"`), LazyVim configuration
-- **Git SSH Authentication**: 1Password integration for seamless auth (`1password-cli` installed)
+- **macOS Development**: Darwin 24.5.0 with Brewfile-managed package system
+- **Shell Environment**: Zsh with Oh My Zsh, Warp terminal (native prompting, no starship)
+- **Editor**: NeoVim as primary editor (`$EDITOR="nvim"`), LazyVim with modern plugins
+- **Git SSH Authentication**: 1Password integration with commit signing, delta for enhanced diffs
 - **Navigation**: Enhanced with `zoxide` (replaces cd), `fzf` (fuzzy finder), `ripgrep` (fast search)
 
 ### Dotfiles Architecture
@@ -31,19 +31,19 @@
 - **Version Control**: Git-managed dotfiles with backup system during setup
 
 ### Language Preferences & Patterns
-- **Rust**: Primary language - leverage zero-cost abstractions, type-driven design, functional composition
-- **Go**: Secondary systems language - GOPATH configured, language server installed
-- **TypeScript/JavaScript**: For web development - fnm for Node.js version management, modern ES features
-- **Python**: For data/ML work - uv for package/project management (replaces pip/pipenv/poetry), clean code with typing
-- **Shell/Bash**: For automation and tooling - enhanced with modern alternatives (ripgrep, fd, zoxide)
+- **Rust**: Primary language - leverage zero-cost abstractions, type-driven design, functional composition (managed via rustup)
+- **Go**: Secondary systems language - latest version via mise, clean GOPATH configuration
+- **TypeScript/JavaScript**: For web development - bun runtime, Node.js LTS via mise, modern ES features
+- **Python**: For data/ML work - uv for package/project management, latest version via mise, clean typing
+- **Shell/Bash**: For automation and tooling - enhanced with modern alternatives (eza, bat, ripgrep, fd, delta)
 
 ### Development Tools Ecosystem
-- **Version Control**: Git with git-extras, lazygit for TUI interface
-- **Search & Navigation**: ripgrep (rg), fd (find alternative), fzf (fuzzy finder), tree (directory listing)
-- **Language Tooling**: rust-analyzer (Rust LSP), Node.js via fnm, Go toolchain with proper GOPATH
+- **Version Control**: Git with git-extras, lazygit for TUI interface, delta for enhanced diffs
+- **Search & Navigation**: ripgrep (rg), fd (find alternative), fzf (fuzzy finder), eza (modern ls)
+- **Language Tooling**: rust-analyzer (Rust LSP), Node.js via mise, Go toolchain, comprehensive NeoVim LSP setup
 - **Container Development**: Docker with docker-compose support
-- **Package Managers**: Homebrew (system), Cargo (Rust), fnm (Node.js), uv (Python)
-- **Terminal Enhancement**: Starship prompt, zoxide (smart cd), extensive zsh plugins
+- **Package Managers**: Brewfile (declarative system), Cargo (Rust), mise (universal), bun (JavaScript), uv (Python)
+- **Terminal Enhancement**: Warp native prompting, zoxide (smart cd), alias tips system, health checking
 
 ### Zsh Configuration Details
 - **Plugin Ecosystem**: nvm, node, golang, rust, git-extras, macos, yarn, docker, vi-mode  
@@ -65,11 +65,15 @@
 - **Import Organization**: Standard groupings (std, external, internal)
 
 ### Custom Aliases & Shortcuts
-- **Cargo Shortcuts**: `ctp` (cargo test with output piped to clipboard), `crp` (cargo run with error logging)
-- **Navigation**: `..`, `...`, `....`, `.....` for directory traversal, enhanced `ls` with colors
-- **Git Integration**: `g` alias for git, extensive git-extras functionality
-- **Development Utilities**: Timer stopwatch, IP address lookup, Chrome tab killer, DNS flush
+- **Navigation**: `..`, `...`, `....`, `.....` for directory traversal, `ll` (enhanced ls with git status), `lt` (tree view)
+- **Development**: `dev` (jump to code directory), `dots` (jump to dotfiles), `lg` (lazygit), `env-info` (environment summary)
+- **Search**: `search` (smart ripgrep), `searchcode` (code files only), `recent` (files modified today)
+- **Git Integration**: `g` alias for git, `git-summary` (repository overview), extensive git-extras functionality
+- **System Utilities**: `timer` (stopwatch), `ip`/`localip` (addresses), `chromekill`, `flushDNS`, `afk` (lock screen)
+- **AI Context**: `proj-context` (project overview), `dotfiles-health` (environment validation)
+- **Modern Tools**: `cat` → `bat` (syntax highlighting), `ls` → `eza` (icons/git status)
 - **Claude Code Access**: `claude` alias pointing to `/Users/olivergilbey/.claude/local/claude`
+- **Alias Tips**: Random startup reminders from `alias-descriptions.txt` (2 tips per session)
 
 ## AI Collaboration Guidelines
 
@@ -78,6 +82,7 @@
 - **Direct Communication**: Concise responses (under 4 lines unless detail requested)
 - **No Unnecessary Preamble**: Get straight to the point, avoid "Here's what I'll do" explanations
 - **Show, Don't Tell**: Demonstrate with code rather than explaining in prose
+- **Modern Tooling**: Leverage bun over npm, eza over ls, bat over cat, delta for git diffs
 
 ### Task Management & Planning
 - **TodoWrite Usage**: Always use for multi-step tasks and project organization
@@ -107,7 +112,7 @@
 - **Quality Gates**: Code must pass formatting, linting, and testing before acceptance
 
 ### Code Review Standards
-- **Zero Tolerance**: No warnings, no dead code, no TODO comments in committed code
+- **Zero Tolerance**: No warnings, no dead code, no unaddressed comments in committed code
 - **Pattern Consistency**: Follow established patterns within the codebase
 - **Performance Awareness**: Consider performance implications, but prioritize clarity
 - **Security Conscious**: Never commit secrets, follow security best practices
@@ -164,22 +169,31 @@ For the most current development environment configuration, Claude Code should r
 - **Shell Configuration**: `~/.zshrc` for current aliases, paths, and environment variables
 - **Aliases**: `~/.aliases` for navigation shortcuts and development utilities
 - **NeoVim Config**: `~/.config/nvim/` for current editor plugins and keybindings
-- **Tool Versions**: Check `~/.zshrc` for current Node.js (fnm), Go, Rust, and other toolchain versions
+- **Tool Versions**: Check `~/.zshrc` for current Node.js (mise), Go, Rust, and other toolchain versions
 
 ### Environment Discovery Commands
 When working on projects, Claude Code can check:
 ```bash
+# Environment overview
+dotfiles-health
+env-info
+proj-context
+
 # Current tool versions
 cargo --version
 go version
 node --version
 nvim --version
+mise --version
+bun --version
 
 # Available aliases and functions
-alias | grep -E "(cargo|git|cd|ls)"
+alias | grep -E "(dev|git|search|proj)"
+grep -E "^(alias|function)" ~/.aliases
 
-# Current shell configuration
-echo $EDITOR $SHELL $PATH
+# Project and git context
+git-summary
+ls -la | head -10
 ```
 
 ---
