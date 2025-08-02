@@ -1,6 +1,6 @@
 # Modern macOS Dotfiles
 
-A practical development environment setup with modern tooling and AI-first workflows.
+A practical development environment setup with bleeding-edge tooling, AI-first workflows, and comprehensive automation.
 
 ## Quick Start
 
