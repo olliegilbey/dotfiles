@@ -3,7 +3,7 @@
 
 # Make emacs the default editor.
 # export EDITOR='emacsclient -c'
-export EDITOR='vim'
+export EDITOR='nvim'
 
 # Set vi mode switching to 100ms instead of default 400ms
 export KEYTIMEOUT=1
@@ -15,7 +15,7 @@ fi
 # PATH
 PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 PATH=$PATH:$HOME/.bin
-PATH=$PATH:$HOME/.npm-global/bin
+# Removed ~/.npm-global/bin (migrated to bun via ~/.bun/bin)
 
 # envsubst
 PATH=$PATH:/usr/local/opt/gettext/bin
@@ -27,16 +27,14 @@ PATH=$PATH:/Library/TeX/Root/bin/x86_64-darwin/
 # PATH=$PATH:$HOME/.stack/programs/x86_64-osx/ghc-7.10.3/bin/
 PATH=$PATH:$HOME/.local/bin
 PATH=$PATH:$HOME/.cabal/bin/
-PATH=$PATH:$HOME/.nvm/versions/node/v7.3.0/bin
 
 PATH=$PATH:$HOME/.krew/bin
 
-PATH=$PATH:/usr/local/go
-PATH=$PATH:/documents/go
+PATH=$PATH:/usr/local/go/bin
 
 export PATH=$PATH
 
-export NPM_CONFIG_PREFIX=$HOME/.npm-global
+# Removed NPM_CONFIG_PREFIX (using bun for global packages)
 
 # Setup nvm - for node too slow :( so I've set it manually
 # export NVM_DIR=~/.nvm
@@ -69,8 +67,7 @@ export MANPAGER='less -X';
 export HOMEBREW_TEMP=/usr/local/homebrew_temp
 
 # Go Path
-# export GOPATH=$HOME/.go
-export GOPATH=$HOME/documents/go
+export GOPATH=$HOME/go
 
 # Stop tmux renameing windows
 DISABLE_AUTO_TITLE=true

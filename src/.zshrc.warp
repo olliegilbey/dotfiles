@@ -15,11 +15,6 @@ plugins=(
   zsh-syntax-highlighting # Keep this - essential
 )
 
-# Configure zsh-autosuggestions to not expand aliases
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_USE_ASYNC=true
-ZSH_AUTOSUGGEST_MANUAL_REBIND=true
-
 # Load Oh My Zsh (but skip theme - Warp handles prompting)
 ZSH_THEME=""  # Disable OMZ themes
 source $ZSH/oh-my-zsh.sh
@@ -40,13 +35,6 @@ export PATH="$PATH:$GOBIN"
 # Python via uv
 eval "$(uv generate-shell-completion zsh)"
 export UV_PYTHON_PREFERENCE=only-managed
-
-# mise - Universal version manager (replaces nvm, rbenv, pyenv, etc.)
-if command -v mise &>/dev/null; then
-    eval "$(mise activate zsh)"
-    # mise shell completions
-    eval "$(mise completion zsh)"
-fi
 
 # Essential PATH additions
 export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
@@ -76,24 +64,23 @@ alias claude="$HOME/.claude/local/claude"
 alias csvlint="/opt/homebrew/lib/ruby/gems/3.4.0/bin/csvlint"
 alias python=python3
 
-# Homebrew install tracking function for Brewfile
+# Homebrew install tracking function
 brew_install_with_tracking() {
     command brew install "$@"
     
     if [ $? -eq 0 ]; then
         echo ""
-        echo "📝 Would you like to add '$*' to your Brewfile? (y/n)"
+        echo "📝 Would you like to add '$*' to your dotfiles brew.sh? (y/n)"
         read -r response
         if [[ "$response" =~ ^[Yy]$ ]]; then
-            brewfile_path="$HOME/dotfiles/Brewfile"
-            if [ -f "$brewfile_path" ]; then
-                # Simple append to end of file with proper formatting
-                echo "" >> "$brewfile_path"
-                echo "# $*" >> "$brewfile_path"
-                echo "brew \"$*\"" >> "$brewfile_path"
-                echo "✅ Added 'brew \"$*\"' to Brewfile"
+            line_num=$(grep -n "# Conditionally install tools" "$HOME/dotfiles/brew.sh" | cut -d: -f1)
+            if [ -n "$line_num" ]; then
+                sed -i "" "$((line_num-1))i\\
+# $*\\
+brew install $*" "$HOME/dotfiles/brew.sh"
+                echo "✅ Added 'brew install $*' to dotfiles/brew.sh"
             else
-                echo "⚠️  Brewfile not found at $brewfile_path"
+                echo "⚠️  Could not find insertion point in brew.sh - please add manually"
             fi
         fi
     fi
@@ -108,18 +95,6 @@ brew() {
     fi
 }
 
-# Shell history handled natively by Warp Terminal
-
 # Warp-specific optimizations
 # Let Warp handle prompt, history, and UI enhancements natively
 # Remove starship prompt - Warp has better native prompting
-
-# Note: To disable alias expansion, go to Warp Settings > Features > Terminal > Modern Text Editing > Alias Expansion = OFF
-
-# bun completions
-[ -s "/Users/olivergilbey/.bun/_bun" ] && source "/Users/olivergilbey/.bun/_bun"
-
-# Show random alias tips on startup (only in interactive shells)
-if [[ -o interactive ]] && [[ -t 0 ]] && [[ -t 1 ]]; then
-    bash "$HOME/dotfiles/show-alias-tips.sh"
-fi

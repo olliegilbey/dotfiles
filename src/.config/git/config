@@ -1,0 +1,61 @@
+# Git configuration - Public settings only
+# User-specific details are loaded from ~/.config/git/config.local (not in repo)
+
+[include]
+    path = ~/.config/git/config.local
+
+[core]
+    editor = nvim
+    excludesfile = ~/.config/git/ignore
+    pager = delta
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = false
+
+[push]
+    default = simple
+
+# Modern git diff with delta
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    light = false      # set to true if you're in a terminal w/ a light background color
+    side-by-side = true
+    line-numbers = true
+
+[merge]
+    tool = nvim
+    conflictstyle = diff3
+
+[diff]
+    tool = default-difftool
+    colorMoved = default
+
+# Color configuration
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+
+# Useful aliases
+[alias]
+    co = checkout
+    tree = log --graph --pretty=format:'%C(auto) %h %ad [%an] %m%m %d %s' --abbrev-commit --all --decorate --date=short
+    br = branch
+    dif = diff --stat
+    s = status
+    st = status
+    re = rebase -i
+    fe = fetch --all -p
+    fare = !git fetch --all -p && git rebase -i
+
+[rebase]
+    autosquash = true
+
+[rerere]
+    enabled = 0

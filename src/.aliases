@@ -11,17 +11,19 @@ alias g="git"
 
 colorflag="-G"
 
-# List all files colorized in long format
-alias l="ls -lF ${colorflag}"
-
-# List all files colorized in long format, including dot files
-alias la="ls -laF ${colorflag}"
-
-# List only directories
-alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
-
-# Always use color output for `ls`
-alias ls="ls ${colorflag}"
+# Modern ls replacement with eza (with fallback to ls)
+if command -v eza &> /dev/null; then
+    alias ls='eza --icons --group-directories-first'
+    alias l='eza -l --icons --group-directories-first'
+    alias la='eza -la --icons --group-directories-first --git'
+    alias lsd='eza -lD --icons'
+else
+    # Fallback to traditional ls
+    alias l="ls -lF ${colorflag}"
+    alias la="ls -laF ${colorflag}"
+    alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
+    alias ls="ls ${colorflag}"
+fi
 export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
 
 # Enable aliases to be sudo’ed
@@ -33,7 +35,7 @@ alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+alias ips="ifconfig -a | rg -o 'inet6? (addr:)?\s?((([0-9]+\.){3}[0-9]+)|[a-fA-F0-9:]+)' | sed 's/inet6\? (addr:\)\? \?//'"
 
 # Empty the Trash on all mounted volumes and the main HDD
 # Also, clear Apple’s System Logs to improve shell startup speed
@@ -52,10 +54,136 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && k
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 
 # Lock the screen (when going AFK)
-alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+alias afk="osascript -e 'tell application \"System Events\" to keystroke \"q\" using {command down, control down}'"
+
+# Enhanced cat with syntax highlighting (with fallback)
+if command -v bat &> /dev/null; then
+    alias cat='bat --paging=never --style=numbers,changes --theme=Dracula'
+    alias batcat='bat'  # Keep original bat command available
+fi
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
 # Flush DNS
 alias flushDNS="sudo killall -HUP mDNSResponder"
+
+# AI-friendly aliases and functions
+# Quick directory and file operations
+alias ll='eza -la --icons --group-directories-first --git'  # Detailed list with git status
+alias lt='eza --tree --level=2 --icons'                     # Tree view (2 levels)
+alias lg='lazygit'                                           # Quick git UI
+
+# Development workflow shortcuts
+alias dev='cd ~/Documents/code'                             # Quick access to dev directory
+alias dots='cd ~/dotfiles'                                  # Quick access to dotfiles
+alias src='cd ~/Documents/code && ls'                       # Go to code dir and list
+
+# Quick environment info for AI context
+alias env-info='echo "🖥️  Environment Info:"; echo "Shell: $SHELL ($ZSH_VERSION)"; echo "OS: $(uname -s) $(uname -r)"; echo "Node: $(node --version 2>/dev/null || echo "not installed")"; echo "Go: $(go version 2>/dev/null | cut -d" " -f3 || echo "not installed")"; echo "Rust: $(rustc --version 2>/dev/null | cut -d" " -f2 || echo "not installed")"; echo "Python: $(python3 --version 2>/dev/null || echo "not installed")"; echo "Editor: $EDITOR"; echo "PWD: $(pwd)"'
+
+# AI-friendly file operations (using modern tools)
+alias recent='find . -type f -mtime -1 -not -path "*/.*" | head -10'  # Recent files (1 day)
+alias biggest='du -sh * | sort -rh | head -10'                        # Largest files/dirs
+alias count='find . -type f | wc -l'                                 # Count files
+
+# Ripgrep shortcuts for fast searching
+alias search='rg --smart-case --pretty'                              # Smart case search with colors
+alias searchall='rg --smart-case --hidden --no-ignore'               # Search hidden and ignored files
+alias searchcode='rg --type-add "code:*.{rs,go,js,ts,py,rb,java,cpp,c,h}" --type code'  # Search only code files
+
+# Project context helpers
+alias git-summary='echo "📊 Git Repository Summary:"; echo "Branch: $(git branch --show-current 2>/dev/null || echo "not a git repo")"; echo "Status:"; git status --porcelain 2>/dev/null | head -10 || echo "not a git repo"; echo "Recent commits:"; git log --oneline -5 2>/dev/null || echo "not a git repo"'
+
+# AI context functions
+function proj-context() {
+    echo "📁 Project Context for: $(basename $(pwd))"
+    echo "═══════════════════════════════════════"
+    echo "📍 Location: $(pwd)"
+    
+    # Check for common project files
+    for file in package.json Cargo.toml go.mod pyproject.toml requirements.txt Makefile README.md .env; do
+        if [[ -f "$file" ]]; then
+            echo "📄 Found: $file"
+        fi
+    done
+    
+    # Git info if available
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        echo "🌿 Git branch: $(git branch --show-current)"
+        echo "📊 Git status: $(git status --porcelain | wc -l) changes"
+    fi
+    
+    # Directory stats
+    echo "📈 Directory stats:"
+    echo "   Files: $(find . -type f -not -path '*/.*' | wc -l)"
+    echo "   Directories: $(find . -type d -not -path '*/.*' | wc -l)"
+    echo "   Size: $(du -sh . | cut -f1)"
+}
+
+# Quick documentation lookup
+function docs() {
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: docs <command>"
+        echo "Quick documentation lookup"
+        return 1
+    fi
+    
+    case $1 in
+        git) echo "📚 Git quick reference:"; echo "  git status, git add ., git commit -m 'msg', git push"; ;;
+        docker) echo "📚 Docker quick reference:"; echo "  docker ps, docker build -t name ., docker run -it name"; ;;
+        npm) echo "📚 NPM quick reference:"; echo "  npm install, npm run dev, npm run build, npm test"; ;;
+        cargo) echo "📚 Cargo quick reference:"; echo "  cargo new, cargo build, cargo run, cargo test"; ;;
+        *) man $1 2>/dev/null || echo "❌ No documentation found for: $1"; ;;
+    esac
+}
+
+# JavaScript/Node.js tooling - prefer bun over npm
+alias npm-install='bun install'
+alias npm-run='bun run'
+alias npm-exec='bunx'
+
+# Package management shortcuts
+alias pkg-install='bun install'  # Default to bun for new projects
+alias pkg-global='bun install -g'  # Global package installation with bun
+
+# Fallback aliases for npm when bun doesn't work
+alias npm-fallback='command npm'
+alias npx-fallback='command npx'
+
+# Note: We keep npx available for MCP servers that need it
+
+# Dotfiles health check function
+function dotfiles-health() {
+    echo "🏥 Dotfiles Health Check"
+    echo "═══════════════════════"
+    echo "📍 Location: ~/dotfiles"
+    echo ""
+    
+    echo "🔧 Core Tools:"
+    echo "  Homebrew: $(brew --version | head -1)"
+    echo "  Git: $(git --version)"
+    echo "  NeoVim: $(nvim --version | head -1)"
+    echo ""
+    
+    echo "🚀 Language Runtimes:"
+    echo "  Node.js: $(node --version 2>/dev/null || echo "❌ not available")"
+    echo "  Bun: $(bun --version 2>/dev/null || echo "❌ not available")"
+    echo "  Go: $(go version 2>/dev/null | cut -d" " -f3 || echo "❌ not available")"
+    echo "  Rust: $(rustc --version 2>/dev/null | cut -d" " -f2 || echo "❌ not available")"
+    echo "  Python: $(python3 --version 2>/dev/null || echo "❌ not available")"
+    echo ""
+    
+    echo "⚡ Modern Tools:"
+    echo "  mise: $(mise --version 2>/dev/null || echo "❌ not available")"
+    echo "  delta: $(delta --version 2>/dev/null || echo "❌ not available")"
+    echo "  eza: $(eza --version 2>/dev/null | head -1 || echo "❌ not available")"
+    echo "  bat: $(bat --version 2>/dev/null || echo "❌ not available")"
+    echo ""
+    
+    echo "📦 Package Status:"
+    echo "  Brewfile packages: $(grep -c '^brew\|^tap\|^cask' ~/dotfiles/Brewfile || echo 0)"
+    echo "  Symlinks active: $(ls -la ~ | grep -c dotfiles || echo 0)"
+    echo ""
+    echo "✨ Environment ready!"
+}

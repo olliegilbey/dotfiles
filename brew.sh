@@ -1,110 +1,84 @@
 #!/usr/bin/env bash
 
-# This script installs command-line tools using Homebrew.
-echo "Starting the installation process..."
+set -e  # Exit on any error
+set -u  # Exit on undefined variables
+set -o pipefail  # Exit on pipe failures
 
-echo "Requesting administrative privileges..."
-# Request the user's password at the start of the script
-sudo -v
-echo "Creating homebrew_temp and updating permissions for it..."
-sudo mkdir -p /usr/local/homebrew_temp
-sudo chown -R $(whoami) /usr/local/homebrew_temp
+# Script directory for relative paths
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BREWFILE="$SCRIPT_DIR/Brewfile"
 
-# Keep-alive: update existing `sudo` time stamp until the script has finished.
-while true; do
-	sudo -n true
-	sleep 60
-	kill -0 "$$" || exit
-done 2>/dev/null &
+echo "📦 Homebrew package installation/update (Brewfile)"
+echo "================================================="
 
-echo "Updating Homebrew..."
-# Ensure we’re using the latest version of Homebrew
-brew update
-
-echo "Upgrading any already-installed formulae..."
-# Upgrade any already-installed formulae to their latest version
-brew upgrade
-
-# Install Zsh via Homebrew
-if command -v zsh &>/dev/null; then
-	echo "Zsh is already installed."
-else
-	echo "Installing Zsh..."
-	brew install zsh
+# Validation: Check if Brewfile exists
+if [[ ! -f "$BREWFILE" ]]; then
+    echo "❌ Error: Brewfile not found at $BREWFILE"
+    exit 1
 fi
 
-# The following tools are commonly used across both MacOS and Linux environments
-echo "Installing commonly used tools..."
-# Bash is a shell that interprets commands. Upgrading for newer features and enhancements.
-brew install bash
-# Autocompletion script for bash. Helps in auto-completing commands and filenames.
-brew install bash-completion
-# GitHub CLI, allows you to interact with GitHub from the command line.
-brew install gh
-# Distributed version control system to track changes in source code.
-brew install git
-brew install jq
-brew install lazygit
-# Useful git extensions that make some common Git tasks easier to perform.
-brew install git-extras
-# The Go programming language
-brew install go
-# File and directory search tool
-brew install findutils
-# Image manipulation utilities. Useful for converting and resizing images.
-brew install imagemagick
-# Lightweight, high-performance programming language.
-brew install lua
-# Neovim is a text editor. A modern enhancement from Vim.
-brew install neovim
-# Network exploration tool and security scanner.
-brew install nmap
-# Recursive line-oriented search tool. Extremely fast and powerful.
-brew install ripgrep
-# language server for rust
-brew install rust-analyzer
-# Minimalistic command line shell prompt.
-brew install starship
-# Recursive directory listing command. Helps in getting an overview of a directory tree.
-brew install tree
-# A highly configurable and robust text editor.
-brew install vim
-# Network utility to retrieve files from the web.
-brew install wget
-# Finds files, used by LazyVim, alternative to find. But faster and written in Rust.
-brew install fd
-# zoxide to change cd command to the more powerful one https://www.youtube.com/watch?v=aghxkpyRVDY
-brew install zoxide
-# fuzzy finder to work with zoxide based on above video
-brew install fzf
-# 1Password CLI
-brew install 1password-cli
-# uv - Modern Python package manager and project manager (replaces pip, pipenv, poetry)
-brew install uv
+# Validation: Check if Homebrew is installed
+if ! command -v brew &>/dev/null; then
+    echo "❌ Error: Homebrew is not installed. Please install it first."
+    echo "   Visit: https://brew.sh"
+    exit 1
+fi
 
-# Conditionally install tools based on the operating system
-case "$OSTYPE" in
-linux-gnu*)
-	# Linux specific installations
-	echo "Linux environment detected. Installing Linux-specific tools..."
-	# Clipboard utility for accessing the clipboard in terminal
-	brew install xclip
-	;;
-darwin*)
-	# MacOS specific installations
-	echo "MacOS environment detected. Installing MacOS-specific tools..."
-	# pbcopy and pbpaste are pre-installed on MacOS for clipboard interaction
-	# Install GNU core utilities (those that come with OS X are outdated).
-	brew install coreutils
-	# Link sha256sum for compatibility
-	sudo ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
-	# Platform for developing, shipping, and running applications in containers.
-	brew install docker
-	;;
-*)
-	echo "Unsupported OS type: $OSTYPE"
-	;;
-esac
+echo "✅ Using Brewfile: $BREWFILE"
+echo "📊 Brewfile contains $(grep -c '^brew\|^tap\|^cask' "$BREWFILE" || echo 0) packages"
+
+# Only request sudo if we need it (for linking coreutils)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "🔐 Requesting administrative privileges for macOS setup..."
+    sudo -v
+    
+    # Keep-alive: update existing `sudo` time stamp until the script has finished
+    while true; do
+        sudo -n true
+        sleep 60
+        kill -0 "$$" || exit
+    done 2>/dev/null &
+fi
+
+echo "🔄 Updating Homebrew..."
+if ! brew update; then
+    echo "⚠️  Warning: Homebrew update failed, continuing anyway..."
+fi
+
+echo "⬆️  Upgrading existing formulae..."
+if ! brew upgrade; then
+    echo "⚠️  Warning: Some packages failed to upgrade, continuing..."
+fi
+
+echo "📋 Installing packages from Brewfile..."
+if ! brew bundle --file="$BREWFILE"; then
+    echo "❌ Error: Brewfile installation failed"
+    exit 1
+fi
+
+# macOS-specific post-installation setup
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "🍎 Performing macOS-specific setup..."
+    
+    # Link sha256sum for compatibility (with error handling)
+    if command -v gsha256sum &>/dev/null; then
+        if [[ ! -L "/usr/local/bin/sha256sum" ]]; then
+            echo "🔗 Creating sha256sum symlink..."
+            sudo ln -sf "$(which gsha256sum)" "/usr/local/bin/sha256sum" || {
+                echo "⚠️  Warning: Could not create sha256sum symlink"
+            }
+        else
+            echo "✅ sha256sum symlink already exists"
+        fi
+    else
+        echo "⚠️  Warning: gsha256sum not found, skipping symlink creation"
+    fi
+fi
+
+echo "🧹 Running bundle cleanup..."
+brew bundle cleanup --file="$BREWFILE" --force || {
+    echo "⚠️  Warning: Bundle cleanup had issues, continuing..."
+}
 
 echo "Cleaning up outdated versions from Homebrew..."
 # Clean up outdated versions from the Homebrew cellar

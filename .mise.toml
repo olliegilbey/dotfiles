@@ -1,0 +1,26 @@
+# mise configuration for dotfiles repository
+# Ensures consistent tool versions across environments
+
+[tools]
+# Node.js LTS for tool compatibility (LSPs, dev tools that require node)
+# Use bun for package management, but keep node for compatibility
+node = "lts"
+
+# Go latest stable for systems programming
+go = "latest"
+
+# Python latest stable - mise handles versions, uv handles packages
+python = "latest"
+
+# Note: Rust managed by rustup (not mise) for better toolchain control
+
+[env]
+# Environment variables for this project
+NODE_ENV = "development"
+EDITOR = "nvim"
+
+[tasks]
+# Custom tasks for this dotfiles repository
+setup = "bash init.sh"
+update = "bash init.sh"
+health = "bash -c 'echo \"🏥 Dotfiles Health Check\" && mise doctor && echo \"Tools:\" && bun --version && cargo --version && go version'"
