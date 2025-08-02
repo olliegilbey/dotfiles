@@ -1,5 +1,8 @@
 # Ollie's Global Development Environment & AI Collaboration Style
 
+> **Recently Updated (August 2025)**: Complete environment modernization with bleeding-edge tools, 
+> AI-first workflows, and comprehensive automation. See dotfiles repository for technical details.
+
 ## Personal Development Philosophy
 
 ### Core Principles
@@ -167,9 +170,11 @@
 For the most current development environment configuration, Claude Code should reference:
 - **Dotfiles Location**: `/Users/olivergilbey/dotfiles/src/` (symlinked to home directory)
 - **Shell Configuration**: `~/.zshrc` for current aliases, paths, and environment variables
-- **Aliases**: `~/.aliases` for navigation shortcuts and development utilities
-- **NeoVim Config**: `~/.config/nvim/` for current editor plugins and keybindings
-- **Tool Versions**: Check `~/.zshrc` for current Node.js (mise), Go, Rust, and other toolchain versions
+- **Aliases**: `~/.aliases` for 200+ navigation shortcuts and AI-friendly development utilities
+- **NeoVim Config**: `~/.config/nvim/` with LazyVim distribution and comprehensive plugin suite
+- **Package Management**: `~/dotfiles/Brewfile` for system packages, `.mise.toml` for language versions
+- **Health Checking**: `dotfiles-health` command validates entire environment setup
+- **Alias Tips**: `alias-descriptions.txt` provides user-customizable startup reminders
 
 ### Environment Discovery Commands
 When working on projects, Claude Code can check:

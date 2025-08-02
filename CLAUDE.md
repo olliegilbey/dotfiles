@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-This is a modern macOS/Linux dotfiles repository with automated setup and bleeding-edge tool integration. The architecture follows a symlink-based approach where all configuration files in `src/` are automatically linked to the home directory.
+This is a modern macOS/Linux dotfiles repository with automated setup and bleeding-edge tool integration. Recently underwent a complete overhaul (August 2025) modernizing all components with AI-first workflows. The architecture follows a symlink-based approach where all configuration files in `src/` are automatically linked to the home directory.
 
 ### Key Components
 
 - **`init.sh`** - Master setup script that orchestrates the entire environment installation
-- **`bootstrap.sh`** - Creates symlinks from `src/` to home directory (robust error handling)
-- **`brew.sh`** - Uses Brewfile for declarative package management via `brew bundle`
+- **`bootstrap.sh`** - Creates symlinks from `src/` to home directory (robust error handling, validation, idempotent)
+- **`brew.sh`** - Uses Brewfile for declarative package management via `brew bundle` (31 packages, casks, taps)
 - **`language_installs.sh`** - Sets up programming language toolchains (Rust via rustup, others via mise)
 - **`Brewfile`** - Declarative package management with cross-platform conditionals
 - **`.mise.toml`** - Project-specific language versions (Node.js, Go, Python)
@@ -70,7 +70,16 @@ ls -la ~ | grep dotfiles
 brew install package-name
 ```
 
-## Tool Stack (2025 Bleeding Edge)
+## Tool Stack (2025 Bleeding Edge) - Recently Modernized
+
+### Modern Command-Line Tools (Rust-based)
+- **eza** - Modern ls replacement with icons, git status, and better defaults
+- **bat** - Enhanced cat with syntax highlighting and git integration
+- **delta** - Enhanced git diff viewer with syntax highlighting
+- **ripgrep (rg)** - Recursive line-oriented search tool (extremely fast)
+- **fd** - Fast file finder alternative to find
+- **zoxide** - Smart cd replacement with frecency algorithm
+- **fzf** - Fuzzy finder for command-line productivity
 
 ### Package Management
 - **Homebrew** - System packages and CLI tools
@@ -78,28 +87,31 @@ brew install package-name
 - **uv** - Modern Python package/project manager (replaces pip/pipenv/poetry)
 - **Cargo** - Rust package manager and build system
 
-### Core Development Tools
-- **NeoVim** - Primary editor with LazyVim distribution
-- **Warp** - AI-enhanced terminal (replaces traditional terminals)
-- **ripgrep (rg)** - Fast search tool (replaces grep)
-- **fd** - Fast file finder (replaces find)
-- **zoxide** - Smart cd replacement with frecency algorithm
-- **fzf** - Fuzzy finder for command-line productivity
+### Editors & Development Environment
+- **NeoVim** - Primary editor with LazyVim distribution (completely rebuilt configuration)
+- **Warp** - AI-enhanced terminal with native prompting (no starship needed)
 - **lazygit** - Terminal UI for Git operations
 
 ### Language Toolchains
-- **Rust** - Primary language with rust-analyzer LSP
-- **Go** - Systems programming with full toolchain
-- **Node.js** - Web development via mise (latest LTS)
-- **Python** - Data/ML development via uv package manager
-- **Bun** - Modern JavaScript runtime and package manager
+- **Rust** - Primary language with rust-analyzer LSP (managed via rustup)
+- **Go** - Systems programming with full toolchain (managed via mise)
+- **Node.js** - Web development via mise (latest LTS) + **Bun** for performance
+- **Python** - Data/ML development via uv package manager (managed via mise)
+- **Bun** - Modern JavaScript runtime and package manager (replaces npm for new projects)
 
 ## Configuration Architecture
 
 ### Shell Configuration Layers
 1. **`.zshenv`** - Environment variables and PATH setup (loaded first)
-2. **`.zshrc`** - Interactive shell configuration with Oh My Zsh
-3. **`.aliases`** - Custom commands and shortcuts
+2. **`.zshrc`** - Interactive shell configuration with Oh My Zsh, mise activation, bun completions
+3. **`.aliases`** - Extensive custom commands and AI-friendly shortcuts (200+ lines)
+
+### NeoVim Configuration (LazyVim-based)
+- **Plugin Management**: lazy.nvim with modular plugin architecture
+- **LSP Setup**: Comprehensive language server configuration
+- **UI Enhancement**: TokyoNight theme with transparent background
+- **File Navigation**: nvim-tree, telescope, which-key integration
+- **Git Integration**: Built-in git support with LazyVim
 
 ### Key Environment Variables
 - `EDITOR="nvim"` - Default editor for all tools
@@ -110,21 +122,30 @@ brew install package-name
 ```bash
 plugins=(
   git golang rust docker
-  zsh-autosuggestions zsh-syntax-highlighting
+  zsh-autosuggestions zsh-syntax-highlighting zsh-completions
 )
 ```
+
+### Alias Tips System
+- **Random Startup Tips**: Shows 2 random aliases on terminal startup
+- **Dynamic Detection**: Automatically finds new aliases in configuration
+- **User Customization**: Edit `alias-descriptions.txt` to add descriptions
+- **Health Checking**: `dotfiles-health` command validates entire environment
 
 ## AI Development Integration
 
 ### Claude Code Integration
 - **Alias**: `claude` points to `$HOME/.claude/local/claude`
-- **Global Config**: `src/.config/claude/CLAUDE.md` contains comprehensive development philosophy
+- **Project Config**: This `CLAUDE.md` provides repository-specific guidance
+- **Global Config**: `src/.config/claude/CLAUDE.md` contains personal development philosophy (symlinked to `~/.config/claude/CLAUDE.md`)
 - **Settings**: `.claude/settings.local.json` manages permissions and MCP servers
+- **Git Security**: Personal details separated via `config.local` template system
 
 ### Warp Terminal Integration
-- **Native Prompting**: Starship prompt disabled in favor of Warp's native UI
+- **Native Prompting**: Starship completely removed in favor of Warp's native UI
 - **AI Command Suggestions**: Warp provides context-aware command suggestions
-- **Performance Optimization**: Heavy Oh My Zsh plugins removed for Warp compatibility
+- **Performance Optimization**: Removed atuin (conflicts with Warp history) and other heavy plugins
+- **Alias Tips**: Random startup reminders complement Warp's native features
 
 ## Maintenance Commands
 
