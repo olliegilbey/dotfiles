@@ -27,10 +27,19 @@
     light = false      # set to true if you're in a terminal w/ a light background color
     side-by-side = true
     line-numbers = true
+    hyperlinks = true  # clickable file paths in terminal
+    features = decorations
+    syntax-theme = Dracula  # matches your dark theme
+
+[delta "decorations"]
+    commit-decoration-style = "bold yellow box ul"
+    file-style = "bold yellow ul"
+    file-decoration-style = "none"
+    hunk-header-decoration-style = "blue box"
 
 [merge]
     tool = nvim
-    conflictstyle = diff3
+    conflictstyle = zdiff3  # superior conflict resolution vs diff3
 
 [diff]
     tool = default-difftool

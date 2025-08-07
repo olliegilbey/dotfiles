@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e  # Exit on any error
-
 cd "$(dirname "${BASH_SOURCE}")"
 
 echo "🚀 Initializing development environment..."
@@ -106,28 +104,32 @@ if command -v mise &>/dev/null; then
 	mise plugins update 2>/dev/null || echo "ℹ️  No mise plugins to update"
 fi
 
-# Shell history handled by Warp Terminal natively
-
 # Update bun (JavaScript runtime)
 if command -v bun &>/dev/null; then
 	echo "🔄 Updating bun..."
 	bun upgrade 2>/dev/null || echo "ℹ️  bun update handled by homebrew"
 fi
 
+# Shell history handled by Warp Terminal natively
+
 echo ""
 echo "🔄 Activating environment for immediate use..."
 
 # Source the new shell configuration
 if [ -f "$HOME/.zshrc" ]; then
-	echo "📥 Loading shell configuration..."
-	export SHELL=$(which zsh)
-	source "$HOME/.zshrc" 2>/dev/null || echo "⚠️  Shell config loaded with warnings"
+    echo "📥 Loading shell configuration..."
+    export SHELL=$(which zsh)
+    if source "$HOME/.zshrc" 2>/dev/null; then
+        echo "✅ Shell configuration loaded successfully"
+    else
+        echo "⚠️  Shell config loaded with warnings (this is normal for init)"
+    fi
 fi
 
 # Activate mise for language toolchains
 if command -v mise &>/dev/null; then
-	echo "🟢 Activating mise environment..."
-	eval "$(mise activate bash)" 2>/dev/null || echo "ℹ️  mise activation will be available in new shells"
+    echo "🟢 Activating mise environment..."
+    eval "$(mise activate bash)" 2>/dev/null || echo "ℹ️  mise activation will be available in new shells"
 fi
 
 # Test environment activation
@@ -138,46 +140,45 @@ echo "🏥 Running environment validation..."
 tools_ready=true
 
 if command -v node &>/dev/null; then
-	echo "✅ Node.js: $(node --version)"
+    echo "✅ Node.js:  $(node --version)"
 else
-	echo "⚠️  Node.js: Will be available after terminal restart"
-	tools_ready=false
+    echo "⚠️  Node.js: Will be available after terminal restart"
+    tools_ready=false
 fi
 
 if command -v bun &>/dev/null; then
-	echo "✅ Bun: $(bun --version)"
+    echo "✅ Bun:  $(bun --version)"
 else
-	echo "⚠️  Bun: Installation may need terminal restart"
-	tools_ready=false
+    echo "⚠️  Bun: Installation may need terminal restart"
+    tools_ready=false
 fi
 
 if command -v mise &>/dev/null; then
-	echo "✅ mise: $(mise --version | head -1)"
+    echo "✅ mise:  $(mise --version | head -1)"
 else
-	echo "⚠️  mise: Installation may need terminal restart"
-	tools_ready=false
+    echo "⚠️  mise: Installation may need terminal restart"
+    tools_ready=false
 fi
 
 if command -v delta &>/dev/null; then
-	echo "✅ delta: $(delta --version)"
+    echo "✅ delta:  $(delta --version)"
 else
-	echo "⚠️  delta: Installation may need terminal restart"
-	tools_ready=false
+    echo "⚠️  delta: Installation may need terminal restart"
+    tools_ready=false
 fi
 
 # Summary
 if [ "$tools_ready" = true ]; then
-	echo ""
-	echo "🎉 All tools are immediately available!"
+    echo ""
+    echo "🎉 All tools are immediately available!"
 else
-	echo ""
-	echo "ℹ️  Some tools need terminal restart to be available"
+    echo ""
+    echo "ℹ️  Some tools need terminal restart to be available"
 fi
 
-# Update alias descriptions for new installations
+# Alias descriptions are now inline with aliases - no separate update needed
 echo ""
-echo "📝 Updating alias descriptions..."
-bash "$(dirname "${BASH_SOURCE}")/update-alias-descriptions.sh" >/dev/null 2>&1 || echo "ℹ️  Alias descriptions update skipped"
+echo "📝 Alias descriptions are managed inline with aliases"
 
 echo ""
 echo "✨ Environment setup complete!"

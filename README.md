@@ -55,30 +55,28 @@ brew install package-name
 # Health check
 dotfiles-health
 
-# Regenerate this README
+# This README has GENERATED_CONTENT at the bottom, that pulls the info on your env. Regenerate with:
 ./update-readme.sh
 
-# Update alias descriptions for startup tips
-./update-alias-descriptions.sh
+# Random alias tips on terminal startup
+./show-alias-tips.sh
 ```
 
 ## Alias Tips & Cheatsheet
 
 The setup includes a smart alias reminder system that shows 2 random aliases on terminal startup.
 
-### Customizing Alias Tips
-1. **Edit descriptions**: `alias-descriptions.txt`
-2. **Format**: `alias_name::description`
-3. **Only aliases with descriptions** appear in startup tips
+### Adding Alias Descriptions
+Add descriptions directly inline with your aliases in `src/.aliases`:
 
 ```bash
-# Example entries in alias-descriptions.txt
-ll::Enhanced ls with icons, git status, and detailed info
-lg::Launch lazygit for terminal Git UI
-dev::Quick jump to development directory
+# Example: Add description as comment after the alias
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'  # Simple command-line timer
+alias lg='lazygit'  # Quick git UI
+alias dev='cd ~/Documents/code'  # Quick access to dev directory
 ```
 
-The system auto-detects new aliases but you need to add descriptions manually to enable them in the tips.
+Only aliases with descriptions appear in startup tips. Non-obvious aliases should have descriptions added for better discoverability.
 
 ---
 
@@ -96,7 +94,7 @@ Managed for consistent versions across environments:
 
 ## 📦 Package Environment
 
-Currently managing **28 packages**, **2 casks**, and **1 taps** via Brewfile.
+Currently managing **31 packages**, **2 casks**, and **1 taps** via Brewfile.
 
 ### Development Languages
 
@@ -113,6 +111,7 @@ Currently managing **28 packages**, **2 casks**, and **1 taps** via Brewfile.
 - **fd** - Fast file finder alternative to find (used by LazyVim)
 - **fzf** - Fuzzy finder for command-line (works with zoxide)
 - **ripgrep** - Recursive line-oriented search tool (extremely fast)
+- **todo-txt** - Simple todo.txt manager for command line
 - **zoxide** - Smart cd replacement with frecency algorithm
 - **zsh** - Your primary shell
 
@@ -136,14 +135,16 @@ Currently managing **28 packages**, **2 casks**, and **1 taps** via Brewfile.
 
 ### System Utilities
 
+- **csvkit** - CSV processing tools including csvstat
 - **findutils** - File and directory search tools
 - **imagemagick** - Image manipulation utilities
-- **nmap** - Network exploration tool and security scanner
 - **wget** - Network utility to retrieve files from the web
 
 ### Other Tools
 
 - **bash-completion** - Bash autocompletion
+- **curl**
+- **gemini-cli**
 - **jq** - JSON processor
 - **tree** - Recursive directory listing command
 
@@ -159,4 +160,4 @@ This validates all tools, language runtimes, and configurations.
 
 ---
 
-*Last updated: 2025-08-02 12:02:57*
+*Last updated: 2025-08-07 14:29:27*

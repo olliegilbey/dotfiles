@@ -75,7 +75,6 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
     },
@@ -93,9 +92,9 @@ return {
         signs = true,
       })
 
-      -- Setup capabilities
+      -- Setup capabilities (LazyVim uses blink.cmp, not nvim-cmp)
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+      -- LazyVim will handle completion capabilities automatically
 
       -- Setup language servers
       local lspconfig = require("lspconfig")
@@ -110,6 +109,17 @@ return {
             },
           },
         },
+        on_attach = function(client, bufnr)
+          local opts = { buffer = bufnr }
+          -- Rust-specific keymaps
+          vim.keymap.set("n", "<leader>Cr", "<cmd>!cargo run<cr>", { desc = "Cargo run", buffer = bufnr })
+          vim.keymap.set("n", "<leader>Ct", "<cmd>!cargo test<cr>", { desc = "Cargo test", buffer = bufnr })
+          vim.keymap.set("n", "<leader>Cb", "<cmd>!cargo build<cr>", { desc = "Cargo build", buffer = bufnr })
+          vim.keymap.set("n", "<leader>Cc", "<cmd>!cargo check<cr>", { desc = "Cargo check", buffer = bufnr })
+          vim.keymap.set("n", "<leader>Cf", "<cmd>!cargo fmt<cr>", { desc = "Cargo format", buffer = bufnr })
+          vim.keymap.set("n", "<leader>Cl", "<cmd>!cargo clippy<cr>", { desc = "Cargo clippy", buffer = bufnr })
+          vim.keymap.set("n", "<leader>Cd", "<cmd>!cargo doc --open<cr>", { desc = "Cargo docs", buffer = bufnr })
+        end,
       })
 
       -- Go  
@@ -125,6 +135,16 @@ return {
       -- Python
       lspconfig.pyright.setup({
         capabilities = capabilities,
+        on_attach = function(client, bufnr)
+          local opts = { buffer = bufnr }
+          -- Python-specific keymaps
+          vim.keymap.set("n", "<leader>pr", "<cmd>!python %<cr>", { desc = "Run Python file", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pt", "<cmd>!python -m pytest<cr>", { desc = "Run pytest", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pf", "<cmd>!black % && isort %<cr>", { desc = "Format with black/isort", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pl", "<cmd>!python -m flake8 %<cr>", { desc = "Run flake8 linting", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pi", "<cmd>!pip install -r requirements.txt<cr>", { desc = "Install requirements", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pc", "<cmd>!python -m py_compile %<cr>", { desc = "Compile Python file", buffer = bufnr })
+        end,
       })
 
       -- Bash
@@ -165,18 +185,28 @@ return {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
           local opts = { buffer = ev.buf }
+          -- Navigation
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
           vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
           vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
-          vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-          vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+          
+          -- Code actions and refactoring (enhanced <leader>c group)
+          vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions", buffer = ev.buf })
+          vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Code rename", buffer = ev.buf })
           vim.keymap.set("n", "<leader>cf", function()
             vim.lsp.buf.format({ async = true })
-          end, opts)
+          end, { desc = "Code format", buffer = ev.buf })
+          vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, { desc = "Code implementation", buffer = ev.buf })
+          vim.keymap.set("n", "<leader>cs", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "Code symbols", buffer = ev.buf })
+          vim.keymap.set("n", "<leader>cS", "<cmd>Telescope lsp_workspace_symbols<cr>", { desc = "Code workspace symbols", buffer = ev.buf })
+          vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Code diagnostics", buffer = ev.buf })
+          
+          -- Keep legacy mapping for compatibility
+          vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
         end,
       })
     end,

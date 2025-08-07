@@ -17,7 +17,7 @@ python = "latest"
 [env]
 # Environment variables for this project
 NODE_ENV = "development"
-EDITOR = "nvim"
+# EDITOR defined in .zshenv
 
 [tasks]
 # Custom tasks for this dotfiles repository

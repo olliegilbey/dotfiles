@@ -5,7 +5,23 @@
       "Bash(ls:*)",
       "Bash(find:*)",
       "Bash(dotfiles-health:*)",
-      "Bash(source ~/.aliases)"
+      "Bash(source ~/.aliases)",
+      "Bash(brew list:*)",
+      "Bash(brew:*)",
+      "Bash(source:*)",
+      "Bash(nvim:*)",
+      "Bash(grep:*)",
+      "Bash(echo $TERM)",
+      "WebFetch(domain:docs.warp.dev)",
+      "WebFetch(domain:github.com)",
+      "Bash(defaults read:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(mkdir:*)",
+      "Bash(./show-alias-tips.sh:*)",
+      "Bash(git-aliases:*)",
+      "Bash(timeout 10s nvim:*)",
+      "Bash(rg:*)",
+      "Bash(git diff:*)"
     ]
   },
   "enableAllProjectMcpServers": true

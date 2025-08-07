@@ -27,17 +27,23 @@ fi
 echo "✅ Using Brewfile: $BREWFILE"
 echo "📊 Brewfile contains $(grep -c '^brew\|^tap\|^cask' "$BREWFILE" || echo 0) packages"
 
-# Only request sudo if we need it (for linking coreutils)
+# Only request sudo if we need it (for linking coreutils) and if interactive
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "🔐 Requesting administrative privileges for macOS setup..."
-    sudo -v
-    
-    # Keep-alive: update existing `sudo` time stamp until the script has finished
-    while true; do
-        sudo -n true
-        sleep 60
-        kill -0 "$$" || exit
-    done 2>/dev/null &
+    # Check if we're running interactively
+    if [[ -t 0 ]] && [[ -t 1 ]]; then
+        echo "🔐 Requesting administrative privileges for macOS setup..."
+        sudo -v
+        
+        # Keep-alive: update existing `sudo` time stamp until the script has finished
+        while true; do
+            sudo -n true
+            sleep 60
+            kill -0 "$$" || exit
+        done 2>/dev/null &
+    else
+        echo "ℹ️  Non-interactive session detected. Sudo-required operations will be skipped."
+        echo "   If you need all features, run this script interactively."
+    fi
 fi
 
 echo "🔄 Updating Homebrew..."
@@ -63,10 +69,16 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # Link sha256sum for compatibility (with error handling)
     if command -v gsha256sum &>/dev/null; then
         if [[ ! -L "/usr/local/bin/sha256sum" ]]; then
-            echo "🔗 Creating sha256sum symlink..."
-            sudo ln -sf "$(which gsha256sum)" "/usr/local/bin/sha256sum" || {
-                echo "⚠️  Warning: Could not create sha256sum symlink"
-            }
+            # Check if we can use sudo (either we have cached credentials or we're interactive)
+            if sudo -n true 2>/dev/null; then
+                echo "🔗 Creating sha256sum symlink..."
+                sudo ln -sf "$(which gsha256sum)" "/usr/local/bin/sha256sum" || {
+                    echo "⚠️  Warning: Could not create sha256sum symlink"
+                }
+            else
+                echo "ℹ️  Skipping sha256sum symlink (requires sudo)"
+                echo "   Run 'sudo ln -sf \$(which gsha256sum) /usr/local/bin/sha256sum' manually if needed"
+            fi
         else
             echo "✅ sha256sum symlink already exists"
         fi

@@ -1,28 +1,40 @@
 #!/usr/bin/env bash
 
-# Script to show random alias tips on startup
+# Script to show random alias tips on startup (reads inline descriptions)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DESCRIPTIONS_FILE="$SCRIPT_DIR/alias-descriptions.txt"
+ALIASES_FILE="$SCRIPT_DIR/src/.aliases"
 
-# Only show tips if descriptions file exists
-[[ ! -f "$DESCRIPTIONS_FILE" ]] && exit 0
+# Only show tips if aliases file exists
+[[ ! -f "$ALIASES_FILE" ]] && exit 0
 
-# Get aliases with descriptions (not empty after ::)
+# Function to extract aliases with descriptions from inline comments
+extract_aliases_with_descriptions() {
+    local file="$1"
+    if [[ -f "$file" ]]; then
+        # Find alias definitions with trailing comments
+        # Pattern: alias name='command'  # description
+        grep -E '^[[:space:]]*alias [a-zA-Z0-9_-]+=' "$file" | while IFS= read -r line; do
+            # Check if line has a description comment
+            if [[ "$line" == *"#"* ]]; then
+                # Extract alias name
+                alias_name=$(echo "$line" | sed -E 's/^[[:space:]]*alias ([^=]*)=.*/\1/')
+                # Extract description (everything after the last #)
+                description=$(echo "$line" | sed 's/.*#[[:space:]]*//')
+                
+                # Only include if description is not empty
+                if [[ -n "$description" && "$description" != "" ]]; then
+                    echo "$alias_name::$description"
+                fi
+            fi
+        done
+    fi
+}
+
+# Get aliases with descriptions (not empty)
 aliases_with_descriptions=()
 while IFS= read -r line; do
-    # Skip comments and empty lines
-    [[ "$line" =~ ^#.*$ ]] && continue
-    [[ -z "$line" ]] && continue
-    
-    # Split on :: and check if description exists
-    if [[ "$line" == *"::"* ]]; then
-        alias_name="${line%%::*}"
-        description="${line#*::}"
-        if [[ -n "$description" && "$description" != "" ]]; then
-            aliases_with_descriptions+=("$alias_name::$description")
-        fi
-    fi
-done < "$DESCRIPTIONS_FILE"
+    [[ -n "$line" ]] && aliases_with_descriptions+=("$line")
+done < <(extract_aliases_with_descriptions "$ALIASES_FILE")
 
 # Exit if no aliases with descriptions
 if [[ ${#aliases_with_descriptions[@]} -eq 0 ]]; then

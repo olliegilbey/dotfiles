@@ -38,7 +38,6 @@ brew "vim"              # Highly configurable and robust text editor
 brew "tree"             # Recursive directory listing command
 brew "wget"             # Network utility to retrieve files from the web
 brew "jq"               # JSON processor
-brew "nmap"             # Network exploration tool and security scanner
 brew "imagemagick"      # Image manipulation utilities
 brew "findutils"        # File and directory search tools
 
@@ -46,6 +45,10 @@ brew "findutils"        # File and directory search tools
 brew "uv"               # Modern Python package manager (replaces pip, pipenv, poetry)
 brew "bun"              # Modern JavaScript runtime and package manager (faster than npm/node)
 brew "mise"             # Universal version manager (replaces nvm, rbenv, pyenv, etc.)
+
+# Productivity and task management
+brew "todo-txt"         # Simple todo.txt manager for command line
+brew "csvkit"           # CSV processing tools including csvstat
 
 # Security and authentication
 cask "1password-cli"    # 1Password command-line interface
@@ -63,3 +66,9 @@ end
 if OS.linux?
   brew "xclip"          # Clipboard utility for accessing clipboard in terminal
 end
+
+# gemini-cli
+brew "gemini-cli"
+
+# curl
+brew "curl"
