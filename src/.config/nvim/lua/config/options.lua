@@ -4,7 +4,17 @@ local opt = vim.opt
 -- UI & Appearance
 opt.number = true
 opt.relativenumber = true
-opt.signcolumn = "yes"
+opt.signcolumn = "yes:1"  -- Limit sign column to 1 character width  
+opt.numberwidth = 1       -- Minimum width for line number column (as narrow as possible)
+
+-- Force narrow line number gutter
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.numberwidth = 1
+    vim.opt_local.signcolumn = "yes:1"
+  end,
+})
 opt.cursorline = true
 opt.scrolloff = 8
 opt.sidescrolloff = 8

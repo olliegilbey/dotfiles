@@ -1,22 +1,31 @@
+# ~/.aliases - Enhanced Command Aliases & Functions
+# Sourced by .zshrc for all interactive shells
+#
+# ALIAS DESCRIPTIONS SYSTEM:
+# To enable startup tips, add a comment with # after your alias:
+#   alias myalias='command'  # Description for startup tips
+# The show-alias-tips.sh script extracts these for random display
+# ================================================================
+
 # Easier navigation: .., ..., ...., ....., ~ and -
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
+alias ..="cd .."  # Go up one directory
+alias ...="cd ../.."  # Go up two directories  
+alias ....="cd ../../.."  # Go up three directories
+alias .....="cd ../../../.."  # Go up four directories
 
 # Vim
 # alias vim='mvim '
 
-alias g="git"
+alias g="git"  # Quick git command access
 
 colorflag="-G"
 
 # Modern ls replacement with eza (with fallback to ls)
 if command -v eza &> /dev/null; then
-    alias ls='eza --icons --group-directories-first'
-    alias l='eza -l --icons --group-directories-first'
-    alias la='eza -la --icons --group-directories-first --git'
-    alias lsd='eza -lD --icons'
+    alias ls='eza --icons --group-directories-first'  # Modern ls with icons
+    alias l='eza -l --icons --group-directories-first'  # Long format with icons
+    alias la='eza -la --icons --group-directories-first --git'  # Long format with hidden files and git status
+    alias lsd='eza -lD --icons'  # Show only directories
 else
     # Fallback to traditional ls
     alias l="ls -lF ${colorflag}"
@@ -30,7 +39,7 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 alias sudo='sudo '
 
 # Stopwatch
-alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'  # Simple command-line timer
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -39,7 +48,7 @@ alias ips="ifconfig -a | rg -o 'inet6? (addr:)?\s?((([0-9]+\.){3}[0-9]+)|[a-fA-F
 
 # Empty the Trash on all mounted volumes and the main HDD
 # Also, clear Apple’s System Logs to improve shell startup speed
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"  # Empty all trash and logs
 
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
@@ -51,10 +60,10 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && k
 
 # Kill all the tabs in Chrome to free up memory
 # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
-alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"  # Kill Chrome helper processes
 
 # Lock the screen (when going AFK)
-alias afk="osascript -e 'tell application \"System Events\" to keystroke \"q\" using {command down, control down}'"
+alias afk="osascript -e 'tell application \"System Events\" to keystroke \"q\" using {command down, control down}' && pmset sleepnow"  # Lock screen and sleep
 
 # Enhanced cat with syntax highlighting (with fallback)
 if command -v bat &> /dev/null; then
@@ -66,7 +75,7 @@ fi
 alias reload="exec $SHELL -l"
 
 # Flush DNS
-alias flushDNS="sudo killall -HUP mDNSResponder"
+alias flushDNS="sudo killall -HUP mDNSResponder"  # Flush DNS cache
 
 # AI-friendly aliases and functions
 # Quick directory and file operations
@@ -78,22 +87,40 @@ alias lg='lazygit'                                           # Quick git UI
 alias dev='cd ~/Documents/code'                             # Quick access to dev directory
 alias dots='cd ~/dotfiles'                                  # Quick access to dotfiles
 alias src='cd ~/Documents/code && ls'                       # Go to code dir and list
+alias refresh='source ~/.zshrc && dotfiles-health'          # Reload shell and run health check
+alias clear-shell-cache='rm -f ~/.cache/*-completion.zsh ~/.cache/*-init.zsh && echo "🧹 Shell completion caches cleared"'  # Clear cached completions
+
+# System and tool integration
+alias claude="$HOME/.claude/local/claude"  # Launch Claude Code AI assistant
+alias csvlint="/opt/homebrew/lib/ruby/gems/3.4.0/bin/csvlint"  # CSV validation tool
+alias python=python3  # Use Python 3 by default
+
+# Meta-aliases for discovering other tools' aliases
+alias git-aliases='git config --get-regexp "^alias\." | sed "s/^alias\.//"'  # Show all git aliases
+alias npm-aliases='npm run --silent'  # Show npm script aliases
+alias docker-aliases='echo "Docker aliases are in: docker --help"'  # Docker command reference
 
 # Quick environment info for AI context
-alias env-info='echo "🖥️  Environment Info:"; echo "Shell: $SHELL ($ZSH_VERSION)"; echo "OS: $(uname -s) $(uname -r)"; echo "Node: $(node --version 2>/dev/null || echo "not installed")"; echo "Go: $(go version 2>/dev/null | cut -d" " -f3 || echo "not installed")"; echo "Rust: $(rustc --version 2>/dev/null | cut -d" " -f2 || echo "not installed")"; echo "Python: $(python3 --version 2>/dev/null || echo "not installed")"; echo "Editor: $EDITOR"; echo "PWD: $(pwd)"'
+alias env-info='echo "🖥️  Environment Info:"; echo "Shell: $SHELL ($ZSH_VERSION)"; echo "OS: $(uname -s) $(uname -r)"; echo "Node: $(node --version 2>/dev/null || echo "not installed")"; echo "Go: $(go version 2>/dev/null | cut -d" " -f3 || echo "not installed")"; echo "Rust: $(rustc --version 2>/dev/null | cut -d" " -f2 || echo "not installed")"; echo "Python: $(python3 --version 2>/dev/null || echo "not installed")"; echo "Editor: $EDITOR"; echo "PWD: $(pwd)"'  # Show development environment summary
 
 # AI-friendly file operations (using modern tools)
 alias recent='find . -type f -mtime -1 -not -path "*/.*" | head -10'  # Recent files (1 day)
 alias biggest='du -sh * | sort -rh | head -10'                        # Largest files/dirs
 alias count='find . -type f | wc -l'                                 # Count files
 
-# Ripgrep shortcuts for fast searching
+# Modern search tools (ripgrep replaces grep)
+alias grep='rg'                                                      # Replace grep with ripgrep
 alias search='rg --smart-case --pretty'                              # Smart case search with colors
 alias searchall='rg --smart-case --hidden --no-ignore'               # Search hidden and ignored files
 alias searchcode='rg --type-add "code:*.{rs,go,js,ts,py,rb,java,cpp,c,h}" --type code'  # Search only code files
 
+# Git diff shortcuts that leverage delta
+alias gd='git diff'                                                  # Quick git diff (uses delta)
+alias gds='git diff --staged'                                        # Staged changes (uses delta)
+alias gdh='git diff HEAD~1'                                          # Compare with previous commit
+
 # Project context helpers
-alias git-summary='echo "📊 Git Repository Summary:"; echo "Branch: $(git branch --show-current 2>/dev/null || echo "not a git repo")"; echo "Status:"; git status --porcelain 2>/dev/null | head -10 || echo "not a git repo"; echo "Recent commits:"; git log --oneline -5 2>/dev/null || echo "not a git repo"'
+alias git-summary='echo "📊 Git Repository Summary:"; echo "Branch: $(git branch --show-current 2>/dev/null || echo "not a git repo")"; echo "Status:"; git status --porcelain 2>/dev/null | head -10 || echo "not a git repo"; echo "Recent commits:"; git log --oneline -5 2>/dev/null || echo "not a git repo"'  # Quick git repository overview
 
 # AI context functions
 function proj-context() {
@@ -153,6 +180,95 @@ alias npx-fallback='command npx'
 
 # Note: We keep npx available for MCP servers that need it
 
+# Todo.txt - Unified task management
+# PRIMARY: NeoVim plugin (<leader>tt = open, <leader>ta = add, <leader>td = done list)
+# FALLBACK: CLI aliases below for quick terminal access
+alias tl='echo "📝 Current todos (use <leader>tt in nvim for full interface):" && cat ~/todo.txt | grep -v "^x " | nl'  # Show current todos in terminal
+# Quick add task function with priority support
+function ta() {
+    local priority=""
+    local task="$*"
+    
+    # If no arguments provided, open NeoVim with todo.txt and trigger capture_todo
+    if [[ $# -eq 0 ]]; then
+        echo "📝 Opening NeoVim todo interface..."
+        nvim ~/todo.txt -c "lua require('todotxt').capture_todo()"
+        return
+    fi
+    
+    # Check if first argument is A, B, or C for priority
+    if [[ "$1" =~ ^[ABC]$ ]]; then
+        priority="($1) "
+        shift
+        task="$*"
+    fi
+    
+    echo "$(date +%Y-%m-%d) $priority$task" >> ~/todo.txt
+    echo "Added: $priority$task"
+    echo ""
+    echo "Current todos:"
+    cat ~/todo.txt | grep -v "^x " | nl
+}
+alias tt='nvim -c "lua require(\"todotxt\").toggle_todotxt()"'  # Open NeoVim with todo.txt buffer interface
+
+# Quick NeoVim shortcuts  
+alias nv='nvim ./'                                               # Open current directory in NeoVim
+
+# Advanced CLI operations (todo.sh tool from Homebrew)
+alias ta-cli='todo.sh add'                                      # CLI add: ta-cli "Call Mom"
+alias tl-cli='todo.sh list | bat --paging=never --style=numbers' # CLI list with syntax highlighting
+alias tp='todo.sh listproj | sort'                             # List projects (CLI)
+alias tc='todo.sh listcon | sort'                              # List contexts (CLI)
+alias ts='todo.sh list'                                        # Search tasks (CLI)
+
+# Enhanced viewing function for CLI use
+function todo-overview() {
+    echo "📋 Todo Overview:"
+    echo "===================="
+    todo.sh list | bat --paging=never --style=numbers --theme=Dracula
+    echo ""
+    echo "📊 Quick Stats:"
+    echo "   Total tasks: $(todo.sh list | wc -l)"
+    echo "   Projects: $(todo.sh listproj | wc -l)"
+    echo "   Contexts: $(todo.sh listcon | wc -l)"
+}
+
+# Quick completion function for simple todo.txt format
+function td() {
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: td [task_number]  - Mark task as done"
+        echo "Current tasks:"
+        cat ~/todo.txt | grep -v "^x " | nl
+        return
+    fi
+    
+    local line_num=$1
+    local total_lines=$(cat ~/todo.txt | grep -v "^x " | wc -l)
+    
+    if [[ $line_num -gt $total_lines ]] || [[ $line_num -lt 1 ]]; then
+        echo "❌ Task number $line_num not found (1-$total_lines)"
+        return 1
+    fi
+    
+    # Get the actual line from active todos (non-completed)
+    local task_line=$(cat ~/todo.txt | grep -v "^x " | sed -n "${line_num}p")
+    
+    # Mark as completed with completion date
+    local completed_task="x $(date +%Y-%m-%d) $task_line"
+    
+    # Create temp file with completed task and remaining tasks
+    {
+        cat ~/todo.txt | grep "^x "  # Keep existing completed tasks
+        echo "$completed_task"       # Add newly completed task
+        cat ~/todo.txt | grep -v "^x " | sed "${line_num}d"  # Remove completed task from active
+    } > ~/todo.txt.tmp && mv ~/todo.txt.tmp ~/todo.txt
+    
+    echo "✅ Completed: $task_line"
+    echo ""
+    echo "Remaining tasks:"
+    cat ~/todo.txt | grep -v "^x " | nl
+}
+
 # Dotfiles health check function
 function dotfiles-health() {
     echo "🏥 Dotfiles Health Check"
@@ -186,4 +302,14 @@ function dotfiles-health() {
     echo "  Symlinks active: $(ls -la ~ | grep -c dotfiles || echo 0)"
     echo ""
     echo "✨ Environment ready!"
+}
+
+
+# Secrets Management
+# Lazily load the Gemini API key from 1Password on first use
+gemini() {
+  if [[ -z "$GEMINI_API_KEY" ]]; then
+    export GEMINI_API_KEY=$(op read "op://Private/gemini_api_key/credential" --account my.1password.com)
+  fi
+  command gemini "$@"
 }

@@ -28,7 +28,7 @@
 - **Navigation**: Enhanced with `zoxide` (replaces cd), `fzf` (fuzzy finder), `ripgrep` (fast search)
 
 ### Dotfiles Architecture
-- **Symlinked Configuration**: All dotfiles managed via `/Users/olivergilbey/dotfiles/bootstrap.sh`
+- **Symlinked Configuration**: All dotfiles managed via `~/dotfiles/bootstrap.sh`
 - **Configuration Location**: `~/dotfiles/src/` contains all config files, symlinked to home directory
 - **Automated Setup**: Complete environment bootstrap with `init.sh`, `brew.sh`, `language_installs.sh`
 - **Version Control**: Git-managed dotfiles with backup system during setup
@@ -75,7 +75,7 @@
 - **System Utilities**: `timer` (stopwatch), `ip`/`localip` (addresses), `chromekill`, `flushDNS`, `afk` (lock screen)
 - **AI Context**: `proj-context` (project overview), `dotfiles-health` (environment validation)
 - **Modern Tools**: `cat` → `bat` (syntax highlighting), `ls` → `eza` (icons/git status)
-- **Claude Code Access**: `claude` alias pointing to `/Users/olivergilbey/.claude/local/claude`
+- **Claude Code Access**: `claude` alias pointing to `~/.claude/local/claude`
 - **Alias Tips**: Random startup reminders from `alias-descriptions.txt` (2 tips per session)
 
 ## AI Collaboration Guidelines
@@ -168,7 +168,7 @@
 
 ### Dotfiles Reference
 For the most current development environment configuration, Claude Code should reference:
-- **Dotfiles Location**: `/Users/olivergilbey/dotfiles/src/` (symlinked to home directory)
+- **Dotfiles Location**: `~/dotfiles/src/` (symlinked to home directory)
 - **Shell Configuration**: `~/.zshrc` for current aliases, paths, and environment variables
 - **Aliases**: `~/.aliases` for 200+ navigation shortcuts and AI-friendly development utilities
 - **NeoVim Config**: `~/.config/nvim/` with LazyVim distribution and comprehensive plugin suite
@@ -205,4 +205,4 @@ ls -la | head -10
 
 *This global configuration helps Claude Code understand Ollie's development style, preferences, and collaboration patterns across all projects. Project-specific CLAUDE.md files should extend these principles with domain-specific context.*
 
-*For real-time environment details, Claude Code should reference the dotfiles at `/Users/olivergilbey/dotfiles/src/` to understand current tool versions, aliases, and configuration preferences.*
+*For real-time environment details, Claude Code should reference the dotfiles at `~/dotfiles/src/` to understand current tool versions, aliases, and configuration preferences.*

@@ -1,82 +1,33 @@
-# This file needs to be really quick, since, for some completely wacked
-# reason, evil evaluates it everytime you run dd or something similar
+# Environment variables loaded by all shell sessions
+# This file should be kept minimal and fast.
 
-# Make emacs the default editor.
-# export EDITOR='emacsclient -c'
+# Set the default editor
 export EDITOR='nvim'
 
 # Set vi mode switching to 100ms instead of default 400ms
 export KEYTIMEOUT=1
 
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-fi
-
-# PATH
-PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
-PATH=$PATH:$HOME/.bin
-# Removed ~/.npm-global/bin (migrated to bun via ~/.bun/bin)
-
-# envsubst
-PATH=$PATH:/usr/local/opt/gettext/bin
-# Composer libs
-PATH=$PATH:$HOME/.composer/vendor/bin
-# Latex
-PATH=$PATH:/Library/TeX/Root/bin/x86_64-darwin/
-# Haskell
-# PATH=$PATH:$HOME/.stack/programs/x86_64-osx/ghc-7.10.3/bin/
-PATH=$PATH:$HOME/.local/bin
-PATH=$PATH:$HOME/.cabal/bin/
-
-PATH=$PATH:$HOME/.krew/bin
-
-PATH=$PATH:/usr/local/go/bin
-
-export PATH=$PATH
-
-# Removed NPM_CONFIG_PREFIX (using bun for global packages)
-
-# Setup nvm - for node too slow :( so I've set it manually
-# export NVM_DIR=~/.nvm
-# source $(brew --prefix nvm)/nvm.sh
-
-# nvm use --silent default
-
-
 # Increase Bash history size. Allow 32³ entries; the default is 500.
-export HISTSIZE='32768';
-export HISTFILESIZE="${HISTSIZE}";
+export HISTSIZE='32768'
+export HISTFILESIZE="${HISTSIZE}"
 # Omit duplicates and commands that begin with a space from history.
-export HISTCONTROL='ignoreboth';
+export HISTCONTROL='ignoreboth'
 
 # Prefer US English and use UTF-8.
-export LANG='en_US.UTF-8';
-export LC_ALL='en_US.UTF-8';
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
 
 # Highlight section titles in manual pages.
-export LESS_TERMCAP_md="${yellow}";
+export LESS_TERMCAP_md="${yellow}"
 
 # Don’t clear the screen after quitting a manual page.
-export MANPAGER='less -X';
+export MANPAGER='less -X'
 
-# Always enable colored `grep` output.
-# export GREP_OPTIONS='--color=auto';
-# alias grep=`grep --color=auto`;
-
-# Homebrew temp
+# Homebrew temp directory
 export HOMEBREW_TEMP=/usr/local/homebrew_temp
 
 # Go Path
 export GOPATH=$HOME/go
 
-# Stop tmux renameing windows
+# Stop tmux from renaming windows
 DISABLE_AUTO_TITLE=true
-
-#Android Development
-export ANDROID_HOME=/usr/local/opt/android-sdk
-
-# Use Java 8 by default
-# export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
-. "$HOME/.cargo/env"
-
-export PATH="$PATH:/Users/olivergilbey/.foundry/bin"

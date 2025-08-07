@@ -61,9 +61,29 @@ validate_environment() {
     log_success "Environment validation passed"
 }
 
+# Clean up old trash directories (keep only 3 most recent)
+cleanup_old_trash_directories() {
+    local trash_pattern="${TRASH_DIR}.*"
+    local trash_count=$(find "$(dirname "$TRASH_DIR")" -maxdepth 1 -name "$(basename "$TRASH_DIR").*" 2>/dev/null | wc -l)
+    
+    if [ "$trash_count" -gt 3 ]; then
+        log_info "Cleaning up old trash directories (keeping 3 most recent)"
+        # Keep only the 3 most recent trash directories
+        find "$(dirname "$TRASH_DIR")" -maxdepth 1 -name "$(basename "$TRASH_DIR").*" -type d 2>/dev/null | \
+            sort -r | tail -n +4 | \
+            while read -r old_trash; do
+                log_info "Removing old trash directory: $(basename "$old_trash")"
+                rm -rf "$old_trash"
+            done
+    fi
+}
+
 # Create trash directory safely
 setup_trash_dir() {
     log_info "Setting up trash directory..."
+    
+    # Clean up old archived trash directories first
+    cleanup_old_trash_directories
     
     if [[ -d "$TRASH_DIR" ]]; then
         log_warning "Existing trash directory found, archiving with timestamp"
@@ -71,6 +91,8 @@ setup_trash_dir() {
             log_error "Failed to archive existing trash directory"
             exit 1
         }
+        # Clean up again after creating new archived directory
+        cleanup_old_trash_directories
     fi
     
     mkdir -p "$TRASH_DIR" || {

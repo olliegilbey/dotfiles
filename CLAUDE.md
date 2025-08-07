@@ -15,10 +15,8 @@ This is a modern macOS/Linux dotfiles repository with automated setup and bleedi
 - **`Brewfile`** - Declarative package management with cross-platform conditionals
 - **`.mise.toml`** - Project-specific language versions (Node.js, Go, Python)
 - **`update-readme.sh`** - Dynamic README generation from current environment
-- **`update-alias-descriptions.sh`** - Alias detection and description management
-- **`show-alias-tips.sh`** - Random alias reminders on terminal startup
+- **`show-alias-tips.sh`** - Random alias reminders on terminal startup (reads inline descriptions from .aliases)
 - **`git-config-local.template`** - Secure git identity template (keeps personal details private)
-- **`alias-descriptions.txt`** - User-customizable alias descriptions for startup tips
 - **`src/`** - Contains all dotfiles that get symlinked to home directory
 
 ### Symlink Strategy
@@ -45,8 +43,8 @@ The bootstrap system automatically:
 # Update language toolchains only
 ./language_installs.sh
 
-# Update alias descriptions for startup tips
-./update-alias-descriptions.sh
+# Show random alias tips (reads inline descriptions from .aliases)
+./show-alias-tips.sh
 
 # Regenerate README from current environment
 ./update-readme.sh
@@ -104,14 +102,15 @@ brew install package-name
 ### Shell Configuration Layers
 1. **`.zshenv`** - Environment variables and PATH setup (loaded first)
 2. **`.zshrc`** - Interactive shell configuration with Oh My Zsh, mise activation, bun completions
-3. **`.aliases`** - Extensive custom commands and AI-friendly shortcuts (200+ lines)
+3. **`.aliases`** - Extensive custom commands with inline descriptions (200+ lines, 70+ aliases)
 
 ### NeoVim Configuration (LazyVim-based)
 - **Plugin Management**: lazy.nvim with modular plugin architecture
-- **LSP Setup**: Comprehensive language server configuration
-- **UI Enhancement**: TokyoNight theme with transparent background
-- **File Navigation**: nvim-tree, telescope, which-key integration
+- **LSP Setup**: Comprehensive language server configuration with enhanced keybindings
+- **UI Enhancement**: Kanagawa theme with transparent background and narrow gutter
+- **File Navigation**: Snacks explorer (30-char width), telescope, which-key integration
 - **Git Integration**: Built-in git support with LazyVim
+- **Todo Integration**: todo.txt plugin with buffer-local keybindings
 
 ### Key Environment Variables
 - `EDITOR="nvim"` - Default editor for all tools
@@ -127,9 +126,10 @@ plugins=(
 ```
 
 ### Alias Tips System
-- **Random Startup Tips**: Shows 2 random aliases on terminal startup
-- **Dynamic Detection**: Automatically finds new aliases in configuration
-- **User Customization**: Edit `alias-descriptions.txt` to add descriptions
+- **Inline Documentation**: Alias descriptions stored as comments in .aliases file
+- **Random Startup Tips**: Shows 2 random aliases on terminal startup via show-alias-tips.sh
+- **Centralized Storage**: All aliases are stored in .aliases file for consistent sourcing
+- **Maintenance**: Non-obvious aliases should have descriptions added inline for better discoverability
 - **Health Checking**: `dotfiles-health` command validates entire environment
 
 ## AI Development Integration

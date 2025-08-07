@@ -12,3 +12,25 @@ src/.atom/
 .claude/temp-*
 # Ignore Raycast extension source maps
 src/.config/raycast/extensions/**/*.js.map
+
+# Generated diagnostic files
+nvim_health.txt
+brew_dependency_tree.txt
+
+# Editor temporary files
+**/.tmp*
+**/*.tmp
+
+# Tool cache and state files
+src/.config/configstore/
+src/.config/github-copilot/versions.json
+src/.config/uv/uv-receipt.json
+
+# Shell completion caches
+.cache/*-completion.zsh
+.cache/*-init.zsh
+
+# Application secrets and tokens
+src/.config/github-copilot/hosts.json
+src/.config/raycast/config.json
+src/.config/raycast/ai/
