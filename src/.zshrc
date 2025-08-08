@@ -51,6 +51,13 @@ export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PA
 # SHELL CONFIGURATION
 # ------------------------------------------------------------------------------
 
+# History Configuration (balanced performance and persistence)
+export HISTSIZE=50000
+export SAVEHIST=50000  
+export HISTFILE=~/.zsh_history
+setopt share_history          # Share between sessions with batched writes
+setopt hist_ignore_dups       # Skip duplicate entries
+
 # General Configuration
 export ZSH="$HOME/.oh-my-zsh"
 # EDITOR is defined in .zshenv

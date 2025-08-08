@@ -36,6 +36,7 @@ return {
           })
         end, 100)
       end)
+      -- Only check/install missing tools, don't refresh registry on every startup
       local function ensure_installed()
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
@@ -44,11 +45,15 @@ return {
           end
         end
       end
-      if mr.refresh then
-        mr.refresh(ensure_installed)
-      else
-        ensure_installed()
-      end
+      
+      -- Defer the check to avoid blocking startup
+      vim.defer_fn(function()
+        if mr.refresh then
+          mr.refresh(ensure_installed)
+        else
+          ensure_installed()
+        end
+      end, 100)
     end,
   },
 

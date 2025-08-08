@@ -106,16 +106,18 @@ brew install package-name
 
 ### NeoVim Configuration (LazyVim-based)
 - **Plugin Management**: lazy.nvim with modular plugin architecture
-- **LSP Setup**: Comprehensive language server configuration with enhanced keybindings
+- **LSP Setup**: Comprehensive language server configuration with optimized startup performance
 - **UI Enhancement**: Kanagawa theme with transparent background and narrow gutter
 - **File Navigation**: Snacks explorer (30-char width), telescope, which-key integration
 - **Git Integration**: Built-in git support with LazyVim
 - **Todo Integration**: todo.txt plugin with buffer-local keybindings
+- **Performance**: Deferred tool installation to prevent startup delays
 
 ### Key Environment Variables
 - `EDITOR="nvim"` - Default editor for all tools
 - `GOPATH="$HOME/go"` - Go workspace
 - `UV_PYTHON_PREFERENCE=only-managed` - Python version management via uv
+- `HISTSIZE=50000, SAVEHIST=50000` - Large history with cross-session sharing
 
 ### Modern Zsh Plugin Stack
 ```bash
@@ -124,6 +126,16 @@ plugins=(
   zsh-autosuggestions zsh-syntax-highlighting zsh-completions
 )
 ```
+
+### Command Aliases & AI Agent Notes
+- **`grep` is aliased to `rg`**: Uses ripgrep syntax, not POSIX grep syntax
+  - Shows "🔍 ripgrep:" indicator before all output for context
+  - Ripgrep searches files by default: `grep pattern` searches all files in current directory
+  - POSIX grep needs input: `echo "text" | /usr/bin/grep pattern` or `/usr/bin/grep pattern file.txt`
+  - No `-E` flag needed: `rg 'pattern1|pattern2'` instead of `grep -E '(pattern1|pattern2)'`
+- **Python development shortcuts**: 
+  - `uvr` alias for `uv run python` (frequently used for Python script execution)
+  - Python managed via uv for package/project management
 
 ### Alias Tips System
 - **Inline Documentation**: Alias descriptions stored as comments in .aliases file
