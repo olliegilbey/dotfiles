@@ -94,6 +94,7 @@ alias clear-shell-cache='rm -f ~/.cache/*-completion.zsh ~/.cache/*-init.zsh && 
 alias claude="$HOME/.claude/local/claude"  # Launch Claude Code AI assistant
 alias csvlint="/opt/homebrew/lib/ruby/gems/3.4.0/bin/csvlint"  # CSV validation tool
 alias python=python3  # Use Python 3 by default
+alias uvr='uv run python'  # Quick uv run python shortcut
 
 # Meta-aliases for discovering other tools' aliases
 alias git-aliases='git config --get-regexp "^alias\." | sed "s/^alias\.//"'  # Show all git aliases
@@ -109,7 +110,7 @@ alias biggest='du -sh * | sort -rh | head -10'                        # Largest 
 alias count='find . -type f | wc -l'                                 # Count files
 
 # Modern search tools (ripgrep replaces grep)
-alias grep='rg'                                                      # Replace grep with ripgrep
+alias grep='echo "🔍 \033[36mripgrep:\033[0m" >&2 && sleep 0.01 && rg'  # Search text using ripgrep (different syntax than POSIX grep)
 alias search='rg --smart-case --pretty'                              # Smart case search with colors
 alias searchall='rg --smart-case --hidden --no-ignore'               # Search hidden and ignored files
 alias searchcode='rg --type-add "code:*.{rs,go,js,ts,py,rb,java,cpp,c,h}" --type code'  # Search only code files
