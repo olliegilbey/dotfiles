@@ -184,16 +184,16 @@ alias npx-fallback='command npx'
 # Todo.txt - Unified task management
 # PRIMARY: NeoVim plugin (<leader>tt = open, <leader>ta = add, <leader>td = done list)
 # FALLBACK: CLI aliases below for quick terminal access
-alias tl='echo "📝 Current todos (use <leader>tt in nvim for full interface):" && cat ~/todo.txt | grep -v "^x " | nl'  # Show current todos in terminal
+alias tl='echo "📝 Current todos (use <leader>tt in nvim for full interface):" && cat ~/todo.txt | rg -v "^x " | nl'  # Show current todos in terminal
 # Quick add task function with priority support
 function ta() {
     local priority=""
     local task="$*"
     
-    # If no arguments provided, open NeoVim with todo.txt and trigger capture_todo
+    # If no arguments provided, open NeoVim with done.txt and trigger capture_todo
     if [[ $# -eq 0 ]]; then
         echo "📝 Opening NeoVim todo interface..."
-        nvim ~/todo.txt -c "lua require('todotxt').capture_todo()"
+        nvim ~/done.txt -c "lua require('todotxt').capture_todo()"
         return
     fi
     
@@ -239,12 +239,12 @@ function td() {
     if [[ $# -eq 0 ]]; then
         echo "Usage: td [task_number]  - Mark task as done"
         echo "Current tasks:"
-        cat ~/todo.txt | grep -v "^x " | nl
+        cat ~/todo.txt | rg -v "^x " | nl
         return
     fi
     
     local line_num=$1
-    local total_lines=$(cat ~/todo.txt | grep -v "^x " | wc -l)
+    local total_lines=$(cat ~/todo.txt | rg -v "^x " | wc -l)
     
     if [[ $line_num -gt $total_lines ]] || [[ $line_num -lt 1 ]]; then
         echo "❌ Task number $line_num not found (1-$total_lines)"
@@ -252,22 +252,22 @@ function td() {
     fi
     
     # Get the actual line from active todos (non-completed)
-    local task_line=$(cat ~/todo.txt | grep -v "^x " | sed -n "${line_num}p")
+    local task_line=$(cat ~/todo.txt | rg -v "^x " | sed -n "${line_num}p")
     
     # Mark as completed with completion date
     local completed_task="x $(date +%Y-%m-%d) $task_line"
     
     # Create temp file with completed task and remaining tasks
     {
-        cat ~/todo.txt | grep "^x "  # Keep existing completed tasks
+        cat ~/todo.txt | rg "^x "  # Keep existing completed tasks
         echo "$completed_task"       # Add newly completed task
-        cat ~/todo.txt | grep -v "^x " | sed "${line_num}d"  # Remove completed task from active
+        cat ~/todo.txt | rg -v "^x " | sed "${line_num}d"  # Remove completed task from active
     } > ~/todo.txt.tmp && mv ~/todo.txt.tmp ~/todo.txt
     
     echo "✅ Completed: $task_line"
     echo ""
     echo "Remaining tasks:"
-    cat ~/todo.txt | grep -v "^x " | nl
+    cat ~/todo.txt | rg -v "^x " | nl
 }
 
 # Dotfiles health check function

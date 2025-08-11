@@ -8,7 +8,7 @@ set -o pipefail # Exit on pipe failures
 # Script validation and setup
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SRC_DIR="$SCRIPT_DIR/src"
-readonly TRASH_DIR="$SCRIPT_DIR/trash"
+readonly BACKUP_DIR="$SCRIPT_DIR/replaced_files"
 readonly HOME_DIR="$HOME"
 
 # Color codes for output
@@ -61,53 +61,25 @@ validate_environment() {
     log_success "Environment validation passed"
 }
 
-# Clean up old trash directories (keep only 3 most recent)
-cleanup_old_trash_directories() {
-    local trash_pattern="${TRASH_DIR}.*"
-    local trash_count=$(find "$(dirname "$TRASH_DIR")" -maxdepth 1 -name "$(basename "$TRASH_DIR").*" 2>/dev/null | wc -l)
+# Simple backup directory setup
+setup_backup_dir() {
+    log_info "Setting up backup directory..."
     
-    if [ "$trash_count" -gt 3 ]; then
-        log_info "Cleaning up old trash directories (keeping 3 most recent)"
-        # Keep only the 3 most recent trash directories
-        find "$(dirname "$TRASH_DIR")" -maxdepth 1 -name "$(basename "$TRASH_DIR").*" -type d 2>/dev/null | \
-            sort -r | tail -n +4 | \
-            while read -r old_trash; do
-                log_info "Removing old trash directory: $(basename "$old_trash")"
-                rm -rf "$old_trash"
-            done
-    fi
-}
-
-# Create trash directory safely
-setup_trash_dir() {
-    log_info "Setting up trash directory..."
-    
-    # Clean up old archived trash directories first
-    cleanup_old_trash_directories
-    
-    if [[ -d "$TRASH_DIR" ]]; then
-        log_warning "Existing trash directory found, archiving with timestamp"
-        mv "$TRASH_DIR" "${TRASH_DIR}.$(date +%Y%m%d_%H%M%S)" || {
-            log_error "Failed to archive existing trash directory"
-            exit 1
-        }
-        # Clean up again after creating new archived directory
-        cleanup_old_trash_directories
-    fi
-    
-    mkdir -p "$TRASH_DIR" || {
-        log_error "Failed to create trash directory: $TRASH_DIR"
+    mkdir -p "$BACKUP_DIR" || {
+        log_error "Failed to create backup directory: $BACKUP_DIR"
         exit 1
     }
     
-    log_success "Trash directory ready: $TRASH_DIR"
+    log_success "Backup directory ready: $BACKUP_DIR"
 }
+
 
 # Symlink creation with validation
 create_symlink() {
     local src_file="$1"
     local target_file="$HOME_DIR/$src_file"
     local source_path="$SRC_DIR/$src_file"
+    
     
     # Validate source file exists
     if [[ ! -e "$source_path" ]]; then
@@ -124,8 +96,10 @@ create_symlink() {
     # Backup existing file/directory if it exists
     if [[ -e "$target_file" ]]; then
         log_warning "Backing up existing ~/$src_file"
-        mv "$target_file" "$TRASH_DIR/$src_file" || {
-            log_error "Failed to backup ~/$src_file"
+        # Create backup with timestamp to avoid conflicts
+        local backup_name="$src_file.backup.$(date +%Y%m%d_%H%M%S)"
+        mv "$target_file" "$BACKUP_DIR/$backup_name" || {
+            log_error "Failed to backup ~/$src_file to $backup_name"
             return 1
         }
     fi
@@ -146,7 +120,7 @@ main() {
     log_info "🔗 Starting dotfiles bootstrap process..."
     
     validate_environment
-    setup_trash_dir
+    setup_backup_dir
     
     log_info "Creating dotfiles symlinks..."
     
@@ -156,10 +130,10 @@ main() {
     # Process each file in src directory
     while IFS= read -r -d '' file; do
         local basename_file="$(basename "$file")"
-        ((total_links++))
+        total_links=$((total_links + 1))
         
         if ! create_symlink "$basename_file"; then
-            ((failed_links++))
+            failed_links=$((failed_links + 1))
             log_error "Failed to process: $basename_file"
         fi
     done < <(find "$SRC_DIR" -maxdepth 1 -type f -print0)
@@ -167,10 +141,10 @@ main() {
     # Process each directory in src directory
     while IFS= read -r -d '' dir; do
         local basename_dir="$(basename "$dir")"
-        ((total_links++))
+        total_links=$((total_links + 1))
         
         if ! create_symlink "$basename_dir"; then
-            ((failed_links++))
+            failed_links=$((failed_links + 1))
             log_error "Failed to process: $basename_dir"
         fi
     done < <(find "$SRC_DIR" -maxdepth 1 -type d -not -path "$SRC_DIR" -print0)
