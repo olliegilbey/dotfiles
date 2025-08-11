@@ -22,6 +22,7 @@ return {
         sources = {
           explorer = {
             layout = { preset = "sidebar", preview = false },
+            hidden = true, -- Show hidden files by default
           },
         },
       },
