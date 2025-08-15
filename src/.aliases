@@ -96,6 +96,37 @@ alias csvlint="/opt/homebrew/lib/ruby/gems/3.4.0/bin/csvlint"  # CSV validation 
 alias python=python3  # Use Python 3 by default
 alias uvr='uv run python'  # Quick uv run python shortcut
 
+# Python package management - interactive pip replacement
+pip() {
+    if [[ $# -eq 0 ]]; then
+        echo "💡 Python package management with uv:"
+        echo "  uv add <package>        # Add to current project"
+        echo "  uv tool install <pkg>   # Install global tool"
+        echo "  uvr --with <pkg> ...    # One-off script usage"
+        return 1
+    fi
+    
+    if [[ "$1" == "install" ]]; then
+        shift  # Remove 'install' from arguments
+        echo "💡 Install '${*}' globally as a tool? (y/n)"
+        read -r response
+        if [[ "$response" =~ ^[Yy]$ ]]; then
+            uv tool install "$@"
+        else
+            echo ""
+            echo "💡 Alternatives:"
+            echo "  uv add ${*}              # Add to current project"
+            echo "  uvr --with ${*} script   # One-off usage"
+        fi
+    else
+        echo "💡 Use uv commands instead:"
+        echo "  uv add <package>        # Add to project"
+        echo "  uv tool install <pkg>   # Global tool"
+    fi
+}
+
+alias pip3='pip'  # Same interactive function for pip3
+
 # Meta-aliases for discovering other tools' aliases
 alias git-aliases='git config --get-regexp "^alias\." | sed "s/^alias\.//"'  # Show all git aliases
 alias npm-aliases='npm run --silent'  # Show npm script aliases
