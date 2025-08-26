@@ -22,7 +22,16 @@ cp git-config-local.template ~/.config/git/config.local
 # Edit ~/.config/git/config.local with your name, email, and signing key
 ```
 
-### 2. Verify Everything Works
+### 2. Set Up Raycast (macOS)
+
+Raycast is installed via Homebrew but requires manual setup:
+
+1. Open Raycast from Applications to start the service
+2. Set as Spotlight replacement (`Cmd+Space`)  
+3. Install extensions: GitHub, Spotify Controls, Arc Browser, Obsidian, Slack
+4. Sign in to extension services as needed
+
+### 3. Verify Everything Works
 
 ```bash
 dotfiles-health
@@ -94,7 +103,7 @@ Managed for consistent versions across environments:
 
 ## 📦 Package Environment
 
-Currently managing **31 packages**, **2 casks**, and **1 taps** via Brewfile.
+Currently managing **31 packages**, **3 casks**, and **1 taps** via Brewfile.
 
 ### Development Languages
 
@@ -133,12 +142,24 @@ Currently managing **31 packages**, **2 casks**, and **1 taps** via Brewfile.
 - **mise** - Universal version manager (replaces nvm, rbenv, pyenv, etc.)
 - **uv** - Modern Python package manager (replaces pip, pipenv, poetry)
 
+### Productivity Apps
+
+- **raycast** - Spotlight replacement with extensible functionality
+
 ### System Utilities
 
 - **csvkit** - CSV processing tools including csvstat
 - **findutils** - File and directory search tools
 - **imagemagick** - Image manipulation utilities
 - **wget** - Network utility to retrieve files from the web
+
+### Security Tools
+
+- **1password-cli** - 1Password command-line interface
+
+### Fonts
+
+- **font-fira-code-nerd-font** - Programming font with ligatures and icons
 
 ### Other Tools
 
@@ -160,4 +181,4 @@ This validates all tools, language runtimes, and configurations.
 
 ---
 
-*Last updated: 2025-08-07 14:29:27*
+*Last updated: 2025-08-26 21:21:52*

@@ -53,6 +53,9 @@ brew "csvkit"           # CSV processing tools including csvstat
 # Security and authentication
 cask "1password-cli"    # 1Password command-line interface
 
+# Productivity apps
+cask "raycast"          # Spotlight replacement with extensible functionality
+
 # Fonts
 cask "font-fira-code-nerd-font"  # Programming font with ligatures and icons
 
