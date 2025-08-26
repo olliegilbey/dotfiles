@@ -203,10 +203,12 @@ echo $PATH | tr ':' '\n' | grep -E "(cargo|go|mise)"
 - **Private Config Protection**: Sensitive data never committed to public repository
 
 ### Dynamic Documentation
-- **Environment-Aware README**: Generated from actual Brewfile and `.mise.toml` contents
-- **Static/Dynamic Split**: User content preserved, tool lists auto-updated
-- **Accurate Package Counts**: Always reflects current environment state
-- **Smart Categorization**: Tools grouped by function based on comments
+- **README.md Structure**: 
+  - **Static content (top section)**: Edit README.md directly - setup instructions, customization guide, etc.
+  - **Dynamic content (after `<!-- GENERATED_CONTENT_STARTS_HERE -->`)**: Auto-generated from Brewfile and .mise.toml
+  - **Regeneration**: Run `./update-readme.sh` to rebuild only the dynamic sections while preserving static content
+- **Smart Categorization**: Tools grouped by function based on Brewfile comments
+- **IMPORTANT**: Always edit the static part of README.md directly, never the generated sections
 
 ## Development Philosophy
 

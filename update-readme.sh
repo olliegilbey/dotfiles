@@ -44,6 +44,13 @@ categorize_package() {
         echo "Package Managers & Runtimes"
     elif [[ "$package" == "bat" || "$package" == "eza" || "$package" == "ripgrep" || "$package" == "fd" || "$package" == "delta" || "$package" == "zoxide" || "$package" == "fzf" ]]; then
         echo "Modern Command-Line Tools"
+    # Cask-specific categorization
+    elif [[ "$package" == "raycast" ]]; then
+        echo "Productivity Apps"
+    elif [[ "$package" == "1password-cli" ]]; then
+        echo "Security Tools"
+    elif [[ "$package" =~ ^font- ]]; then
+        echo "Fonts"
     # Category detection based on comments (order matters - more specific first)
     elif [[ "$lower_comment" =~ (package.?manager|runtime|installer) ]]; then
         echo "Package Managers & Runtimes"
@@ -109,7 +116,7 @@ categorize_package() {
         # Create temporary files for each category
         TEMP_DIR=$(mktemp -d)
         
-        # Parse Brewfile and categorize packages
+        # Parse Brewfile and categorize packages and casks
         while IFS= read -r line; do
             if [[ "$line" =~ ^brew[[:space:]]+\"([^\"]+)\"[[:space:]]*#?[[:space:]]*(.*) ]]; then
                 package="${BASH_REMATCH[1]}"
@@ -117,6 +124,14 @@ categorize_package() {
                 category=$(categorize_package "$package" "$comment")
                 
                 # Create category file if it doesn't exist
+                category_file="$TEMP_DIR/$(echo "$category" | tr ' ' '_')"
+                echo "$package|$comment" >> "$category_file"
+            elif [[ "$line" =~ ^cask[[:space:]]+\"([^\"]+)\"[[:space:]]*#?[[:space:]]*(.*) ]]; then
+                package="${BASH_REMATCH[1]}"
+                comment="${BASH_REMATCH[2]}"
+                category=$(categorize_package "$package" "$comment")
+                
+                # Create category file if it doesn't exist  
                 category_file="$TEMP_DIR/$(echo "$category" | tr ' ' '_')"
                 echo "$package|$comment" >> "$category_file"
             fi
@@ -129,6 +144,7 @@ categorize_package() {
             "Editors"
             "Version Control"
             "Package Managers & Runtimes"
+            "Productivity Apps"
             "System Utilities"
             "Security Tools"
             "Fonts"

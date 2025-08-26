@@ -10,8 +10,8 @@ src/.atom/
 
 # Claude configuration
 .claude/temp-*
-# Ignore Raycast extension source maps
-src/.config/raycast/extensions/**/*.js.map
+# Ignore Raycast extensions (auto-generated/managed by Raycast)
+src/.config/raycast/extensions/
 
 # Generated diagnostic files
 nvim_health.txt

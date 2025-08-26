@@ -39,7 +39,46 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 alias sudo='sudo '
 
 # Stopwatch
-alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'  # Simple command-line timer
+# Live stopwatch timer with real-time elapsed display
+timer() {
+    local start_time=$(date +%s)
+    local start_display=$(date +"%H:%M:%S")
+    
+    echo "⏱️  Timer started at $start_display"
+    echo "Press Enter to stop..."
+    echo ""
+    
+    # Disable job control notifications
+    setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
+    
+    # Start background process to update time display
+    while true; do
+        local current=$(date +%s)
+        local elapsed=$((current - start_time))
+        local hours=$((elapsed / 3600))
+        local minutes=$(((elapsed % 3600) / 60))
+        local seconds=$((elapsed % 60))
+        
+        printf "\r🕐 Elapsed: %02d:%02d:%02d" $hours $minutes $seconds
+        sleep 1
+    done &
+    
+    local bg_pid=$!
+    
+    # Wait for Enter
+    read
+    
+    # Kill background process and show final time
+    kill $bg_pid 2>/dev/null
+    wait $bg_pid 2>/dev/null
+    local end_time=$(date +%s)
+    local total_elapsed=$((end_time - start_time))
+    local final_hours=$((total_elapsed / 3600))
+    local final_minutes=$(((total_elapsed % 3600) / 60))
+    local final_seconds=$((total_elapsed % 60))
+    
+    printf "\n⏹️  Final time: %02d:%02d:%02d (stopped at %s)\n" $final_hours $final_minutes $final_seconds "$(date +%H:%M:%S)"
+}
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -87,7 +126,7 @@ alias lg='lazygit'                                           # Quick git UI
 alias dev='cd ~/Documents/code'                             # Quick access to dev directory
 alias dots='cd ~/dotfiles'                                  # Quick access to dotfiles
 alias src='cd ~/Documents/code && ls'                       # Go to code dir and list
-alias refresh='source ~/.zshrc && dotfiles-health'          # Reload shell and run health check
+alias refresh='source ~/.zshenv && source ~/.zshrc && source ~/.aliases && dotfiles-health'  # Reload full shell configuration and run health check
 alias clear-shell-cache='rm -f ~/.cache/*-completion.zsh ~/.cache/*-init.zsh && echo "🧹 Shell completion caches cleared"'  # Clear cached completions
 
 # System and tool integration
@@ -239,7 +278,7 @@ function ta() {
     echo "Added: $priority$task"
     echo ""
     echo "Current todos:"
-    cat ~/todo.txt | grep -v "^x " | nl
+    cat ~/todo.txt | rg -v "^x " | nl
 }
 alias tt='nvim -c "lua require(\"todotxt\").toggle_todotxt()"'  # Open NeoVim with todo.txt buffer interface
 
