@@ -78,6 +78,14 @@
 - **Claude Code Access**: `claude` alias pointing to `~/.claude/local/claude`
 - **Alias Tips**: Random startup reminders from `alias-descriptions.txt` (2 tips per session)
 
+### Critical AI Agent Notes
+- **⚠️ IMPORTANT: `grep` is aliased to `rg` (ripgrep)** - Different syntax than POSIX grep!
+  - Shows "🔍 ripgrep:" indicator before output
+  - Searches files by default: `grep pattern` searches all files in current directory
+  - POSIX grep needs input: `echo "text" | /usr/bin/grep pattern` or use `command grep`
+  - No `-E` flag needed: Use `rg 'pattern1|pattern2'` instead of `grep -E '(pattern1|pattern2)'`
+  - AI agents should ALWAYS use `rg` directly instead of `grep` to avoid syntax errors
+
 ## AI Collaboration Guidelines
 
 ### Claude Code Usage Patterns

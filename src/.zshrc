@@ -160,3 +160,6 @@ brew() {
 if [[ -o interactive ]] && [[ -t 0 ]] && [[ -t 1 ]]; then
     bash "$HOME/dotfiles/show-alias-tips.sh"
 fi
+
+# bun completions
+[ -s "/Users/olivergilbey/.bun/_bun" ] && source "/Users/olivergilbey/.bun/_bun"

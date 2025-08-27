@@ -30,7 +30,7 @@ else
     # Fallback to traditional ls
     alias l="ls -lF ${colorflag}"
     alias la="ls -laF ${colorflag}"
-    alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
+    alias lsd="ls -lF ${colorflag} | rg '^d'"
     alias ls="ls ${colorflag}"
 fi
 export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
@@ -83,7 +83,7 @@ timer() {
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | rg -o 'inet6? (addr:)?\s?((([0-9]+\.){3}[0-9]+)|[a-fA-F0-9:]+)' | sed 's/inet6\? (addr:\)\? \?//'"
+alias ips="ifconfig -a | rg -o 'inet6? (addr:)?\s?((([0-9]+\.){3}[0-9]+)|[a-fA-F0-9:]+)' | sed 's/inet6* (addr:)* *//'"
 
 # Empty the Trash on all mounted volumes and the main HDD
 # Also, clear Apple’s System Logs to improve shell startup speed
@@ -99,7 +99,7 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && k
 
 # Kill all the tabs in Chrome to free up memory
 # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
-alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"  # Kill Chrome helper processes
+alias chromekill="ps ux | rg '[C]hrome Helper --type=renderer' | rg -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"  # Kill Chrome helper processes
 
 # Lock the screen (when going AFK)
 alias afk="osascript -e 'tell application \"System Events\" to keystroke \"q\" using {command down, control down}' && pmset sleepnow"  # Lock screen and sleep
@@ -119,7 +119,7 @@ alias flushDNS="sudo killall -HUP mDNSResponder"  # Flush DNS cache
 # AI-friendly aliases and functions
 # Quick directory and file operations
 alias ll='eza -la --icons --group-directories-first --git'  # Detailed list with git status
-alias lt='eza --tree --level=2 --icons'                     # Tree view (2 levels)
+alias lt='eza --tree --level=2 --icons --all'              # Tree view (2 levels) including hidden files
 alias lg='lazygit'                                           # Quick git UI
 
 # Development workflow shortcuts
@@ -369,12 +369,75 @@ function dotfiles-health() {
     echo ""
     
     echo "📦 Package Status:"
-    echo "  Brewfile packages: $(grep -c '^brew\|^tap\|^cask' ~/dotfiles/Brewfile || echo 0)"
-    echo "  Symlinks active: $(ls -la ~ | grep -c dotfiles || echo 0)"
+    echo "  Brewfile packages: $(rg -c '^brew|^tap|^cask' ~/dotfiles/Brewfile || echo 0)"
+    echo "  Symlinks active: $(ls -la ~ | rg -c dotfiles || echo 0)"
     echo ""
     echo "✨ Environment ready!"
 }
 
+
+# AI Context Helper - Provides comprehensive context to new Claude Code instances
+ai-context() {
+    echo "🤖 AI Context Setup for New Claude Code Instance"
+    echo "════════════════════════════════════════════════"
+    echo ""
+    
+    echo "⚠️  CRITICAL ENVIRONMENT NOTES:"
+    echo "   • grep is aliased to rg (ripgrep) - USE RG SYNTAX ONLY"
+    echo "   • Shows '🔍 ripgrep:' indicator before rg output"
+    echo "   • AI agents must ALWAYS use 'rg' directly, never 'grep'"
+    echo ""
+    
+    echo "📁 Current Environment:"
+    env-info
+    echo ""
+    
+    echo "🔧 Project Context:"
+    proj-context
+    echo ""
+    
+    echo "📊 Repository Status:"
+    git-summary
+    echo ""
+    
+    echo "📋 REQUIRED AI ACTIONS:"
+    echo "────────────────────────"
+    
+    # Check for local CLAUDE.md
+    if [[ -f "CLAUDE.md" ]]; then
+        echo "1. 🔍 READ LOCAL PROJECT CONTEXT:"
+        echo "   Use: Read tool to read './CLAUDE.md' completely"
+        echo "   This contains project-specific instructions and architecture"
+        echo ""
+    else
+        echo "1. ⚠️  NO LOCAL CLAUDE.MD FOUND:"
+        echo "   Consider running: claude init"
+        echo "   This creates a project-specific CLAUDE.md with context"
+        echo "   Or create manually if this project needs AI context documentation"
+        echo ""
+    fi
+    
+    echo "2. 🌐 READ GLOBAL DEVELOPMENT CONTEXT:"
+    echo "   Use: Read tool to read '~/.config/claude/CLAUDE.md' completely"
+    echo "   This contains Ollie's development preferences and AI collaboration style"
+    echo ""
+    
+    echo "3. 🛠️  VALIDATE ENVIRONMENT:"
+    echo "   Run: dotfiles-health"
+    echo "   Confirms all tools and configurations are working properly"
+    echo ""
+    
+    echo "4. 🔍 DISCOVER AVAILABLE TOOLS:"
+    echo "   Run: alias | rg <pattern>"
+    echo "   Explore available shortcuts and productivity commands"
+    echo ""
+    
+    echo "💡 REMEMBER:"
+    echo "   • All grep commands must use ripgrep (rg) syntax"
+    echo "   • Read both CLAUDE.md files for complete context"
+    echo "   • Use env-info, proj-context, git-summary for dynamic updates"
+    echo "   • This environment prioritizes modern tooling and AI-first workflows"
+}
 
 # Secrets Management
 # Lazily load the Gemini API key from 1Password on first use
