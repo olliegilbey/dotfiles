@@ -21,7 +21,15 @@
       "Bash(git-aliases:*)",
       "Bash(timeout 10s nvim:*)",
       "Bash(rg:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(timer)",
+      "Bash(alias ..)",
+      "Bash(alias ...)",
+      "Bash(alias g)",
+      "Bash(zoxide query:*)"
+    ],
+    "additionalDirectories": [
+      "/Users/olivergilbey/.cache"
     ]
   },
   "enableAllProjectMcpServers": false

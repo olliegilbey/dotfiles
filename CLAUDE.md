@@ -133,9 +133,27 @@ plugins=(
   - Ripgrep searches files by default: `grep pattern` searches all files in current directory
   - POSIX grep needs input: `echo "text" | /usr/bin/grep pattern` or `/usr/bin/grep pattern file.txt`
   - No `-E` flag needed: `rg 'pattern1|pattern2'` instead of `grep -E '(pattern1|pattern2)'`
+  - **IMPORTANT**: Installation scripts (init.sh, brew.sh, bootstrap.sh, language_installs.sh) use POSIX `grep` because `rg` isn't installed yet during bootstrap
+  - **Runtime/interactive**: Only interactive shell aliases use the `grep→rg` alias for modern UX
 - **Python development shortcuts**: 
   - `uvr` alias for `uv run python` (frequently used for Python script execution)
   - Python managed via uv for package/project management
+
+### AI Context Helper Function
+- **`ai-context`**: New function for onboarding Claude Code instances
+  - Provides environment overview and critical warnings (especially grep→rg behavior)
+  - Gives explicit instructions to read both local and global CLAUDE.md files
+  - Suggests `claude init` if no local CLAUDE.md exists
+  - Recommends validation commands (dotfiles-health, env-info, proj-context)
+  - Usage: Run `ai-context` command and follow all provided instructions
+
+### Recent Comprehensive Alias Testing (August 2025)
+- **All aliases tested and fixed**: Navigation, development, search, file operations, AI context
+- **Key fixes applied**:
+  - `ips` alias: Fixed sed regex syntax (unbalanced parentheses)
+  - `lt` alias: Added `--all` flag for proper hidden file display in dotfiles
+  - `refresh` alias: Converted all grep usage to rg throughout .aliases file
+  - General: Eliminated all grep/rg syntax conflicts in interactive aliases
 
 ### Alias Tips System
 - **Inline Documentation**: Alias descriptions stored as comments in .aliases file
