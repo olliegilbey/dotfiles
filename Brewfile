@@ -51,13 +51,14 @@ brew "todo-txt"         # Simple todo.txt manager for command line
 brew "csvkit"           # CSV processing tools including csvstat
 
 # Security and authentication
-cask "1password-cli"    # 1Password command-line interface
+cask "1password-cli"    # 1Password command-line interface, access with "op"
 
 # Productivity apps
 cask "raycast"          # Spotlight replacement with extensible functionality
 
 # Fonts
 cask "font-fira-code-nerd-font"  # Programming font with ligatures and icons
+cask "font-hack-nerd-font"  # Programming font with ligatures and icons
 
 # macOS-specific tools
 if OS.mac?

@@ -69,4 +69,4 @@
 [rerere]
     enabled = 0
 [gpg "ssh"]
-	allowedSignersFile = /Users/olivergilbey/.config/git/allowed_signers
+	allowedSignersFile = $HOME/.config/git/allowed_signers
