@@ -18,8 +18,13 @@ cd ~/dotfiles
 ### 1. Configure Your Git Identity (Required)
 
 ```bash
-cp git-config-local.template ~/.config/git/config.local
+# Set up git user configuration
+cp src/.config/git/config-local.template ~/.config/git/config.local
 # Edit ~/.config/git/config.local with your name, email, and signing key
+
+# Set up SSH commit verification (optional, for signed commits)
+cp src/.config/git/allowed-signers.template ~/.config/git/allowed_signers
+# Edit ~/.config/git/allowed_signers with your SSH public key
 ```
 
 ### 2. Set Up Raycast (macOS)
@@ -45,9 +50,10 @@ These are the key files you'll want to customize for your needs:
 - **`Brewfile`** - Add/remove packages (`brew install` automatically adds new ones)
 - **`.mise.toml`** - Language versions (Node.js, Go, Python)
 
-### Shell Configuration  
-- **`src/.aliases`** - Custom commands and shortcuts
+### Shell Configuration
+- **`src/.aliases`** - Custom commands and shortcuts (uses `$DEV_DIR` variable)
 - **`src/.zshrc`** - Shell behavior and environment variables
+- **`src/.zshenv`** - Environment variables including `DEV_DIR` (default: `~/code`)
 
 ### Application Configs
 - **`src/.config/nvim/`** - NeoVim editor configuration
