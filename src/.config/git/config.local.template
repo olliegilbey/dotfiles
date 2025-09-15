@@ -1,0 +1,42 @@
+# Git User Configuration Template
+# Run this command to set up your personal git config:
+#   cp src/.config/git/config.local.template ~/.config/git/config.local
+# Then edit ~/.config/git/config.local with your details
+
+[user]
+    name = Your Full Name
+    email = your.email@example.com
+    # Optional: Add your SSH signing key
+    # signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+# Optional: Credential helper (adjust for your system)
+[credential]
+    helper = cache
+    # macOS users might prefer:
+    # helper = osxkeychain
+
+# SSH commit signing configuration (recommended for security)
+# Uncomment the following sections to enable SSH signing:
+
+# [gpg]
+#     format = ssh
+# [commit]
+#     gpgsign = true
+
+# SSH signing with 1Password (if you use 1Password)
+# [gpg "ssh"]
+#     program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+#     allowedSignersFile = ~/.config/git/allowed_signers.local
+
+# OR for standard SSH signing (using ssh-agent)
+# [gpg "ssh"]
+#     allowedSignersFile = ~/.config/git/allowed_signers.local
+
+# If you enable SSH signing above, also copy and edit the allowed signers file:
+# cp src/.config/git/allowed_signers.local.template ~/.config/git/allowed_signers.local
+
+# Optional: URL shortcuts for easier cloning
+# [url "git@github.com:"]
+#     insteadOf = https://github.com/
+# [url "git@gitlab.com:"]
+#     insteadOf = https://gitlab.com/

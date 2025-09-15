@@ -17,6 +17,7 @@
      gpgsign = true
 [gpg "ssh"]
   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+  allowedSignersFile = ~/.config/git/allowed_signers.local
 
  #Optional: URL shortcuts for easier cloning
  [url "git@github.com:"]

@@ -16,7 +16,7 @@ This is a modern macOS/Linux dotfiles repository with automated setup and bleedi
 - **`.mise.toml`** - Project-specific language versions (Node.js, Go, Python)
 - **`update-readme.sh`** - Dynamic README generation from current environment
 - **`show-alias-tips.sh`** - Random alias reminders on terminal startup (reads inline descriptions from .aliases)
-- **`git-config-local.template`** - Secure git identity template (keeps personal details private)
+- **`config.local.template`** - Secure git identity template (keeps personal details private)
 - **`src/`** - Contains all dotfiles that get symlinked to home directory
 
 ### Symlink Strategy
@@ -216,7 +216,7 @@ echo $PATH | tr ':' '\n' | grep -E "(cargo|go|mise)"
 
 ### Security Architecture
 - **Git Identity Separation**: Personal details kept in `~/.config/git/config.local` (not in repo)
-- **Template-Based Setup**: `git-config-local.template` provides secure starting point
+- **Template-Based Setup**: `config.local.template` and `allowed_signers.local.template` provide secure starting points
 - **SSH-First Design**: Repository optimized for SSH cloning and development
 - **Private Config Protection**: Sensitive data never committed to public repository
 

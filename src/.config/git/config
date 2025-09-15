@@ -68,5 +68,3 @@
 
 [rerere]
     enabled = 0
-[gpg "ssh"]
-	allowedSignersFile = $HOME/.config/git/allowed_signers
