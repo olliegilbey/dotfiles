@@ -2,6 +2,7 @@
 .DS_Store
 Desktop.ini
 trash/*
+replaced_files/*
 src/.vim/bundle/*
 src/.vim/Fonts
 src/.atom/

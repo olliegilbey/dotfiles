@@ -1,0 +1,29 @@
+[user]
+    name = Oliver Gilbey 
+    email = olliegilbey@gmail.com
+    # Optional: Add your SSH signing key
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFo+DKyoRY0oCvDlhJsoFTRc0mJ6zHMFOZmjg+6gNRF2
+
+# Optional: Credential helper (adjust for your system)
+[credential]
+    # helper = cache
+    # macOS users might prefer:
+     helper = osxkeychain
+
+# Optional: SSH signing with 1Password (if you use 1Password)
+[gpg]
+     format = ssh
+ [commit]
+     gpgsign = true
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+ #Optional: URL shortcuts for easier cloning
+ [url "git@github.com:"]
+     insteadOf = https://github.com/
+ [url "git@gitlab.com:"]
+     insteadOf = https://gitlab.com/
+
+
+
+
