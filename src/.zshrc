@@ -80,6 +80,9 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=true
 ZSH_THEME=""
 source $ZSH/oh-my-zsh.sh
 
+# Unset Oh My Zsh's grep alias to use native grep behavior
+unalias grep 2>/dev/null || true
+
 # Essential completions
 autoload -U compinit && compinit
 

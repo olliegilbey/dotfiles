@@ -130,7 +130,6 @@ alias refresh='source ~/.zshenv && source ~/.zshrc && source ~/.aliases && dotfi
 alias clear-shell-cache='rm -f ~/.cache/*-completion.zsh ~/.cache/*-init.zsh && echo "🧹 Shell completion caches cleared"'  # Clear cached completions
 
 # System and tool integration
-alias claude="$HOME/.claude/local/claude"  # Launch Claude Code AI assistant
 alias csvlint="/opt/homebrew/lib/ruby/gems/3.4.0/bin/csvlint"  # CSV validation tool
 alias python=python3  # Use Python 3 by default
 alias uvr='uv run python'  # Quick uv run python shortcut
@@ -179,8 +178,7 @@ alias recent='find . -type f -mtime -1 -not -path "*/.*" | head -10'  # Recent f
 alias biggest='du -sh * | sort -rh | head -10'                        # Largest files/dirs
 alias count='find . -type f | wc -l'                                 # Count files
 
-# Modern search tools (ripgrep replaces grep)
-alias grep='echo "🔍 \033[36mripgrep:\033[0m" >&2 && sleep 0.01 && rg'  # Search text using ripgrep (different syntax than POSIX grep)
+# Modern search tools
 alias search='rg --smart-case --pretty'                              # Smart case search with colors
 alias searchall='rg --smart-case --hidden --no-ignore'               # Search hidden and ignored files
 alias searchcode='rg --type-add "code:*.{rs,go,js,ts,py,rb,java,cpp,c,h}" --type code'  # Search only code files
@@ -292,6 +290,9 @@ alias tp='todo.sh listproj | sort'                             # List projects (
 alias tc='todo.sh listcon | sort'                              # List contexts (CLI)
 alias ts='todo.sh list'                                        # Search tasks (CLI)
 
+# Quick todo command reference
+alias t='echo "📝 Todo.txt Commands Cheat Sheet:" && echo "===============================" && echo "" && echo "🎯 MAIN ACTIONS:" && echo "   ta <task>     - Add new task (with priority: ta \"Call Mom @home +family\")" && echo "   tl            - List current todos (terminal view)" && echo "   tt            - Open NeoVim todo interface" && echo "   td <num>      - Complete task by line number" && echo "" && echo "🔍 BROWSING (CLI):" && echo "   tl-cli        - List with syntax highlighting" && echo "   tp            - Show all projects (+project)" && echo "   tc            - Show all contexts (@context)" && echo "   ts            - Search/list tasks" && echo "   ta-cli        - Add task via CLI tool" && echo "" && echo "📊 OVERVIEW:" && echo "   todo-overview - Full stats and formatted view" && echo "" && echo "💡 Examples:" && echo "   ta \"Fix bug @work +project (A)\"  # High priority task" && echo "   ta \"Buy milk @errands\"          # Simple task with context" && echo "   td 3                            # Complete task #3"'  # Show all todo commands
+
 # Enhanced viewing function for CLI use
 function todo-overview() {
     echo "📋 Todo Overview:"
@@ -383,9 +384,9 @@ ai-context() {
     echo ""
     
     echo "⚠️  CRITICAL ENVIRONMENT NOTES:"
-    echo "   • grep is aliased to rg (ripgrep) - USE RG SYNTAX ONLY"
-    echo "   • Shows '🔍 ripgrep:' indicator before rg output"
-    echo "   • AI agents must ALWAYS use 'rg' directly, never 'grep'"
+    echo "   • AI agents should prefer 'rg' (ripgrep) over 'grep' for better performance"
+    echo "   • Use 'rg' syntax, not POSIX grep syntax (e.g., 'rg pattern' not 'grep -r pattern')"
+    echo "   • Both grep and rg are available with their native behaviors"
     echo ""
     
     echo "📁 Current Environment:"
@@ -433,7 +434,7 @@ ai-context() {
     echo ""
     
     echo "💡 REMEMBER:"
-    echo "   • All grep commands must use ripgrep (rg) syntax"
+    echo "   • Use 'rg' instead of 'grep' for better performance and modern UX"
     echo "   • Read both CLAUDE.md files for complete context"
     echo "   • Use env-info, proj-context, git-summary for dynamic updates"
     echo "   • This environment prioritizes modern tooling and AI-first workflows"

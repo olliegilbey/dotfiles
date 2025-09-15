@@ -11,25 +11,25 @@
       "Bash(source:*)",
       "Bash(nvim:*)",
       "Bash(grep:*)",
+      "Bash(rg:*)",
       "Bash(echo $TERM)",
-      "WebFetch(domain:docs.warp.dev)",
-      "WebFetch(domain:github.com)",
       "Bash(defaults read:*)",
-      "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(mkdir:*)",
       "Bash(./show-alias-tips.sh:*)",
       "Bash(git-aliases:*)",
       "Bash(timeout 10s nvim:*)",
-      "Bash(rg:*)",
       "Bash(git diff:*)",
       "Bash(timer)",
       "Bash(alias ..)",
       "Bash(alias ...)",
       "Bash(alias g)",
-      "Bash(zoxide query:*)"
+      "Bash(zoxide query:*)",
+      "WebFetch(domain:docs.warp.dev)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "additionalDirectories": [
-      "/Users/olivergilbey/.cache"
+      "$HOME/.cache"
     ]
   },
   "enableAllProjectMcpServers": false
