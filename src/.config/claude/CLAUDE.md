@@ -79,12 +79,12 @@
 - **Alias Tips**: Random startup reminders from `alias-descriptions.txt` (2 tips per session)
 
 ### Critical AI Agent Notes
-- **⚠️ IMPORTANT: `grep` is aliased to `rg` (ripgrep)** - Different syntax than POSIX grep!
-  - Shows "🔍 ripgrep:" indicator before output
-  - Searches files by default: `grep pattern` searches all files in current directory
-  - POSIX grep needs input: `echo "text" | /usr/bin/grep pattern` or use `command grep`
+- **⚠️ IMPORTANT: AI agents should prefer `rg` (ripgrep) over `grep`** - Much faster and better UX!
+  - Both `grep` and `rg` are available with their native behaviors (no aliases)
+  - Use `rg` syntax: `rg pattern` searches all files recursively by default
+  - No `-r` flag needed: `rg pattern` is equivalent to `grep -r pattern`
   - No `-E` flag needed: Use `rg 'pattern1|pattern2'` instead of `grep -E '(pattern1|pattern2)'`
-  - AI agents should ALWAYS use `rg` directly instead of `grep` to avoid syntax errors
+  - AI agents should use `rg` for better performance and colored output
 
 ## AI Collaboration Guidelines
 

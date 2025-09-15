@@ -128,20 +128,20 @@ plugins=(
 ```
 
 ### Command Aliases & AI Agent Notes
-- **`grep` is aliased to `rg`**: Uses ripgrep syntax, not POSIX grep syntax
-  - Shows "🔍 ripgrep:" indicator before all output for context
-  - Ripgrep searches files by default: `grep pattern` searches all files in current directory
-  - POSIX grep needs input: `echo "text" | /usr/bin/grep pattern` or `/usr/bin/grep pattern file.txt`
+- **AI agents should prefer `rg` (ripgrep) over `grep`**: Much faster and more user-friendly
+  - Use `rg` syntax: `rg pattern` searches all files in current directory recursively
+  - No `-r` flag needed: `rg pattern` is equivalent to `grep -r pattern`
   - No `-E` flag needed: `rg 'pattern1|pattern2'` instead of `grep -E '(pattern1|pattern2)'`
-  - **IMPORTANT**: Installation scripts (init.sh, brew.sh, bootstrap.sh, language_installs.sh) use POSIX `grep` because `rg` isn't installed yet during bootstrap
-  - **Runtime/interactive**: Only interactive shell aliases use the `grep→rg` alias for modern UX
+  - Both `grep` and `rg` are available with their native behaviors (no aliases)
+  - **Installation scripts**: Use POSIX `grep` during bootstrap since `rg` isn't installed yet
+  - **Interactive/AI usage**: Prefer `rg` for better performance and output formatting
 - **Python development shortcuts**: 
   - `uvr` alias for `uv run python` (frequently used for Python script execution)
   - Python managed via uv for package/project management
 
 ### AI Context Helper Function
 - **`ai-context`**: New function for onboarding Claude Code instances
-  - Provides environment overview and critical warnings (especially grep→rg behavior)
+  - Provides environment overview and critical notes (including rg preference for AI agents)
   - Gives explicit instructions to read both local and global CLAUDE.md files
   - Suggests `claude init` if no local CLAUDE.md exists
   - Recommends validation commands (dotfiles-health, env-info, proj-context)
@@ -152,8 +152,8 @@ plugins=(
 - **Key fixes applied**:
   - `ips` alias: Fixed sed regex syntax (unbalanced parentheses)
   - `lt` alias: Added `--all` flag for proper hidden file display in dotfiles
-  - `refresh` alias: Converted all grep usage to rg throughout .aliases file
-  - General: Eliminated all grep/rg syntax conflicts in interactive aliases
+  - `refresh` alias: Optimized for modern shell workflows
+  - General: Removed grep→rg alias to prevent tool compatibility issues
 
 ### Alias Tips System
 - **Inline Documentation**: Alias descriptions stored as comments in .aliases file

@@ -10,6 +10,7 @@ src/.atom/
 
 # Claude configuration
 .claude/temp-*
+.claude/settings.local.json
 # Ignore Raycast extensions (auto-generated/managed by Raycast)
 src/.config/raycast/extensions/
 
