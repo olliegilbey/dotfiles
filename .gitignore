@@ -36,3 +36,4 @@ src/.config/raycast/config.json
 src/.config/raycast/ai/
 src/.config/zed/prompts/prompts-library-db.0.mdb/lock.mdb
 src/.config/op/
+src/.config/git/allowed_signers

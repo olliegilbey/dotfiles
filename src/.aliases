@@ -123,9 +123,9 @@ alias lt='eza --tree --level=2 --icons --all'              # Tree view (2 levels
 alias lg='lazygit'                                           # Quick git UI
 
 # Development workflow shortcuts
-alias dev='cd ~/code'                             # Quick access to dev directory
+alias dev='cd "$DEV_DIR"'                             # Quick access to dev directory
 alias dots='cd ~/dotfiles'                                  # Quick access to dotfiles
-alias src='cd ~/code && ls'                       # Go to code dir and list
+alias src='cd "$DEV_DIR" && ls'                       # Go to code dir and list
 alias refresh='source ~/.zshenv && source ~/.zshrc && source ~/.aliases && dotfiles-health'  # Reload full shell configuration and run health check
 alias clear-shell-cache='rm -f ~/.cache/*-completion.zsh ~/.cache/*-init.zsh && echo "🧹 Shell completion caches cleared"'  # Clear cached completions
 
