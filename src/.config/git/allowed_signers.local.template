@@ -1,6 +1,6 @@
 # Git SSH Allowed Signers Template
 # Run this command to set up SSH commit verification:
-#   cp git-allowed-signers.template ~/.config/git/allowed_signers
+#   cp src/.config/git/allowed_signers.local.template ~/.config/git/allowed_signers.local
 # Then add your SSH public key(s) below
 
 # Format: email ssh-key-type public-key-data

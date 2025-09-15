@@ -19,12 +19,12 @@ cd ~/dotfiles
 
 ```bash
 # Set up git user configuration
-cp src/.config/git/git-config-local.template ~/.config/git/config.local
+cp src/.config/git/config.local.template ~/.config/git/config.local
 # Edit ~/.config/git/config.local with your name, email, and signing key
 
 # Set up SSH commit verification (optional, for signed commits)
-cp src/.config/git/git-allowed-signers.template ~/.config/git/allowed_signers
-# Edit ~/.config/git/allowed_signers with your SSH public key
+cp src/.config/git/allowed_signers.local.template ~/.config/git/allowed_signers.local
+# Edit ~/.config/git/allowed_signers.local with your SSH public key
 ```
 
 ### 2. Set Up Raycast (macOS)

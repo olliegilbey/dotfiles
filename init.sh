@@ -188,8 +188,12 @@ echo "📋 Next steps:"
 # Check if git config.local exists
 if [ ! -f "$HOME/.config/git/config.local" ]; then
 	echo "   1. 🔑 Set up your git identity (REQUIRED):"
-	echo "      cp git-config-local.template ~/.config/git/config.local"
+	echo "      cp src/.config/git/config.local.template ~/.config/git/config.local"
 	echo "      # Then edit ~/.config/git/config.local with your name, email, and signing key"
+	echo ""
+	echo "      # For SSH commit signing (optional but recommended):"
+	echo "      cp src/.config/git/allowed_signers.local.template ~/.config/git/allowed_signers.local"
+	echo "      # Then edit ~/.config/git/allowed_signers.local with your SSH public key"
 	echo ""
 	echo "   2. 🔄 Restart your terminal or run: source ~/.zshrc"
 	echo ""
