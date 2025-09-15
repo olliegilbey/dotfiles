@@ -89,7 +89,7 @@ autoload -U compinit && compinit
 # Python via uv - lazy load completions for performance
 if command -v uv &>/dev/null; then
     # Cache completion for faster startup
-    local uv_completion_cache="$HOME/.cache/uv-completion.zsh"
+    uv_completion_cache="$HOME/.cache/uv-completion.zsh"
     if [[ ! -f "$uv_completion_cache" ]] || [[ "$uv_completion_cache" -ot "$(which uv)" ]]; then
         mkdir -p "$(dirname "$uv_completion_cache")"
         uv generate-shell-completion zsh > "$uv_completion_cache"
@@ -103,7 +103,7 @@ if command -v mise &>/dev/null; then
     eval "$(mise activate zsh)"
     
     # Cache mise completions for faster startup
-    local mise_completion_cache="$HOME/.cache/mise-completion.zsh"
+    mise_completion_cache="$HOME/.cache/mise-completion.zsh"
     if [[ ! -f "$mise_completion_cache" ]] || [[ "$mise_completion_cache" -ot "$(which mise)" ]]; then
         mkdir -p "$(dirname "$mise_completion_cache")"
         mise completion zsh > "$mise_completion_cache"
@@ -119,7 +119,7 @@ fi
 
 # zoxide (modern cd replacement) with cached initialization
 if command -v zoxide &>/dev/null; then
-    local zoxide_init_cache="$HOME/.cache/zoxide-init.zsh"
+    zoxide_init_cache="$HOME/.cache/zoxide-init.zsh"
     if [[ ! -f "$zoxide_init_cache" ]] || [[ "$zoxide_init_cache" -ot "$(which zoxide)" ]]; then
         mkdir -p "$(dirname "$zoxide_init_cache")"
         zoxide init --cmd cd zsh > "$zoxide_init_cache"
@@ -164,5 +164,3 @@ if [[ -o interactive ]] && [[ -t 0 ]] && [[ -t 1 ]]; then
     bash "$HOME/dotfiles/show-alias-tips.sh"
 fi
 
-# bun completions
-[ -s "/Users/olivergilbey/.bun/_bun" ] && source "/Users/olivergilbey/.bun/_bun"
