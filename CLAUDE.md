@@ -104,6 +104,12 @@ brew install package-name
 2. **`.zshrc`** - Interactive shell configuration with Oh My Zsh, mise activation, bun completions
 3. **`.aliases`** - Extensive custom commands with inline descriptions (200+ lines, 70+ aliases)
 
+### Debug and Development Tools
+- **`ZSHRC_LOADED`** - Environment variable set to Unix timestamp when `.zshrc` loads
+  - Used for debugging shell configuration loading issues
+  - Displayed in `refresh` alias output for verification
+  - Example: `echo $ZSHRC_LOADED` shows when shell was last configured
+
 ### NeoVim Configuration (LazyVim-based)
 - **Plugin Management**: lazy.nvim with modular plugin architecture
 - **LSP Setup**: Comprehensive language server configuration with optimized startup performance

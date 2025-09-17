@@ -65,3 +65,12 @@ keymap("n", "<leader>qq", "<cmd>q<cr>", { desc = "Quit current buffer" })
 keymap("n", "<leader>qa", "<cmd>qa<cr>", { desc = "Quit all" })
 keymap("n", "<leader>qw", "<cmd>wq<cr>", { desc = "Save and quit current" })
 keymap("n", "<leader>qW", "<cmd>wqa<cr>", { desc = "Save all and quit all" })
+
+-- Command Palette
+keymap("n", "<leader><leader>", "<cmd>Telescope commands<cr>", { desc = "Command Palette" })
+
+-- Flash.nvim - Jump to any character on screen
+keymap("n", "<leader>jj", function() require("flash").jump() end, { desc = "Flash Jump" })
+keymap("n", "<leader>js", function() require("flash").treesitter() end, { desc = "Flash Treesitter" })
+
+
