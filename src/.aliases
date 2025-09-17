@@ -126,7 +126,7 @@ alias lg='lazygit'                                           # Quick git UI
 alias dev='cd "$DEV_DIR"'                             # Quick access to dev directory
 alias dots='cd ~/dotfiles'                                  # Quick access to dotfiles
 alias src='cd "$DEV_DIR" && ls'                       # Go to code dir and list
-alias refresh='echo "🔄 Refreshing shell configuration..." && zsh -c "source ~/.zshenv; source ~/.zshrc; source ~/.aliases; echo \"✅ Configuration loaded\"; dotfiles-health"'  # Reload shell configuration and run health check
+alias refresh='echo "🔄 Refreshing shell configuration..." && zsh -c "source ~/.zshenv; source ~/.zshrc; source ~/.aliases; echo \"✅ Configuration loaded (ZSHRC_LOADED: \$ZSHRC_LOADED)\"; dotfiles-health"'  # Reload shell configuration and run health check
 alias clear-shell-cache='rm -f ~/.cache/*-completion.zsh ~/.cache/*-init.zsh && echo "🧹 Shell completion caches cleared"'  # Clear cached completions
 
 # System and tool integration
@@ -382,7 +382,12 @@ ai-context() {
     echo "🤖 AI Context Setup for New Claude Code Instance"
     echo "════════════════════════════════════════════════"
     echo ""
-    
+
+    echo "⏰ Current Date/Time: $(date)"
+    echo "🔧 Shell Config Loaded: $(date -r $ZSHRC_LOADED 2>/dev/null || echo 'Unknown')"
+    echo "   • ZSHRC_LOADED timestamp: $ZSHRC_LOADED"
+    echo ""
+
     echo "⚠️  CRITICAL ENVIRONMENT NOTES:"
     echo "   • AI agents should prefer 'rg' (ripgrep) over 'grep' for better performance"
     echo "   • Use 'rg' syntax, not POSIX grep syntax (e.g., 'rg pattern' not 'grep -r pattern')"

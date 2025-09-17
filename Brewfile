@@ -34,6 +34,10 @@ brew "delta"            # Enhanced git diff viewer with syntax highlighting
 brew "neovim"           # Modern text editor, enhancement from Vim
 brew "vim"              # Highly configurable and robust text editor
 
+# LaTeX distribution (commented out - install manually when needed)
+# cask "mactex-no-gui"    # Full LaTeX distribution (~4GB) - includes everything
+# Alternative: brew install --cask basictex && sudo tlmgr install latexmk
+
 # System utilities and tools
 brew "tree"             # Recursive directory listing command
 brew "wget"             # Network utility to retrieve files from the web

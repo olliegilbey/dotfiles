@@ -1,6 +1,9 @@
 # Warp-Optimized .zshrc Configuration
 # Streamlined for performance and Warp compatibility
 
+# Debug marker for Claude Code investigation
+export ZSHRC_LOADED="$(date +%s)"
+
 # ------------------------------------------------------------------------------
 # PATH MANAGEMENT
 # ------------------------------------------------------------------------------
@@ -47,6 +50,9 @@ export PATH="$PATH:$HOME/.foundry/bin"
 # Visual Studio Code
 export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
 
+# Essential completions
+autoload -U compinit && compinit
+
 # ------------------------------------------------------------------------------
 # SHELL CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -83,8 +89,7 @@ source $ZSH/oh-my-zsh.sh
 # Unset Oh My Zsh's grep alias to use native grep behavior
 unalias grep 2>/dev/null || true
 
-# Essential completions
-autoload -U compinit && compinit
+# Essential completions - MOVED TO TOP
 
 # Python via uv - lazy load completions for performance
 if command -v uv &>/dev/null; then
@@ -117,14 +122,9 @@ fi
 # Source aliases
 [ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 
-# zoxide (modern cd replacement) with cached initialization
+# zoxide (modern cd replacement) with z command (cd stays normal)
 if command -v zoxide &>/dev/null; then
-    zoxide_init_cache="$HOME/.cache/zoxide-init.zsh"
-    if [[ ! -f "$zoxide_init_cache" ]] || [[ "$zoxide_init_cache" -ot "$(which zoxide)" ]]; then
-        mkdir -p "$(dirname "$zoxide_init_cache")"
-        zoxide init --cmd cd zsh > "$zoxide_init_cache"
-    fi
-    source "$zoxide_init_cache"
+    eval "$(zoxide init zsh)"
 fi
 
 # Custom aliases are in ~/.aliases (sourced above)
