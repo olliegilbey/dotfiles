@@ -1,0 +1,9 @@
+# Kanagawa with transparent background
+# Just inherit kanagawa and remove backgrounds
+inherits = "kanagawa"
+
+# Make background transparent (like your NeoVim: bg = NONE)
+"ui.background" = {}
+"ui.gutter" = {}
+"ui.statusline" = { fg = "fujiWhite" }
+"ui.statusline.inactive" = { fg = "fujiGray" }

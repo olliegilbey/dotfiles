@@ -8,7 +8,9 @@ tap "oven-sh/bun"
 # Note: bash kept for script compatibility - many tools and CI systems expect bash
 brew "bash"              # POSIX shell - required for script compatibility
 brew "bash-completion"   # Bash autocompletion
-brew "zsh"              # Your primary shell
+brew "zsh"               # Your primary shell
+brew "zsh-autosuggestions"   # Fish-like autosuggestions for zsh
+brew "zsh-syntax-highlighting"  # Fish-like syntax highlighting for zsh
 
 # Version control and Git utilities
 brew "git"              # Distributed version control system
@@ -29,10 +31,14 @@ brew "eza"              # Modern ls replacement with icons, git status, and bett
 brew "zoxide"           # Smart cd replacement with frecency algorithm
 brew "fzf"              # Fuzzy finder for command-line (works with zoxide)
 brew "delta"            # Enhanced git diff viewer with syntax highlighting
+brew "hyperfine"        # Command-line benchmarking tool (Rust)
+brew "just"             # Command runner for project tasks (better UX than Make)
+brew "starship"         # Fast, customizable cross-shell prompt (Rust)
 
 # Editors and development environments
 brew "neovim"           # Modern text editor, enhancement from Vim
 brew "vim"              # Highly configurable and robust text editor
+brew "helix"            # Modern modal editor written in Rust (lightweight alternative)
 
 # LaTeX distribution (commented out - install manually when needed)
 # cask "mactex-no-gui"    # Full LaTeX distribution (~4GB) - includes everything
@@ -47,15 +53,19 @@ brew "findutils"        # File and directory search tools
 
 # Modern package managers and version managers
 brew "uv"               # Modern Python package manager (replaces pip, pipenv, poetry)
+brew "ruff"             # Extremely fast Python linter and formatter (Rust, replaces black/flake8/isort)
 brew "bun"              # Modern JavaScript runtime and package manager (faster than npm/node)
 brew "mise"             # Universal version manager (replaces nvm, rbenv, pyenv, etc.)
 
 # Productivity and task management
 brew "todo-txt"         # Simple todo.txt manager for command line
 brew "csvkit"           # CSV processing tools including csvstat
+brew "zellij"           # Modern terminal multiplexer (Rust, persistent sessions)
+brew "mosh"             # Mobile shell for unreliable connections (better than SSH for mobile)
 
 # Security and authentication
 cask "1password-cli"    # 1Password command-line interface, access with "op"
+cask "tailscale"        # Zero-config mesh VPN for secure remote access (iPad development)
 
 # Productivity apps
 cask "raycast"          # Spotlight replacement with extensible functionality
@@ -80,3 +90,6 @@ brew "gemini-cli"
 
 # curl
 brew "curl"
+
+# codex
+brew "codex"

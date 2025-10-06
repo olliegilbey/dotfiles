@@ -30,11 +30,34 @@ extract_aliases_with_descriptions() {
     fi
 }
 
+# Function to extract just commands from justfile
+extract_just_commands() {
+    local justfile="$SCRIPT_DIR/justfile"
+    if [[ -f "$justfile" ]]; then
+        # Extract recipes with their comments
+        grep -E "^[a-z].*:.*#" "$justfile" | while IFS= read -r line; do
+            # Extract recipe name (before :)
+            recipe_name=$(echo "$line" | sed -E 's/^([a-z][a-z0-9_-]*).*/\1/')
+            # Extract description (after #)
+            description=$(echo "$line" | sed 's/.*#[[:space:]]*//')
+
+            if [[ -n "$description" && "$description" != "" ]]; then
+                echo "just $recipe_name::$description"
+            fi
+        done
+    fi
+}
+
 # Get aliases with descriptions (not empty)
 aliases_with_descriptions=()
 while IFS= read -r line; do
     [[ -n "$line" ]] && aliases_with_descriptions+=("$line")
 done < <(extract_aliases_with_descriptions "$ALIASES_FILE")
+
+# Add just commands to the pool
+while IFS= read -r line; do
+    [[ -n "$line" ]] && aliases_with_descriptions+=("$line")
+done < <(extract_just_commands)
 
 # Exit if no aliases with descriptions
 if [[ ${#aliases_with_descriptions[@]} -eq 0 ]]; then

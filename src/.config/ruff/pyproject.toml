@@ -1,0 +1,65 @@
+# Ruff Configuration - Modern Python Linting and Formatting
+# https://docs.astral.sh/ruff/configuration/
+
+[tool.ruff]
+# Target Python 3.11+ (aligned with mise and uv defaults)
+target-version = "py311"
+
+# Line length to match Black's default
+line-length = 88
+
+# Exclude common directories
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    "build",
+    "dist",
+    "*.egg-info",
+]
+
+[tool.ruff.lint]
+# Enable recommended rules + extra goodies
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort (import sorting)
+    "N",      # pep8-naming
+    "UP",     # pyupgrade (modernize Python code)
+    "B",      # flake8-bugbear (find bugs and design problems)
+    "C4",     # flake8-comprehensions
+    "SIM",    # flake8-simplify
+    "RUF",    # Ruff-specific rules
+]
+
+# Never enforce these rules
+ignore = [
+    "E501",   # Line too long (handled by formatter)
+    "B008",   # Do not perform function call in argument defaults
+]
+
+# Allow autofix for all enabled rules
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+# Use double quotes for strings (Black default)
+quote-style = "double"
+
+# Indent with spaces (not tabs)
+indent-style = "space"
+
+# Respect magic trailing commas
+skip-magic-trailing-comma = false
+
+# Format docstrings
+docstring-code-format = true
+
+[tool.ruff.lint.isort]
+# Sort imports similar to isort
+known-first-party = []
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]

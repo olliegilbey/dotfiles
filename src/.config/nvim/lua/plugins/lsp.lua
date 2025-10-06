@@ -19,10 +19,9 @@ return {
         
         -- Formatters
         "stylua",
-        "shfmt", 
+        "shfmt",
         "prettier",
-        "black",
-        "isort",
+        "ruff",
       },
     },
     config = function(_, opts)
@@ -142,13 +141,14 @@ return {
         capabilities = capabilities,
         on_attach = function(client, bufnr)
           local opts = { buffer = bufnr }
-          -- Python-specific keymaps
-          vim.keymap.set("n", "<leader>pr", "<cmd>!python %<cr>", { desc = "Run Python file", buffer = bufnr })
-          vim.keymap.set("n", "<leader>pt", "<cmd>!python -m pytest<cr>", { desc = "Run pytest", buffer = bufnr })
-          vim.keymap.set("n", "<leader>pf", "<cmd>!black % && isort %<cr>", { desc = "Format with black/isort", buffer = bufnr })
-          vim.keymap.set("n", "<leader>pl", "<cmd>!python -m flake8 %<cr>", { desc = "Run flake8 linting", buffer = bufnr })
-          vim.keymap.set("n", "<leader>pi", "<cmd>!pip install -r requirements.txt<cr>", { desc = "Install requirements", buffer = bufnr })
-          vim.keymap.set("n", "<leader>pc", "<cmd>!python -m py_compile %<cr>", { desc = "Compile Python file", buffer = bufnr })
+          -- Python-specific keymaps (modernized with uv + ruff)
+          vim.keymap.set("n", "<leader>pr", "<cmd>!uv run python %<cr>", { desc = "Run Python file (uv)", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pt", "<cmd>!uv run pytest<cr>", { desc = "Run pytest (uv)", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pf", "<cmd>!ruff format % && ruff check --fix %<cr>", { desc = "Format with ruff", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pl", "<cmd>!ruff check %<cr>", { desc = "Lint with ruff", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pi", "<cmd>!uv sync<cr>", { desc = "Sync dependencies (uv)", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pa", "<cmd>!uv add ", { desc = "Add package (uv add ...)", buffer = bufnr })
+          vim.keymap.set("n", "<leader>pc", "<cmd>!ruff check --fix %<cr>", { desc = "Check and fix with ruff", buffer = bufnr })
         end,
       })
 

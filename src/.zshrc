@@ -1,13 +1,13 @@
-# Warp-Optimized .zshrc Configuration
-# Streamlined for performance and Warp compatibility
+# Pure Zsh Configuration - Modernized October 2025
+# Optimized for speed, clarity, and Warp terminal compatibility
 
-# Debug marker for Claude Code investigation
+# Debug marker for troubleshooting
 export ZSHRC_LOADED="$(date +%s)"
 
-# ------------------------------------------------------------------------------
+# ==============================================================================
 # PATH MANAGEMENT
-# ------------------------------------------------------------------------------
-# All PATH modifications are centralized here for clarity and order.
+# ==============================================================================
+# All PATH modifications centralized for clarity and performance.
 
 # Homebrew - THIS MUST BE FIRST
 if [ -x "/opt/homebrew/bin/brew" ]; then
@@ -17,7 +17,7 @@ fi
 # Base system paths (prepend to preserve existing PATH)
 export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
 
-# Homebrew
+# Homebrew completion paths
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
   # Add GNU gettext for envsubst
@@ -50,46 +50,124 @@ export PATH="$PATH:$HOME/.foundry/bin"
 # Visual Studio Code
 export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
 
-# Essential completions
-autoload -U compinit && compinit
+# ==============================================================================
+# ZSH CONFIGURATION
+# ==============================================================================
 
-# ------------------------------------------------------------------------------
-# SHELL CONFIGURATION
-# ------------------------------------------------------------------------------
-
-# History Configuration (balanced performance and persistence)
+# History Configuration
 export HISTSIZE=50000
-export SAVEHIST=50000  
+export SAVEHIST=50000
 export HISTFILE=~/.zsh_history
-setopt share_history          # Share between sessions with batched writes
+setopt share_history          # Share between sessions
 setopt hist_ignore_dups       # Skip duplicate entries
+setopt hist_ignore_space      # Ignore commands starting with space
+setopt append_history         # Append rather than overwrite
 
-# General Configuration
-export ZSH="$HOME/.oh-my-zsh"
-# EDITOR is defined in .zshenv
+# Completion system
+autoload -Uz compinit
+# Only regenerate .zcompdump once a day for faster startup
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
-# Essential OMZ plugins only
-plugins=(
-  git
-  golang
-  rust
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
+# Case-insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+# Better completion menu
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
-# Configure zsh-autosuggestions
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_USE_ASYNC=true
-ZSH_AUTOSUGGEST_MANUAL_REBIND=true
+# ==============================================================================
+# MANUAL PLUGINS
+# ==============================================================================
 
-# Load Oh My Zsh (theme is disabled for Warp)
-ZSH_THEME=""
-source $ZSH/oh-my-zsh.sh
+# zsh-autosuggestions (manual install via Homebrew)
+if [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+  ZSH_AUTOSUGGEST_USE_ASYNC=true
+  ZSH_AUTOSUGGEST_MANUAL_REBIND=true
+fi
 
-# Unset Oh My Zsh's grep alias to use native grep behavior
-unalias grep 2>/dev/null || true
+# zsh-syntax-highlighting (manual install via Homebrew) - MUST BE LAST PLUGIN
+if [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
-# Essential completions - MOVED TO TOP
+# ==============================================================================
+# GIT ALIASES (from Oh-My-Zsh git plugin)
+# ==============================================================================
+
+# Status and info
+alias g='git'
+alias ga='git add'
+alias gaa='git add --all'
+alias gst='git status'
+alias gss='git status -s'
+alias gd='git diff'
+alias gds='git diff --staged'
+
+# Commit
+alias gc='git commit -v'
+alias gc!='git commit -v --amend'
+alias gcn!='git commit -v --no-edit --amend'
+alias gcmsg='git commit -m'
+
+# Branches
+alias gb='git branch'
+alias gba='git branch -a'
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gbd='git branch -d'
+alias gbD='git branch -D'
+
+# Remote operations
+alias gl='git pull'
+alias gp='git push'
+alias gpf='git push --force-with-lease'
+alias gpsup='git push --set-upstream origin $(git symbolic-ref --short HEAD)'
+
+# Logs
+alias glog='git log --oneline --decorate --graph'
+alias gloga='git log --oneline --decorate --graph --all'
+alias glg='git log --stat'
+
+# Stash
+alias gsta='git stash'
+alias gstaa='git stash apply'
+alias gstd='git stash drop'
+alias gstl='git stash list'
+alias gstp='git stash pop'
+
+# ==============================================================================
+# GOLANG ALIASES (from Oh-My-Zsh golang plugin)
+# ==============================================================================
+
+alias gob='go build'
+alias gor='go run'
+alias goc='go clean'
+alias goi='go install'
+alias got='go test'
+alias gof='go fmt'
+alias gofa='go fmt ./...'
+
+# ==============================================================================
+# RUST ALIASES (from Oh-My-Zsh rust plugin)
+# ==============================================================================
+
+alias cr='cargo run'
+alias cb='cargo build'
+alias cbr='cargo build --release'
+alias ct='cargo test'
+alias cc='cargo check'
+alias ccl='cargo clippy'
+alias cca='cargo clean'
+alias cu='cargo update'
+
+# ==============================================================================
+# VERSION MANAGERS & TOOLS
+# ==============================================================================
 
 # Python via uv - lazy load completions for performance
 if command -v uv &>/dev/null; then
@@ -106,7 +184,7 @@ export UV_PYTHON_PREFERENCE=only-managed
 # mise - Universal version manager with cached completions
 if command -v mise &>/dev/null; then
     eval "$(mise activate zsh)"
-    
+
     # Cache mise completions for faster startup
     mise_completion_cache="$HOME/.cache/mise-completion.zsh"
     if [[ ! -f "$mise_completion_cache" ]] || [[ "$mise_completion_cache" -ot "$(which mise)" ]]; then
@@ -119,15 +197,30 @@ fi
 # Bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-# Source aliases
-[ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
-
 # zoxide (modern cd replacement) with z command (cd stays normal)
 if command -v zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
 fi
 
-# Custom aliases are in ~/.aliases (sourced above)
+# ==============================================================================
+# STARSHIP PROMPT (Conditional: Only for SSH or non-Warp sessions)
+# ==============================================================================
+
+# Detect if we're in Warp terminal
+if [[ "$TERM_PROGRAM" != "WarpTerminal" ]] && command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+fi
+
+# ==============================================================================
+# CUSTOM ALIASES
+# ==============================================================================
+
+# Source custom aliases from ~/.aliases
+[ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
+
+# ==============================================================================
+# HOMEBREW HELPERS
+# ==============================================================================
 
 # Homebrew install tracking function
 brew_install_with_tracking() {
@@ -159,8 +252,11 @@ brew() {
     fi
 }
 
-# Show random alias tips on startup
+# ==============================================================================
+# STARTUP TIPS
+# ==============================================================================
+
+# Show random alias tips on interactive shell startup
 if [[ -o interactive ]] && [[ -t 0 ]] && [[ -t 1 ]]; then
     bash "$HOME/dotfiles/show-alias-tips.sh"
 fi
-

@@ -1,0 +1,60 @@
+# Helix Configuration - Matching NeoVim Setup
+theme = "kanagawa"
+
+[editor]
+# UI matching your NeoVim
+line-number = "relative"
+cursorline = true
+scrolloff = 8
+mouse = true
+color-modes = true
+bufferline = "multiple"
+auto-save = false
+rulers = [80, 120]
+
+# Indentation (2 spaces like NeoVim)
+[editor.indent-guides]
+render = true
+character = "│"
+
+[editor.whitespace]
+render = "all"
+characters = { tab = "→", space = "·", nbsp = "␣", newline = "⏎" }
+
+# Cursor shapes
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+# LSP
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
+auto-signature-help = true
+
+# Search (smartcase like NeoVim)
+[editor.search]
+smart-case = true
+wrap-around = true
+
+# Soft wrap disabled (like NeoVim)
+[editor.soft-wrap]
+enable = false
+
+# Minimal statusline
+[editor.statusline]
+left = ["mode", "spacer", "version-control", "file-name", "file-modification-indicator"]
+center = ["diagnostics"]
+right = ["position", "file-encoding", "file-type"]
+
+# Keys - NeoVim-inspired
+[keys.normal]
+C-s = ":w"
+K = "hover"
+g = { d = "goto_definition", r = "goto_reference", i = "goto_implementation" }
+space = { f = "file_picker", e = "file_picker_in_current_directory", b = "buffer_picker", s = "symbol_picker", w = ":w", q = ":q", x = ":wq" }
+
+[keys.insert]
+j = { k = "normal_mode" }
+C-s = ":w"

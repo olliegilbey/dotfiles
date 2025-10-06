@@ -123,9 +123,10 @@ alias lt='eza --tree --level=2 --icons --all'              # Tree view (2 levels
 alias lg='lazygit'                                           # Quick git UI
 
 # Development workflow shortcuts
-alias dev='cd "$DEV_DIR"'                             # Quick access to dev directory
-alias dots='cd ~/dotfiles'                                  # Quick access to dotfiles
-alias src='cd "$DEV_DIR" && ls'                       # Go to code dir and list
+alias dev='cd "$DEV_DIR"'  # Quick access to dev directory
+alias dots='cd ~/dotfiles'  # Quick access to dotfiles
+alias src='cd "$DEV_DIR" && ls'  # Go to code dir and list
+alias j='just'  # Quick just command runner
 alias refresh='echo "🔄 Refreshing shell configuration..." && zsh -c "source ~/.zshenv; source ~/.zshrc; source ~/.aliases; echo \"✅ Configuration loaded (ZSHRC_LOADED: \$ZSHRC_LOADED)\"; dotfiles-health"'  # Reload shell configuration and run health check
 alias clear-shell-cache='rm -f ~/.cache/*-completion.zsh ~/.cache/*-init.zsh && echo "🧹 Shell completion caches cleared"'  # Clear cached completions
 
@@ -280,8 +281,9 @@ function ta() {
 }
 alias tt='nvim -c "lua require(\"todotxt\").toggle_todotxt()"'  # Open NeoVim with todo.txt buffer interface
 
-# Quick NeoVim shortcuts  
-alias nv='nvim ./'                                               # Open current directory in NeoVim
+# Quick NeoVim shortcuts
+alias nv='nvim ./'  # Open current directory in NeoVim
+alias hx='hx'  # Quick helix editor (lightweight alternative to nvim)
 
 # Advanced CLI operations (todo.sh tool from Homebrew)
 alias ta-cli='todo.sh add'                                      # CLI add: ta-cli "Call Mom"

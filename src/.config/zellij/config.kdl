@@ -1,0 +1,57 @@
+// Zellij Configuration - Optimized for Remote Development
+// Persistent sessions that survive disconnects
+
+// Theme matching your terminal aesthetic
+theme "kanagawa"
+
+// Simplified UI
+pane_frames false
+simplified_ui true
+
+// Mouse support
+mouse_mode true
+scroll_buffer_size 10000
+
+// Copy on select (like modern terminals)
+copy_on_select true
+
+// Session behavior
+default_layout "compact"
+default_shell "zsh"
+
+// Auto-attach to session if exists
+session_serialization false
+pane_viewport_serialization false
+
+// Keybindings - simplified for remote use
+keybinds {
+    normal {
+        // Session management
+        bind "Ctrl p" { SwitchToMode "Pane"; }
+        bind "Ctrl s" { SwitchToMode "Session"; }
+        bind "Ctrl t" { SwitchToMode "Tab"; }
+
+        // Quick actions
+        bind "Ctrl q" { Quit; }
+    }
+
+    pane {
+        bind "d" { NewPane "Down"; SwitchToMode "Normal"; }
+        bind "r" { NewPane "Right"; SwitchToMode "Normal"; }
+        bind "x" { CloseFocus; SwitchToMode "Normal"; }
+        bind "f" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
+        bind "Esc" { SwitchToMode "Normal"; }
+    }
+
+    tab {
+        bind "n" { NewTab; SwitchToMode "Normal"; }
+        bind "x" { CloseTab; SwitchToMode "Normal"; }
+        bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
+        bind "Esc" { SwitchToMode "Normal"; }
+    }
+
+    session {
+        bind "d" { Detach; }
+        bind "Esc" { SwitchToMode "Normal"; }
+    }
+}

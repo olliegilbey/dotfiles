@@ -1,7 +1,7 @@
 # Ollie's Global Development Environment & AI Collaboration Style
 
-> **Recently Updated (August 2025)**: Complete environment modernization with bleeding-edge tools, 
-> AI-first workflows, and comprehensive automation. See dotfiles repository for technical details.
+> This file defines system-wide guidance for Claude Code across all projects.
+> See dotfiles repository for technical details and project-specific CLAUDE.md files for domain context.
 
 ## Personal Development Philosophy
 
@@ -20,12 +20,13 @@
 ## Technical Environment & Preferences
 
 ### Primary Tools & Environment
-- **Terminal-First Workflow**: NeoVim with LazyVim distribution, terminal-based development
-- **macOS Development**: Darwin 24.5.0 with Brewfile-managed package system
-- **Shell Environment**: Zsh with Oh My Zsh, Warp terminal (native prompting, no starship)
-- **Editor**: NeoVim as primary editor (`$EDITOR="nvim"`), LazyVim with modern plugins
+- **Terminal-First Workflow**: NeoVim with LazyVim distribution, Helix for quick edits, terminal-based development
+- **macOS Development**: Brewfile-managed package system with declarative dependencies
+- **Shell Environment**: Pure zsh (manual plugin management), Warp terminal, starship for SSH sessions
+- **Editors**: NeoVim as primary (`$EDITOR="nvim"`), Helix (`hx`) for lightweight edits over SSH
 - **Git SSH Authentication**: 1Password integration with commit signing, delta for enhanced diffs
 - **Navigation**: Enhanced with `zoxide` (replaces cd), `fzf` (fuzzy finder), `ripgrep` (fast search)
+- **Remote Development**: Tailscale for iPad→Mac access, Zellij for persistent sessions, mosh for cellular
 
 ### Dotfiles Architecture
 - **Symlinked Configuration**: All dotfiles managed via `~/dotfiles/bootstrap.sh`
@@ -36,9 +37,9 @@
 ### Language Preferences & Patterns
 - **Rust**: Primary language - leverage zero-cost abstractions, type-driven design, functional composition (managed via rustup)
 - **Go**: Secondary systems language - latest version via mise, clean GOPATH configuration
-- **TypeScript/JavaScript**: For web development - bun runtime, Node.js LTS via mise, modern ES features
-- **Python**: For data/ML work - uv for package/project management, latest version via mise, clean typing
-- **Shell/Bash**: For automation and tooling - enhanced with modern alternatives (eza, bat, ripgrep, fd, delta)
+- **TypeScript/JavaScript**: For web development - Bun for package management, Node.js runtime for Next.js, modern ES features
+- **Python**: For data/ML work - uv for package/project management, ruff for linting/formatting, latest version via mise
+- **Shell/Bash**: For automation and tooling - enhanced with modern alternatives (eza, bat, ripgrep, fd, delta, just)
 
 ### Development Tools Ecosystem
 - **Version Control**: Git with git-extras, lazygit for TUI interface, delta for enhanced diffs
@@ -67,16 +68,19 @@
 - **Comprehensive Documentation**: Examples, reasoning, and context in code comments
 - **Import Organization**: Standard groupings (std, external, internal)
 
-### Custom Aliases & Shortcuts
-- **Navigation**: `..`, `...`, `....`, `.....` for directory traversal, `ll` (enhanced ls with git status), `lt` (tree view)
-- **Development**: `dev` (jump to code directory), `dots` (jump to dotfiles), `lg` (lazygit), `env-info` (environment summary)
-- **Search**: `search` (smart ripgrep), `searchcode` (code files only), `recent` (files modified today)
-- **Git Integration**: `g` alias for git, `git-summary` (repository overview), extensive git-extras functionality
-- **System Utilities**: `timer` (stopwatch), `ip`/`localip` (addresses), `chromekill`, `flushDNS`, `afk` (lock screen)
-- **AI Context**: `proj-context` (project overview), `dotfiles-health` (environment validation)
-- **Modern Tools**: `cat` → `bat` (syntax highlighting), `ls` → `eza` (icons/git status)
-- **Claude Code Access**: `claude` alias pointing to `~/.claude/local/claude`
-- **Alias Tips**: Random startup reminders from `alias-descriptions.txt` (2 tips per session)
+### AI Context Gathering Commands
+**Claude Code should use these to understand projects:**
+- **`proj-context`**: Generates comprehensive project overview (files, structure, git info, dependencies)
+- **`ai-context`**: System-wide environment summary and onboarding instructions
+- **`dotfiles-health`**: Validates development environment setup
+- **`env-info`**: Current environment and tool versions summary
+- **`git-summary`**: Repository statistics and contribution overview
+
+### Other Useful Aliases
+- **Navigation**: `..`, `...` (directory traversal), `ll` (enhanced ls with git), `lt` (tree view)
+- **Development**: `dev` (code directory), `dots` (dotfiles), `lg` (lazygit)
+- **Search**: `search` (smart ripgrep), `searchcode` (code files only), `recent` (modified today)
+- **Git**: `g` (git alias), extensive git-extras functionality
 
 ### Critical AI Agent Notes
 - **⚠️ IMPORTANT: AI agents should prefer `rg` (ripgrep) over `grep`** - Much faster and better UX!

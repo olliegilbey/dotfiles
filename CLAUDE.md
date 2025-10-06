@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-This is a modern macOS/Linux dotfiles repository with automated setup and bleeding-edge tool integration. Recently underwent a complete overhaul (August 2025) modernizing all components with AI-first workflows. The architecture follows a symlink-based approach where all configuration files in `src/` are automatically linked to the home directory.
+This is a modern macOS/Linux dotfiles repository with automated setup and bleeding-edge tool integration. The architecture follows a symlink-based approach where all configuration files in `src/` are automatically linked to the home directory.
 
 ### Key Components
 
@@ -68,7 +68,7 @@ ls -la ~ | grep dotfiles
 brew install package-name
 ```
 
-## Tool Stack (2025 Bleeding Edge) - Recently Modernized
+## Tool Stack - Bleeding Edge
 
 ### Modern Command-Line Tools (Rust-based)
 - **eza** - Modern ls replacement with icons, git status, and better defaults
@@ -78,31 +78,44 @@ brew install package-name
 - **fd** - Fast file finder alternative to find
 - **zoxide** - Smart cd replacement with frecency algorithm
 - **fzf** - Fuzzy finder for command-line productivity
+- **just** - Command runner for project tasks (better UX than Make)
+- **helix** - Modern modal editor written in Rust (lightweight alternative to NeoVim)
+- **hyperfine** - Command-line benchmarking tool
+- **starship** - Fast, customizable cross-shell prompt (conditional loading)
 
 ### Package Management
 - **Homebrew** - System packages and CLI tools
 - **mise** - Universal version manager (replaces nvm, fnm, rbenv, pyenv, etc.)
 - **uv** - Modern Python package/project manager (replaces pip/pipenv/poetry)
+- **ruff** - Extremely fast Python linter and formatter (replaces black/flake8/isort)
 - **Cargo** - Rust package manager and build system
 
 ### Editors & Development Environment
 - **NeoVim** - Primary editor with LazyVim distribution (completely rebuilt configuration)
-- **Warp** - AI-enhanced terminal with native prompting (no starship needed)
+- **Helix** - Lightweight Rust-based modal editor (quick edits, selection-first workflow)
+- **Warp** - AI-enhanced terminal with native prompting
+- **Starship** - Cross-shell prompt (conditionally loaded for SSH/non-Warp sessions)
+- **Zellij** - Modern terminal multiplexer for persistent remote sessions
 - **lazygit** - Terminal UI for Git operations
 
 ### Language Toolchains
 - **Rust** - Primary language with rust-analyzer LSP (managed via rustup)
 - **Go** - Systems programming with full toolchain (managed via mise)
-- **Node.js** - Web development via mise (latest LTS) + **Bun** for performance
-- **Python** - Data/ML development via uv package manager (managed via mise)
-- **Bun** - Modern JavaScript runtime and package manager (replaces npm for new projects)
+- **Node.js** - Web development via mise (latest LTS), runtime for Next.js projects
+- **Python** - Data/ML development via uv package manager (managed via mise), formatted with ruff
+- **Bun** - Modern JavaScript package manager (used for dependency management in Next.js, not runtime due to Turbopack compatibility)
 
 ## Configuration Architecture
 
 ### Shell Configuration Layers
 1. **`.zshenv`** - Environment variables and PATH setup (loaded first)
-2. **`.zshrc`** - Interactive shell configuration with Oh My Zsh, mise activation, bun completions
+2. **`.zshrc`** - Pure zsh configuration with manual plugin management, mise activation, completions
 3. **`.aliases`** - Extensive custom commands with inline descriptions (200+ lines, 70+ aliases)
+
+**Note**: Oh-My-Zsh has been removed. Pure zsh now uses manual plugin management via Homebrew:
+- `zsh-autosuggestions` - Fish-like suggestions from history
+- `zsh-syntax-highlighting` - Real-time command syntax validation
+- Git, Golang, and Rust aliases extracted and maintained manually
 
 ### Debug and Development Tools
 - **`ZSHRC_LOADED`** - Environment variable set to Unix timestamp when `.zshrc` loads
@@ -125,13 +138,12 @@ brew install package-name
 - `UV_PYTHON_PREFERENCE=only-managed` - Python version management via uv
 - `HISTSIZE=50000, SAVEHIST=50000` - Large history with cross-session sharing
 
-### Modern Zsh Plugin Stack
-```bash
-plugins=(
-  git golang rust docker
-  zsh-autosuggestions zsh-syntax-highlighting zsh-completions
-)
-```
+### Helix Configuration
+- **Theme**: Kanagawa with transparent background (matching NeoVim aesthetic)
+- **File Picker**: `space + e` for file exploration (no persistent sidebar)
+- **Keybindings**: NeoVim-inspired (`jk` for normal mode, `Ctrl-s` to save)
+- **Philosophy**: Selection-first editing (select → action vs NeoVim's action → motion)
+- **Use Case**: Quick edits over SSH, lightweight alternative when NeoVim feels heavy
 
 ### Command Aliases & AI Agent Notes
 - **AI agents should prefer `rg` (ripgrep) over `grep`**: Much faster and more user-friendly
@@ -153,17 +165,11 @@ plugins=(
   - Recommends validation commands (dotfiles-health, env-info, proj-context)
   - Usage: Run `ai-context` command and follow all provided instructions
 
-### Recent Comprehensive Alias Testing (August 2025)
-- **All aliases tested and fixed**: Navigation, development, search, file operations, AI context
-- **Key fixes applied**:
-  - `ips` alias: Fixed sed regex syntax (unbalanced parentheses)
-  - `lt` alias: Added `--all` flag for proper hidden file display in dotfiles
-  - `refresh` alias: Optimized for modern shell workflows
-  - General: Removed grep→rg alias to prevent tool compatibility issues
 
 ### Alias Tips System
 - **Inline Documentation**: Alias descriptions stored as comments in .aliases file
-- **Random Startup Tips**: Shows 2 random aliases on terminal startup via show-alias-tips.sh
+- **Random Startup Tips**: Shows 2 random aliases + just commands on terminal startup via show-alias-tips.sh
+- **Just Integration**: Automatically extracts recipes from justfile with their descriptions
 - **Centralized Storage**: All aliases are stored in .aliases file for consistent sourcing
 - **Maintenance**: Non-obvious aliases should have descriptions added inline for better discoverability
 - **Health Checking**: `dotfiles-health` command validates entire environment
@@ -178,10 +184,66 @@ plugins=(
 - **Git Security**: Personal details separated via `config.local` template system
 
 ### Warp Terminal Integration
-- **Native Prompting**: Starship completely removed in favor of Warp's native UI
+- **Native Prompting**: Starship conditionally loaded (only for SSH/non-Warp sessions)
 - **AI Command Suggestions**: Warp provides context-aware command suggestions
-- **Performance Optimization**: Removed atuin (conflicts with Warp history) and other heavy plugins
+- **Performance Optimization**: Pure zsh with manual plugins for faster startup
 - **Alias Tips**: Random startup reminders complement Warp's native features
+
+## Remote Development Infrastructure
+
+### iPad → Mac Remote Development
+- **Tailscale**: Zero-config mesh VPN for secure remote access (works over cellular)
+- **SSH**: Key-based authentication with 1Password integration
+- **Mosh**: Mobile shell for unreliable connections (use when cellular is unstable)
+- **Zellij**: Persistent terminal sessions that survive disconnects
+- **Setup Guide**: See `IPAD_SETUP.md` for complete configuration instructions
+
+### VPN Compatibility Notes
+- **Current limitation**: NordVPN blocks Tailscale connections (must pause NordVPN to connect remotely)
+- **Future solution**: Switching to Mullvad via Tailscale when NordVPN subscription expires
+- **Wake-on-LAN**: Requires network access (complicated by VPN blocking)
+
+### Zellij Session Management
+```bash
+# Start or attach to session (via justfile)
+just dev          # Main development session
+just sessions     # List all active sessions
+
+# Manual zellij commands
+zellij attach main || zellij -s main
+zellij ls         # List sessions
+```
+
+## JavaScript/TypeScript Development Strategy
+
+### Next.js + Bun Hybrid Approach (Recommended)
+**Problem**: Bun runtime has compatibility issues with Next.js Turbopack
+**Solution**: Use Bun for package management, Node.js for runtime
+
+```bash
+# Install dependencies (use Bun - 6x faster than npm)
+bun install
+bun add react-query
+
+# Development (use Node.js runtime for Turbopack compatibility)
+npm run dev       # NOT 'bun run dev'
+
+# Production build
+npm run build     # NOT 'bun run build'
+```
+
+**Why This Works**:
+- Bun's package manager is 100% compatible with Next.js
+- Vercel automatically detects `bun.lockb` and uses Bun for installs
+- Node.js runtime avoids all Turbopack compatibility issues
+- Get 3-6x faster dependency installs without runtime risk
+
+**When to Use Bun Runtime**:
+- Standalone scripts (native TypeScript execution)
+- Non-Next.js projects (Express, Fastify, Vite, etc.)
+- Testing with `bun test`
+
+**Future Timeline**: Full Bun runtime support for Next.js expected late 2025/early 2026
 
 ## Maintenance Commands
 
@@ -196,8 +258,8 @@ rustup update stable
 # Update Node.js to latest LTS via mise
 mise install node@lts && mise use -g node@lts
 
-# Update Oh My Zsh and plugins
-sh ~/.oh-my-zsh/tools/upgrade.sh
+# Update zsh plugins (manual via Homebrew)
+brew upgrade zsh-autosuggestions zsh-syntax-highlighting
 ```
 
 ### Troubleshooting
