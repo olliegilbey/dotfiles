@@ -1,4 +1,6 @@
 # Dotfiles Management Justfile
+# NOTE: This requires `just` to be installed (via brew.sh)
+# For fresh machine setup, run ./init.sh directly first
 # Run `just` or `just --list` to see all available commands
 
 # Default recipe - show all available commands

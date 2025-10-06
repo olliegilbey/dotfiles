@@ -44,49 +44,9 @@ else
 	echo "✅ Shell is already set to zsh"
 fi
 
-# Install Oh My Zsh (idempotent)
+# Zsh plugins are now managed via Homebrew (installed in brew.sh)
 echo ""
-echo "⚡ Setting up Oh My Zsh..."
-if [ -d "$HOME/.oh-my-zsh" ]; then
-	echo "✅ Oh My Zsh is already installed."
-	# Update Oh My Zsh
-	echo "🔄 Updating Oh My Zsh..."
-	env ZSH="$HOME/.oh-my-zsh" sh "$HOME/.oh-my-zsh/tools/upgrade.sh" || true
-else
-	echo "📥 Installing Oh My Zsh..."
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-
-	# Restore our symlinked .zshrc (Oh My Zsh overwrites it)
-	echo "🔄 Restoring dotfiles .zshrc..."
-	rm -f "$HOME/.zshrc"
-	bash bootstrap.sh  # Re-run bootstrap to restore .zshrc symlink
-fi
-
-# Install/update zsh plugins (idempotent)
-echo ""
-echo "🔌 Setting up zsh plugins..."
-ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
-mkdir -p "$ZSH_CUSTOM/plugins"
-
-zsh_plugins=(
-	"zsh-users/zsh-completions:zsh-completions"
-	"zsh-users/zsh-syntax-highlighting:zsh-syntax-highlighting"
-	"zsh-users/zsh-autosuggestions:zsh-autosuggestions"
-)
-
-for plugin_info in "${zsh_plugins[@]}"; do
-	repo=$(echo $plugin_info | cut -d: -f1)
-	name=$(echo $plugin_info | cut -d: -f2)
-	plugin_dir="$ZSH_CUSTOM/plugins/$name"
-	
-	if [ -d "$plugin_dir" ]; then
-		echo "🔄 Updating $name..."
-		(cd "$plugin_dir" && git pull origin main 2>/dev/null || git pull origin master 2>/dev/null || echo "Could not update $name")
-	else
-		echo "📥 Installing $name..."
-		git clone "https://github.com/$repo.git" "$plugin_dir"
-	fi
-done
+echo "✅ Zsh plugins installed via Homebrew (zsh-autosuggestions, zsh-syntax-highlighting)"
 
 # Install/update language toolchains (idempotent)
 echo ""
