@@ -5,13 +5,24 @@ trash/*
 replaced_files/*
 src/.vim/bundle/*
 src/.vim/Fonts
+src/.vim/backups/
+src/.vim/swaps/
+src/.vim/undo/
 src/.atom/
 !src/.atom/styles.less
 !src/.atom/init.coffee
 
-# Claude configuration
-.claude/temp-*
-.claude/settings.local.json
+# Claude configuration - Track only CLAUDE.md and settings.json
+src/.claude/history.jsonl
+src/.claude/settings.local.json
+src/.claude/file-history/
+src/.claude/projects/
+src/.claude/shell-snapshots/
+src/.claude/todos/
+src/.claude/statsig/
+src/.claude/ide/
+src/.claude/plugins/
+src/.claude/temp-*
 # Ignore Raycast extensions (auto-generated/managed by Raycast)
 src/.config/raycast/extensions/
 
