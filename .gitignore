@@ -58,3 +58,6 @@ src/.config/zed/prompts/prompts-library-db.0.mdb/lock.mdb
 src/.config/op/
 src/.config/git/config.local
 src/.config/git/allowed_signers.local
+
+# JGit configuration
+src/.config/jgit/
