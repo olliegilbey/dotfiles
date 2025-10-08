@@ -16,6 +16,7 @@
 - **Zero Warnings Policy**: Clean code with no compiler warnings, lints, or technical debt
 - **Comprehensive Testing**: Tests as specification and AI guardrails against context drift
 - **Beautiful Interfaces**: Whether CLI, web, or API - prioritize excellent user experience
+- **Chain Commands**: Wherever sensible, chain terminal commands together into single commands to avoid using unnecessary tokens between commands. Even going as far as writing inline terminal bash scripts.
 
 ## Technical Environment & Preferences
 
@@ -50,7 +51,7 @@
 - **Terminal Enhancement**: Warp native prompting, zoxide (smart cd), alias tips system, health checking
 
 ### Zsh Configuration Details
-- **Plugin Ecosystem**: nvm, node, golang, rust, git-extras, macos, yarn, docker, vi-mode  
+- **Plugin Ecosystem**: nvm, node, golang, rust, git-extras, macos, yarn, docker, vi-mode
 - **Enhanced Completions**: zsh-completions, zsh-autosuggestions, zsh-syntax-highlighting
 - **Workflow Tools**: wd (warp directory), colorize, history, compleat
 - **Vi Mode**: Terminal editing with vim keybindings enabled
@@ -115,7 +116,7 @@
 
 ### Starting New Projects
 - **Architecture First**: Spend time on proper project structure and dependencies
-- **Documentation Driven**: README and architecture docs before significant coding  
+- **Documentation Driven**: README and architecture docs before significant coding
 - **Testing Strategy**: Establish testing patterns early, use as development guardrails
 - **Dependency Hygiene**: Bleeding-edge stable versions, avoid dependency bloat
 - **Python Projects**: Use `uv init` for new projects, `uv add` for dependencies, `uv run` for execution
@@ -212,6 +213,9 @@ grep -E "^(alias|function)" ~/.aliases
 git-summary
 ls -la | head -10
 ```
+
+And remember:
+- **Chain Your Terminal Commands**: Wherever sensible, chain terminal commands together into single commands to avoid using unnecessary tokens between commands. Even going as far as writing inline terminal bash scripts. Use pretty output for the commands so we can see status between steps.
 
 ---
 

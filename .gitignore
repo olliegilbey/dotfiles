@@ -23,12 +23,19 @@ src/.claude/statsig/
 src/.claude/ide/
 src/.claude/plugins/
 src/.claude/temp-*
+src/.claude/debug/
+
+# Project-specific Claude settings (local only)
+.claude/settings.local.json
 # Ignore Raycast extensions (auto-generated/managed by Raycast)
 src/.config/raycast/extensions/
 
 # Generated diagnostic files
 nvim_health.txt
 brew_dependency_tree.txt
+
+# Security scan reports
+.security-scans/
 
 # Editor temporary files
 **/.tmp*

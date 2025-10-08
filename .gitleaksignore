@@ -1,0 +1,6 @@
+# Gitleaks ignore file - false positives and safe patterns
+# Format: commit_hash:file_path:rule_id:line_number
+
+# Raycast config.json - non-secret UUIDs and preferences (2 false positives)
+63b44c4886d533a1a38583cccccc50e3835c3046:src/.config/raycast/config.json:generic-api-key:2
+63b44c4886d533a1a38583cccccc50e3835c3046:src/.config/raycast/config.json:generic-api-key:3

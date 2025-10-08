@@ -9,7 +9,7 @@
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."  # Go up one directory
-alias ...="cd ../.."  # Go up two directories  
+alias ...="cd ../.."  # Go up two directories
 alias ....="cd ../../.."  # Go up three directories
 alias .....="cd ../../../.."  # Go up four directories
 
@@ -43,14 +43,14 @@ alias sudo='sudo '
 timer() {
     local start_time=$(date +%s)
     local start_display=$(date +"%H:%M:%S")
-    
+
     echo "⏱️  Timer started at $start_display"
     echo "Press Enter to stop..."
     echo ""
-    
+
     # Disable job control notifications
     setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
-    
+
     # Start background process to update time display
     while true; do
         local current=$(date +%s)
@@ -58,16 +58,16 @@ timer() {
         local hours=$((elapsed / 3600))
         local minutes=$(((elapsed % 3600) / 60))
         local seconds=$((elapsed % 60))
-        
+
         printf "\r🕐 Elapsed: %02d:%02d:%02d" $hours $minutes $seconds
         sleep 1
     done &
-    
+
     local bg_pid=$!
-    
+
     # Wait for Enter
     read
-    
+
     # Kill background process and show final time
     kill $bg_pid 2>/dev/null
     wait $bg_pid 2>/dev/null
@@ -76,7 +76,7 @@ timer() {
     local final_hours=$((total_elapsed / 3600))
     local final_minutes=$(((total_elapsed % 3600) / 60))
     local final_seconds=$((total_elapsed % 60))
-    
+
     printf "\n⏹️  Final time: %02d:%02d:%02d (stopped at %s)\n" $final_hours $final_minutes $final_seconds "$(date +%H:%M:%S)"
 }
 
@@ -144,7 +144,7 @@ pip() {
         echo "  uvr --with <pkg> ...    # One-off script usage"
         return 1
     fi
-    
+
     if [[ "$1" == "install" ]]; then
         shift  # Remove 'install' from arguments
         echo "💡 Install '${*}' globally as a tool? (y/n)"
@@ -183,6 +183,7 @@ alias count='find . -type f | wc -l'                                 # Count fil
 alias search='rg --smart-case --pretty'                              # Smart case search with colors
 alias searchall='rg --smart-case --hidden --no-ignore'               # Search hidden and ignored files
 alias searchcode='rg --type-add "code:*.{rs,go,js,ts,py,rb,java,cpp,c,h}" --type code'  # Search only code files
+alias rgi='rg -i -.'                                                 # Ripgrep with ignore case and in hidden files
 
 # Git diff shortcuts that leverage delta
 alias gd='git diff'                                                  # Quick git diff (uses delta)
@@ -197,20 +198,20 @@ function proj-context() {
     echo "📁 Project Context for: $(basename $(pwd))"
     echo "═══════════════════════════════════════"
     echo "📍 Location: $(pwd)"
-    
+
     # Check for common project files
     for file in package.json Cargo.toml go.mod pyproject.toml requirements.txt Makefile README.md .env; do
         if [[ -f "$file" ]]; then
             echo "📄 Found: $file"
         fi
     done
-    
+
     # Git info if available
     if git rev-parse --git-dir > /dev/null 2>&1; then
         echo "🌿 Git branch: $(git branch --show-current)"
         echo "📊 Git status: $(git status --porcelain | wc -l) changes"
     fi
-    
+
     # Directory stats
     echo "📈 Directory stats:"
     echo "   Files: $(find . -type f -not -path '*/.*' | wc -l)"
@@ -225,7 +226,7 @@ function docs() {
         echo "Quick documentation lookup"
         return 1
     fi
-    
+
     case $1 in
         git) echo "📚 Git quick reference:"; echo "  git status, git add ., git commit -m 'msg', git push"; ;;
         docker) echo "📚 Docker quick reference:"; echo "  docker ps, docker build -t name ., docker run -it name"; ;;
@@ -258,21 +259,21 @@ alias tl='echo "📝 Current todos (use <leader>tt in nvim for full interface):"
 function ta() {
     local priority=""
     local task="$*"
-    
+
     # If no arguments provided, open NeoVim with done.txt and trigger capture_todo
     if [[ $# -eq 0 ]]; then
         echo "📝 Opening NeoVim todo interface..."
         nvim ~/done.txt -c "lua require('todotxt').capture_todo()"
         return
     fi
-    
+
     # Check if first argument is A, B, or C for priority
     if [[ "$1" =~ ^[ABC]$ ]]; then
         priority="($1) "
         shift
         task="$*"
     fi
-    
+
     echo "$(date +%Y-%m-%d) $priority$task" >> ~/todo.txt
     echo "Added: $priority$task"
     echo ""
@@ -315,28 +316,28 @@ function td() {
         cat ~/todo.txt | rg -v "^x " | nl
         return
     fi
-    
+
     local line_num=$1
     local total_lines=$(cat ~/todo.txt | rg -v "^x " | wc -l)
-    
+
     if [[ $line_num -gt $total_lines ]] || [[ $line_num -lt 1 ]]; then
         echo "❌ Task number $line_num not found (1-$total_lines)"
         return 1
     fi
-    
+
     # Get the actual line from active todos (non-completed)
     local task_line=$(cat ~/todo.txt | rg -v "^x " | sed -n "${line_num}p")
-    
+
     # Mark as completed with completion date
     local completed_task="x $(date +%Y-%m-%d) $task_line"
-    
+
     # Create temp file with completed task and remaining tasks
     {
         cat ~/todo.txt | rg "^x "  # Keep existing completed tasks
         echo "$completed_task"       # Add newly completed task
         cat ~/todo.txt | rg -v "^x " | sed "${line_num}d"  # Remove completed task from active
     } > ~/todo.txt.tmp && mv ~/todo.txt.tmp ~/todo.txt
-    
+
     echo "✅ Completed: $task_line"
     echo ""
     echo "Remaining tasks:"
@@ -349,13 +350,13 @@ function dotfiles-health() {
     echo "═══════════════════════"
     echo "📍 Location: ~/dotfiles"
     echo ""
-    
+
     echo "🔧 Core Tools:"
     echo "  Homebrew: $(brew --version | head -1)"
     echo "  Git: $(git --version)"
     echo "  NeoVim: $(nvim --version | head -1)"
     echo ""
-    
+
     echo "🚀 Language Runtimes:"
     echo "  Node.js: $(node --version 2>/dev/null || echo "❌ not available")"
     echo "  Bun: $(bun --version 2>/dev/null || echo "❌ not available")"
@@ -363,14 +364,14 @@ function dotfiles-health() {
     echo "  Rust: $(rustc --version 2>/dev/null | cut -d" " -f2 || echo "❌ not available")"
     echo "  Python: $(python3 --version 2>/dev/null || echo "❌ not available")"
     echo ""
-    
+
     echo "⚡ Modern Tools:"
     echo "  mise: $(mise --version 2>/dev/null || echo "❌ not available")"
     echo "  delta: $(delta --version 2>/dev/null || echo "❌ not available")"
     echo "  eza: $(eza --version 2>/dev/null | head -1 || echo "❌ not available")"
     echo "  bat: $(bat --version 2>/dev/null || echo "❌ not available")"
     echo ""
-    
+
     echo "📦 Package Status:"
     echo "  Brewfile packages: $(rg -c '^brew|^tap|^cask' ~/dotfiles/Brewfile || echo 0)"
     echo "  Symlinks active: $(ls -la ~ | rg -c dotfiles || echo 0)"
@@ -395,22 +396,22 @@ ai-context() {
     echo "   • Use 'rg' syntax, not POSIX grep syntax (e.g., 'rg pattern' not 'grep -r pattern')"
     echo "   • Both grep and rg are available with their native behaviors"
     echo ""
-    
+
     echo "📁 Current Environment:"
     env-info
     echo ""
-    
+
     echo "🔧 Project Context:"
     proj-context
     echo ""
-    
+
     echo "📊 Repository Status:"
     git-summary
     echo ""
-    
+
     echo "📋 REQUIRED AI ACTIONS:"
     echo "────────────────────────"
-    
+
     # Check for local CLAUDE.md
     if [[ -f "CLAUDE.md" ]]; then
         echo "1. 🔍 READ LOCAL PROJECT CONTEXT:"
@@ -424,22 +425,22 @@ ai-context() {
         echo "   Or create manually if this project needs AI context documentation"
         echo ""
     fi
-    
+
     echo "2. 🌐 READ GLOBAL DEVELOPMENT CONTEXT:"
     echo "   Use: Read tool to read '~/.config/claude/CLAUDE.md' completely"
     echo "   This contains Ollie's development preferences and AI collaboration style"
     echo ""
-    
+
     echo "3. 🛠️  VALIDATE ENVIRONMENT:"
     echo "   Run: dotfiles-health"
     echo "   Confirms all tools and configurations are working properly"
     echo ""
-    
+
     echo "4. 🔍 DISCOVER AVAILABLE TOOLS:"
     echo "   Run: alias | rg <pattern>"
     echo "   Explore available shortcuts and productivity commands"
     echo ""
-    
+
     echo "💡 REMEMBER:"
     echo "   • Use 'rg' instead of 'grep' for better performance and modern UX"
     echo "   • Read both CLAUDE.md files for complete context"
