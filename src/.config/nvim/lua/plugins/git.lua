@@ -20,6 +20,12 @@ return {
         topdelete = { text = "" },
         changedelete = { text = "▎" },
       },
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+        delay = 500,
+      },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
@@ -43,7 +49,7 @@ return {
     },
   },
 
-  -- Lazygit integration (your preferred git TUI)
+  -- Lazygit integration (terminal-based git TUI)
   {
     "kdheepak/lazygit.nvim",
     keys = {
@@ -59,5 +65,35 @@ return {
       vim.g.lazygit_floating_window_use_plenary = 0
       vim.g.lazygit_use_neovim_remote = 1
     end,
+  },
+
+  -- Neogit - Magit-inspired Git interface for NeoVim
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",  -- Optional diff integration
+      "nvim-telescope/telescope.nvim",  -- Optional telescope integration
+    },
+    keys = {
+      { "<leader>gn", "<cmd>Neogit<cr>", desc = "Neogit" },
+      { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Neogit Commit" },
+    },
+    opts = {
+      -- Use telescope for branch/remote selection
+      integrations = {
+        telescope = true,
+        diffview = true,
+      },
+      -- Customize commit popup behavior
+      commit_editor = {
+        kind = "split",  -- Options: "tab", "split", "floating", "auto"
+      },
+      -- Show git signs in status buffer
+      signs = {
+        section = { "", "" },  -- Collapsible sections
+        item = { "", "" },
+      },
+    },
   },
 }

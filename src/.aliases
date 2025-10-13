@@ -456,3 +456,6 @@ gemini() {
   fi
   command gemini "$@"
 }
+
+# 1Password Diagnostic - Capture what's triggering 1Password popups
+alias 1p-debug='echo "🔍 Capturing processes that might trigger 1Password..." && ps aux | rg "git|ssh|op " | rg -v "rg |1Password\.app" && echo "" && echo "💡 Last command: $(fc -ln -1)" && echo "📋 Saved to /tmp/1p-trigger.log" && ps aux | rg "git|ssh|op " | rg -v "rg |1Password\.app" > /tmp/1p-trigger.log'  # Diagnose 1Password authentication triggers

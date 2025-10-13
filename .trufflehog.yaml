@@ -1,0 +1,6 @@
+# TruffleHog configuration for dotfiles repository
+# Exclude files that contain commit SHAs and other non-secrets
+
+# Exclude patterns
+exclude_paths:
+  - '**/lazy-lock.json'  # NeoVim plugin lock file (contains commit SHAs)

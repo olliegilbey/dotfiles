@@ -156,7 +156,7 @@ return {
 
   -- Active indent guide and indent text objects
   {
-    "echasnovski/mini.indentscope",
+    "nvim-mini/mini.indentscope",
     version = false,
     event = { "BufReadPre", "BufNewFile" },
     opts = {

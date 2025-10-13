@@ -2,7 +2,7 @@
 return {
   -- Mason - LSP installer
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     cmd = "Mason",
     build = ":MasonUpdate",
     opts = {
@@ -58,7 +58,7 @@ return {
 
   -- Mason LSP Config
   {
-    "williamboman/mason-lspconfig.nvim",
+    "mason-org/mason-lspconfig.nvim",
     dependencies = { "mason.nvim" },
     opts = {
       ensure_installed = {
@@ -79,8 +79,8 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      "mason-org/mason.nvim",
+      "mason-org/mason-lspconfig.nvim",
     },
     config = function()
       -- Setup diagnostics

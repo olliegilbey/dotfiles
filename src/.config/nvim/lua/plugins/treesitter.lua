@@ -4,7 +4,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     version = false,
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
+    lazy = false,  -- Disable lazy loading to fix module not found error
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
@@ -108,30 +108,5 @@ return {
         },
       },
     },
-    config = function(_, opts)
-      -- Ensure we have the necessary tools for compilation
-      if vim.fn.executable("gcc") == 0 and vim.fn.executable("clang") == 0 then
-        vim.notify("Warning: No C compiler found. TreeSitter parsers may not compile.", vim.log.levels.WARN)
-      end
-      
-      if type(opts.ensure_installed) == "table" then
-        ---@type table<string, boolean>
-        local added = {}
-        opts.ensure_installed = vim.tbl_filter(function(lang)
-          if added[lang] then
-            return false
-          end
-          added[lang] = true
-          return true
-        end, opts.ensure_installed)
-      end
-      
-      require("nvim-treesitter.configs").setup(opts)
-      
-      -- Install parsers after setup
-      vim.defer_fn(function()
-        vim.cmd("TSUpdate")
-      end, 100)
-    end,
   },
 }

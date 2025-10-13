@@ -1,70 +1,242 @@
-# Git configuration - Public settings only
-# User-specific details are loaded from ~/.config/git/config.local (not in repo)
+# Git Configuration - Public settings only
+# User-specific details (name, email, signing key) loaded from config.local
 
 [include]
-    path = ~/.config/git/config.local
+	path = ~/.config/git/config.local
+
+# ============================================================================
+# ALIASES
+# ============================================================================
+
+[alias]
+	# View abbreviated SHA, description, and history graph
+	l = log --pretty=oneline -n 20 --graph --abbrev-commit
+	tree = log --graph --pretty=format:'%C(auto) %h %ad [%an] %m%m %d %s' --abbrev-commit --all --decorate --date=short
+
+	# Status shortcuts
+	s = status -s
+	st = status
+
+	# Checkout
+	co = checkout
+	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+	# Branch
+	br = branch
+	branches = branch -a
+
+	# Diff shortcuts
+	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+	di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+	dif = diff --stat
+
+	# Pull and fetch
+	p = !"git pull; git submodule foreach git pull origin master"
+	fe = fetch --all -p
+	fare = !git fetch --all -p && git rebase -i
+
+	# Clone
+	c = clone --recursive
+
+	# Commit shortcuts
+	ca = !git add -A && git commit -av
+	amend = commit --amend --reuse-message=HEAD
+	credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+
+	# Rebase
+	re = rebase -i
+	reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+	# Tags, remotes
+	tags = tag -l
+	remotes = remote -v
+
+	# Find commands
+	fb = "!f() { git branch -a --contains $1; }; f"
+	ft = "!f() { git describe --always --contains $1; }; f"
+	fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+	fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+	# Cleanup
+	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+	# Contributors
+	contributors = shortlog --summary --numbered
+
+	# G2 shortcuts (https://github.com/orefalo/g2)
+	dt = difftool
+	df = diff
+	mt = mergetool
+	ls = ls-files
+	bs = bisect
+	gp = grep
+	tg = tag
+	rt = remote
+	ss = stash
+	sm = submodule
+
+	# Merge GitHub pull request on top of master
+	mpr = "!f() { \
+		if [ $(printf \"%s\" \"$1\" | grep '^[0-9]\\+$' > /dev/null; printf $?) -eq 0 ]; then \
+			git fetch origin refs/pull/$1/head:pr/$1 && \
+			git rebase master pr/$1 && \
+			git checkout master && \
+			git merge pr/$1 && \
+			git branch -D pr/$1 && \
+			git commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \
+		fi \
+	}; f"
+
+# ============================================================================
+# CORE SETTINGS
+# ============================================================================
 
 [core]
-    editor = nvim
-    excludesfile = ~/.config/git/ignore
-    pager = delta
+	editor = nvim
+	excludesfile = ~/.config/git/ignore
+	pager = delta
 
-[init]
-    defaultBranch = main
+	# Treat spaces before tabs and trailing whitespace as errors
+	whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 
-[pull]
-    rebase = false
+	# Make git rebase safer on macOS
+	trustctime = false
 
-[push]
-    default = simple
+	# Prevent issues with line endings
+	autocrlf = input
+	safecrlf = warn
 
-# Modern git diff with delta
-[interactive]
-    diffFilter = delta --color-only
+	# Use custom hooks directory
+	hooksPath = /Users/olliegilbey/.config/git/hooks
 
-[delta]
-    navigate = true    # use n and N to move between diff sections
-    light = false      # set to true if you're in a terminal w/ a light background color
-    side-by-side = true
-    line-numbers = true
-    hyperlinks = true  # clickable file paths in terminal
-    features = decorations
-    syntax-theme = Dracula  # matches your dark theme
+[apply]
+	# Detect whitespace errors when applying patches
+	whitespace = fix
 
-[delta "decorations"]
-    commit-decoration-style = "bold yellow box ul"
-    file-style = "bold yellow ul"
-    file-decoration-style = "none"
-    hunk-header-decoration-style = "blue box"
+# ============================================================================
+# COLOR CONFIGURATION
+# ============================================================================
 
-[merge]
-    tool = nvim
-    conflictstyle = zdiff3  # superior conflict resolution vs diff3
+[color]
+	ui = auto
+	diff = auto
+	status = auto
+	branch = auto
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red
+	new = green
+
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+
+# ============================================================================
+# DIFF & MERGE TOOLS
+# ============================================================================
 
 [diff]
-    tool = default-difftool
-    colorMoved = default
+	tool = default-difftool
+	renames = copies
+	colorMoved = default
 
-# Color configuration
-[color]
-    diff = auto
-    status = auto
-    branch = auto
+[merge]
+	tool = nvim
+	log = true
+	conflictstyle = zdiff3
 
-# Useful aliases
-[alias]
-    co = checkout
-    tree = log --graph --pretty=format:'%C(auto) %h %ad [%an] %m%m %d %s' --abbrev-commit --all --decorate --date=short
-    br = branch
-    dif = diff --stat
-    s = status
-    st = status
-    re = rebase -i
-    fe = fetch --all -p
-    fare = !git fetch --all -p && git rebase -i
+[mergetool]
+	keepBackup = false
+
+# Delta - Modern diff viewer
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	light = false
+	side-by-side = true
+	line-numbers = true
+	hyperlinks = true
+	features = decorations
+	syntax-theme = Dracula
+
+[delta "decorations"]
+	commit-decoration-style = "bold yellow box ul"
+	file-style = "bold yellow ul"
+	file-decoration-style = "none"
+	hunk-header-decoration-style = "blue box"
+
+# ============================================================================
+# BEHAVIOR SETTINGS
+# ============================================================================
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = false
+
+[push]
+	default = simple
+	autoSetupRemote = true
+
+[help]
+	autocorrect = 1
 
 [rebase]
-    autosquash = true
+	autosquash = true
 
 [rerere]
-    enabled = 0
+	enabled = 0
+
+[credential]
+	helper = osxkeychain
+
+# ============================================================================
+# GPG SIGNING (ssh-based)
+# ============================================================================
+
+[gpg]
+	format = ssh
+
+[commit]
+	gpgsign = true
+
+# ============================================================================
+# URL SHORTCUTS (SSH for pushes, HTTPS for fetches)
+# ============================================================================
+
+[url "git@github.com:"]
+	pushInsteadOf = https://github.com/
+	pushInsteadOf = "github:"
+	pushInsteadOf = "git://github.com/"
+
+[url "git://github.com/"]
+	insteadOf = "github:"
+
+[url "git@gitlab.com:"]
+	pushInsteadOf = https://gitlab.com/
+
+[url "git@gist.github.com:"]
+	insteadOf = "gst:"
+	pushInsteadOf = "gist:"
+	pushInsteadOf = "git://gist.github.com/"
+
+[url "git://gist.github.com/"]
+	insteadOf = "gist:"
+
+# ============================================================================
+# THIRD-PARTY INTEGRATIONS
+# ============================================================================
+
+[coderabbit]
+	machineId = cli/8259133b7e5844ec8f2d3ae445fceee6

@@ -27,9 +27,6 @@
       "WebFetch(domain:docs.warp.dev)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)"
-    ],
-    "additionalDirectories": [
-      "$HOME/.cache"
     ]
   },
   "enableAllProjectMcpServers": false

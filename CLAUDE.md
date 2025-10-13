@@ -2,6 +2,53 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ CRITICAL: Meta-Configuration Awareness
+
+**This repository is uniquely confusing because it manages GLOBAL configurations while also being a git repository itself.**
+
+### The Dual Nature Problem
+
+When working in this dotfiles repo, you must distinguish between:
+
+1. **Global Configuration Sources** (`src/` directory)
+   - Files here are symlinked to `~/.config/`, `~/`, etc.
+   - Changes to `src/.config/git/config` affect ALL git repos globally
+   - Changes to `src/.zshrc` affect ALL shell sessions
+   - Changes to `src/.config/nvim/` affect NeoVim in ALL projects
+   - **These are the "products" this repo builds**
+
+2. **Dotfiles Project Management** (root directory files)
+   - `CLAUDE.md` - Instructions for working on THIS dotfiles repo (NOT global)
+   - `.gitignore` - What THIS dotfiles repo ignores (NOT global git ignore)
+   - `justfile` - Commands for managing THIS dotfiles repo
+   - `README.md`, `init.sh`, `bootstrap.sh` - Setup/maintenance of the dotfiles system
+   - **These manage the dotfiles repository itself**
+
+### Examples of Confusion
+
+**WRONG:** "Let me add this setting to the git config for this project"
+- Are you editing `src/.config/git/config` (affects all repos) or `.git/config` (affects only dotfiles repo)?
+
+**RIGHT:** "Let me add this git alias to the global config at `src/.config/git/config`"
+
+**WRONG:** "Let me update the CLAUDE.md with global development preferences"
+- `CLAUDE.md` is for managing the dotfiles repo, not global preferences
+- Global preferences go in `src/.config/claude/CLAUDE.md` (symlinked to `~/.config/claude/CLAUDE.md`)
+
+### When Making Changes, Ask:
+
+1. **Is this a global configuration?** → Edit `src/*` (will be symlinked)
+2. **Is this for managing the dotfiles repo?** → Edit root files (project-specific)
+3. **Is this personal/secret?** → Should NOT be in the repo (e.g., `config.local` files)
+
+### Git Configuration Special Case
+
+`src/.config/git/config` is particularly tricky because:
+- It defines git behavior GLOBALLY for all repos
+- But it's also tracked IN this git repo
+- Changes to it affect how THIS repo behaves AND how all other repos behave
+- Personal details (name, email, signing key) go in `config.local` (NOT tracked)
+
 ## Architecture Overview
 
 This is a modern macOS/Linux dotfiles repository with automated setup and bleeding-edge tool integration. The architecture follows a symlink-based approach where all configuration files in `src/` are automatically linked to the home directory.
@@ -104,6 +151,26 @@ brew install package-name
 - **Node.js** - Web development via mise (latest LTS), runtime for Next.js projects
 - **Python** - Data/ML development via uv package manager (managed via mise), formatted with ruff
 - **Bun** - Modern JavaScript package manager (used for dependency management in Next.js, not runtime due to Turbopack compatibility)
+
+## Recent Major Changes (October 2024)
+
+### Git Configuration Consolidation
+- **Migrated to XDG Base Directory Specification**: All git config now in `~/.config/git/` (not `~/.gitconfig`)
+- **Merged configurations**: Combined legacy `.gitconfig` and XDG `config` into single comprehensive file
+- **Fixed 1Password popup issues**: Changed `insteadOf` to `pushInsteadOf` for GitHub/GitLab URLs
+  - Fetches/pulls now use HTTPS (no authentication needed for public repos)
+  - Pushes still use SSH (secure, authenticated)
+  - Eliminates constant 1Password popups during Lazy.nvim plugin updates
+- **Separated personal data**: Only name/email/signing key in `config.local` (not tracked)
+
+### File Structure
+```
+~/.config/git/
+├── config              → symlink to ~/dotfiles/src/.config/git/config (tracked, global settings)
+├── config.local        → personal file (NOT tracked, user-specific)
+├── hooks/              → global git hooks (pre-commit secret scanning)
+└── allowed_signers.*   → SSH signing configuration
+```
 
 ## Configuration Architecture
 
