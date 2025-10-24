@@ -29,24 +29,32 @@ return {
       spec = {
         {
           mode = { "n", "v" },
-          { "<leader><tab>", group = "tabs" },
-          { "<leader>b", group = "buffer" },
-          { "<leader>c", group = "code" },
-          { "<leader>f", group = "file/find" },
-          { "<leader>g", group = "git" },
-          { "<leader>gh", group = "hunks" },
-          { "<leader>p", group = "python" },
-          { "<leader>q", group = "quit/session" },
-          { "<leader>C", group = "cargo" },
-          { "<leader>s", group = "search" },
-          { "<leader>t", group = "todo/test/terminal" },
-          { "<leader>u", group = "ui" },
-          { "<leader>w", group = "windows" },
-          { "<leader>x", group = "diagnostics/quickfix" },
-          { "[", group = "prev" },
-          { "]", group = "next" },
-          { "g", group = "goto" },
-          { "gs", group = "surround" },
+          -- Semantic groups with native icon system integration
+          -- Icons auto-detected by which-key for: find, git, code, buffer, window, search, ui, diagnostic, ai, quit, tab
+          -- Explicit icons only for groups without auto-detection
+
+          -- Auto-detected groups (no icon needed)
+          { "<leader>f", group = "Find/File", desc = "File discovery & search" },
+          { "<leader>g", group = "Git", desc = "Version control operations" },
+          { "<leader>c", group = "Code", desc = "LSP & code intelligence" },
+          { "<leader>b", group = "Buffer", desc = "Buffer management" },
+          { "<leader>w", group = "Window", desc = "Window/split operations" },
+          { "<leader>s", group = "Search", desc = "Advanced search operations" },
+          { "<leader>u", group = "UI/Toggle", desc = "Visual toggles & UI" },
+          { "<leader>x", group = "Diagnostics", desc = "Problems & quickfix" },
+          { "<leader>a", group = "AI", desc = "Claude Code & AI tools" },
+          { "<leader>q", group = "Quit", desc = "Exit operations" },
+          { "<leader><tab>", group = "Tabs", desc = "Tab operations" },
+
+          -- Explicit icons (no auto-detection)
+          { "<leader>gh", group = "Hunks", icon = "󰦒", desc = "Git hunk operations (Gitsigns)" },
+          { "<leader>l", group = "Language", icon = "󰌘", desc = "Context-aware language tools" },
+          { "<leader>t", group = "Todo", icon = "󰄲", desc = "Todo.txt task management" },
+          { "<leader>ts", group = "Sort", icon = "󰒺", desc = "Sort tasks by..." },
+          { "[", group = "Previous", icon = "󰒮", desc = "Navigate to previous..." },
+          { "]", group = "Next", icon = "󰒭", desc = "Navigate to next..." },
+          { "g", group = "Goto", icon = "󰈺", desc = "LSP navigation" },
+          { "gs", group = "Surround", icon = "󰅪", desc = "Surround operations" },
         },
       },
     },

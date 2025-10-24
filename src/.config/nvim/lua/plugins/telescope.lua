@@ -13,20 +13,7 @@ return {
         end,
       },
     },
-    keys = {
-      { "<leader><leader>", "<cmd>Telescope commands<cr>", desc = "Command Palette" },
-      { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
-      { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
-      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
-      { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
-      { "<leader>fc", "<cmd>Telescope commands<cr>", desc = "Commands" },
-      { "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
-      { "<leader>fs", "<cmd>Telescope git_status<cr>", desc = "Git Status" },
-      { "<leader>fm", "<cmd>Telescope marks<cr>", desc = "Marks" },
-      { "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
-      { "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Search in Buffer" },
-    },
+    -- Note: All telescope keymaps are now in lua/config/keymaps/telescope.lua
     opts = {
       defaults = {
         vimgrep_arguments = {

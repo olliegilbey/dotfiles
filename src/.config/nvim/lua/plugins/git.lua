@@ -50,11 +50,9 @@ return {
   },
 
   -- Lazygit integration (terminal-based git TUI)
+  -- Note: Keymaps in lua/config/keymaps/git.lua
   {
     "kdheepak/lazygit.nvim",
-    keys = {
-      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
-    },
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -68,16 +66,13 @@ return {
   },
 
   -- Neogit - Magit-inspired Git interface for NeoVim
+  -- Note: Keymaps in lua/config/keymaps/git.lua
   {
     "NeogitOrg/neogit",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "sindrets/diffview.nvim",  -- Optional diff integration
       "nvim-telescope/telescope.nvim",  -- Optional telescope integration
-    },
-    keys = {
-      { "<leader>gn", "<cmd>Neogit<cr>", desc = "Neogit" },
-      { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Neogit Commit" },
     },
     opts = {
       -- Use telescope for branch/remote selection

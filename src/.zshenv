@@ -6,6 +6,7 @@ export EDITOR='nvim'
 
 # Default development directory (customize as needed)
 export DEV_DIR="$HOME/code"
+export WORK_DIR="$HOME/code/jasho"
 
 # Set vi mode switching to 100ms instead of default 400ms
 export KEYTIMEOUT=1

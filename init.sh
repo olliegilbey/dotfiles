@@ -142,6 +142,30 @@ echo "📝 Alias descriptions are managed inline with aliases"
 
 echo ""
 echo "✨ Environment setup complete!"
+
+# Optional hardware setup (only if node is available)
+if command -v node &>/dev/null && command -v npm &>/dev/null; then
+	echo ""
+	echo "⚙️  Hardware Configuration"
+	echo "=========================================="
+	echo "This dotfiles includes automated hardware setup for:"
+	echo "  - Logitech Brio 4K webcam (auto-configuration)"
+	echo "  - Logitech G502 X LIGHTSPEED mouse (settings backup/restore)"
+	echo ""
+	read -p "Would you like to set up hardware configurations now? (y/N): " -n 1 -r
+	echo ""
+
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		echo ""
+		echo "🔧 Running hardware setup..."
+		bash hardware/setup.sh
+	fi
+else
+	echo ""
+	echo "ℹ️  Hardware configuration available after terminal restart"
+	echo "    Run 'bash hardware/setup.sh' when ready"
+fi
+
 echo ""
 echo "📋 Next steps:"
 

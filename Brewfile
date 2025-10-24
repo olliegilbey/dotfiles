@@ -93,3 +93,6 @@ brew "curl"
 
 # codex
 brew "codex"
+
+# --cask voiceink
+brew "--cask voiceink"

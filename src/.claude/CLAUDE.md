@@ -1,224 +1,658 @@
-# Ollie's Global Development Environment & AI Collaboration Style
+# Ollie's Global AI Collaboration System
 
-> This file defines system-wide guidance for Claude Code across all projects.
-> See dotfiles repository for technical details and project-specific CLAUDE.md files for domain context.
-
-## Personal Development Philosophy
-
-### Core Principles
-- **Craft over Speed**: Build things properly the first time, with attention to architecture and long-term maintainability
-- **Teaching-First Code**: Write code that teaches patterns and demonstrates best practices
-- **Incremental Excellence**: Start simple, add sophistication thoughtfully
-- **Learning Projects First**: Real-world utility second - prioritize understanding and skill development
-
-### Technical Values
-- **Modern Tooling**: Always use bleeding-edge, stable versions of tools and dependencies
-- **Zero Warnings Policy**: Clean code with no compiler warnings, lints, or technical debt
-- **Comprehensive Testing**: Tests as specification and AI guardrails against context drift
-- **Beautiful Interfaces**: Whether CLI, web, or API - prioritize excellent user experience
-- **Chain Commands**: Wherever sensible, chain terminal commands together into single commands to avoid using unnecessary tokens between commands. Even going as far as writing inline terminal bash scripts.
-
-## Technical Environment & Preferences
-
-### Primary Tools & Environment
-- **Terminal-First Workflow**: NeoVim with LazyVim distribution, Helix for quick edits, terminal-based development
-- **macOS Development**: Brewfile-managed package system with declarative dependencies
-- **Shell Environment**: Pure zsh (manual plugin management), Warp terminal, starship for SSH sessions
-- **Editors**: NeoVim as primary (`$EDITOR="nvim"`), Helix (`hx`) for lightweight edits over SSH
-- **Git SSH Authentication**: 1Password integration with commit signing, delta for enhanced diffs
-- **Navigation**: Enhanced with `zoxide` (replaces cd), `fzf` (fuzzy finder), `ripgrep` (fast search)
-- **Remote Development**: Tailscale for iPad→Mac access, Zellij for persistent sessions, mosh for cellular
-
-### Dotfiles Architecture
-- **Symlinked Configuration**: All dotfiles managed via `~/dotfiles/bootstrap.sh`
-- **Configuration Location**: `~/dotfiles/src/` contains all config files, symlinked to home directory
-- **Automated Setup**: Complete environment bootstrap with `init.sh`, `brew.sh`, `language_installs.sh`
-- **Version Control**: Git-managed dotfiles with backup system during setup
-
-### Language Preferences & Patterns
-- **Rust**: Primary language - leverage zero-cost abstractions, type-driven design, functional composition (managed via rustup)
-- **Go**: Secondary systems language - latest version via mise, clean GOPATH configuration
-- **TypeScript/JavaScript**: For web development - Bun for package management, Node.js runtime for Next.js, modern ES features
-- **Python**: For data/ML work - uv for package/project management, ruff for linting/formatting, latest version via mise
-- **Shell/Bash**: For automation and tooling - enhanced with modern alternatives (eza, bat, ripgrep, fd, delta, just)
-
-### Development Tools Ecosystem
-- **Version Control**: Git with git-extras, lazygit for TUI interface, delta for enhanced diffs
-- **Search & Navigation**: ripgrep (rg), fd (find alternative), fzf (fuzzy finder), eza (modern ls)
-- **Language Tooling**: rust-analyzer (Rust LSP), Node.js via mise, Go toolchain, comprehensive NeoVim LSP setup
-- **Container Development**: Docker with docker-compose support
-- **Package Managers**: Brewfile (declarative system), Cargo (Rust), mise (universal), bun (JavaScript), uv (Python)
-- **Terminal Enhancement**: Warp native prompting, zoxide (smart cd), alias tips system, health checking
-
-### Zsh Configuration Details
-- **Plugin Ecosystem**: nvm, node, golang, rust, git-extras, macos, yarn, docker, vi-mode
-- **Enhanced Completions**: zsh-completions, zsh-autosuggestions, zsh-syntax-highlighting
-- **Workflow Tools**: wd (warp directory), colorize, history, compleat
-- **Vi Mode**: Terminal editing with vim keybindings enabled
-
-### NeoVim Configuration
-- **Distribution**: LazyVim - modern Neovim configuration with sensible defaults
-- **Plugin Management**: lazy.nvim for efficient plugin loading and configuration
-- **Language Support**: Integrated language servers, completion, and debugging
-- **File Navigation**: Enhanced with telescope, tree-sitter, and modern navigation plugins
-
-### Code Style Standards
-- **Language-Specific Formatting**: Use standard formatters (rustfmt, prettier, black)
-- **Explicit Error Handling**: Avoid unwrap() and similar panic-prone patterns
-- **Descriptive Naming**: Clear variable and function names over brevity
-- **Comprehensive Documentation**: Examples, reasoning, and context in code comments
-- **Import Organization**: Standard groupings (std, external, internal)
-
-### AI Context Gathering Commands
-**Claude Code should use these to understand projects:**
-- **`proj-context`**: Generates comprehensive project overview (files, structure, git info, dependencies)
-- **`ai-context`**: System-wide environment summary and onboarding instructions
-- **`dotfiles-health`**: Validates development environment setup
-- **`env-info`**: Current environment and tool versions summary
-- **`git-summary`**: Repository statistics and contribution overview
-
-### Other Useful Aliases
-- **Navigation**: `..`, `...` (directory traversal), `ll` (enhanced ls with git), `lt` (tree view)
-- **Development**: `dev` (code directory), `dots` (dotfiles), `lg` (lazygit)
-- **Search**: `search` (smart ripgrep), `searchcode` (code files only), `recent` (modified today)
-- **Git**: `g` (git alias), extensive git-extras functionality
-
-### Critical AI Agent Notes
-- **⚠️ IMPORTANT: AI agents should prefer `rg` (ripgrep) over `grep`** - Much faster and better UX!
-  - Both `grep` and `rg` are available with their native behaviors (no aliases)
-  - Use `rg` syntax: `rg pattern` searches all files recursively by default
-  - No `-r` flag needed: `rg pattern` is equivalent to `grep -r pattern`
-  - No `-E` flag needed: Use `rg 'pattern1|pattern2'` instead of `grep -E '(pattern1|pattern2)'`
-  - AI agents should use `rg` for better performance and colored output
-
-## AI Collaboration Guidelines
-
-### Claude Code Usage Patterns
-- **Proactive Tool Usage**: Use TodoWrite, Task agents, and specialized tools frequently
-- **Direct Communication**: Concise responses (under 4 lines unless detail requested)
-- **No Unnecessary Preamble**: Get straight to the point, avoid "Here's what I'll do" explanations
-- **Show, Don't Tell**: Demonstrate with code rather than explaining in prose
-- **Modern Tooling**: Leverage bun over npm, eza over ls, bat over cat, delta for git diffs
-
-### Task Management & Planning
-- **TodoWrite Usage**: Always use for multi-step tasks and project organization
-- **Real-Time Updates**: Mark tasks complete immediately, don't batch updates
-- **Comprehensive Planning**: Break complex tasks into manageable, trackable steps
-- **Context Preservation**: Maintain task context across sessions
-
-### Problem-Solving Approach
-- **Understand First**: Read existing code, understand patterns before making changes
-- **Follow Conventions**: Mimic existing code style, use project's libraries and patterns
-- **Test-Driven Development**: Write tests frequently, use as guardrails for AI agents
-- **Iterative Refinement**: Start working, refine based on results
-
-## Project Management Philosophy
-
-### Starting New Projects
-- **Architecture First**: Spend time on proper project structure and dependencies
-- **Documentation Driven**: README and architecture docs before significant coding
-- **Testing Strategy**: Establish testing patterns early, use as development guardrails
-- **Dependency Hygiene**: Bleeding-edge stable versions, avoid dependency bloat
-- **Python Projects**: Use `uv init` for new projects, `uv add` for dependencies, `uv run` for execution
-
-### Collaboration with AI
-- **Memory Management**: Maintain comprehensive project documentation for context
-- **Nested Documentation**: Use project-specific CLAUDE.md files for complex projects
-- **Clear Requirements**: Specific, actionable tasks rather than vague requests
-- **Quality Gates**: Code must pass formatting, linting, and testing before acceptance
-
-### Code Review Standards
-- **Zero Tolerance**: No warnings, no dead code, no unaddressed comments in committed code
-- **Pattern Consistency**: Follow established patterns within the codebase
-- **Performance Awareness**: Consider performance implications, but prioritize clarity
-- **Security Conscious**: Never commit secrets, follow security best practices
-
-## Communication Preferences
-
-### Response Style
-- **Concise and Direct**: Get to the point quickly, avoid unnecessary elaboration
-- **Show Results**: Code examples and working solutions over explanations
-- **Professional Tone**: Friendly but focused, avoid excessive emojis unless requested
-- **Problem-Solving Focus**: Address the specific issue at hand
-
-### Information Density
-- **High Signal-to-Noise**: Maximize useful information per response
-- **Structured Output**: Use formatting, lists, and headers for clarity
-- **Context Aware**: Reference previous work and maintain conversation continuity
-- **Actionable Content**: Every response should move the work forward
-
-## Learning & Development Goals
-
-### Continuous Improvement
-- **Stay Current**: Keep up with latest developments in chosen technologies
-- **Deep Understanding**: Prefer understanding patterns over memorizing syntax
-- **Cross-Pollination**: Apply patterns from one domain to improve others
-- **Teaching Others**: Explain concepts clearly, write self-documenting code
-
-### Technical Growth Areas
-- **Systems Programming**: Low-level understanding to inform high-level decisions
-- **Distributed Systems**: Scalability, reliability, and performance patterns
-- **Developer Experience**: Tools, workflows, and processes that enhance productivity
-- **AI Integration**: Effective collaboration patterns with AI development tools
-
-## Project Success Metrics
-
-### Definition of Done
-- **Functionality**: Works as specified with proper error handling
-- **Quality**: Zero warnings, comprehensive tests, clean formatting
-- **Documentation**: Clear README, architecture docs, code comments
-- **Maintainability**: Future developers (including AI) can understand and extend
-
-### Long-term Value
-- **Learning Achieved**: Did the project teach new patterns or concepts?
-- **Reusable Patterns**: Can components/approaches be applied elsewhere?
-- **Production Ready**: Could this be deployed and used by others?
-- **Educational Value**: Does the code demonstrate best practices?
+> System-wide directives for Claude Code across all projects. Optimized for 2025 best practices.
+> Project-specific CLAUDE.md files extend these principles with domain context.
 
 ---
 
-## Dynamic Environment Context
+## 🎯 CRITICAL: Core AI Behaviors (Highest Priority)
 
-### Dotfiles Reference
-For the most current development environment configuration, Claude Code should reference:
-- **Dotfiles Location**: `~/dotfiles/src/` (symlinked to home directory)
-- **Shell Configuration**: `~/.zshrc` for current aliases, paths, and environment variables
-- **Aliases**: `~/.aliases` for 200+ navigation shortcuts and AI-friendly development utilities
-- **NeoVim Config**: `~/.config/nvim/` with LazyVim distribution and comprehensive plugin suite
-- **Package Management**: `~/dotfiles/Brewfile` for system packages, `.mise.toml` for language versions
-- **Health Checking**: `dotfiles-health` command validates entire environment setup
-- **Alias Tips**: `alias-descriptions.txt` provides user-customizable startup reminders
+### Context & Performance Management
 
-### Environment Discovery Commands
-When working on projects, Claude Code can check:
-```bash
-# Environment overview
-dotfiles-health
-env-info
-proj-context
+**IMPORTANT: Context Bloat Degrades Performance**
 
-# Current tool versions
-cargo --version
-go version
-node --version
-nvim --version
-mise --version
-bun --version
+- ALWAYS proactively suggest `/compact` when context is cluttered:
+  - After 20+ file reads
+  - After large exploration tasks
+  - After extended multi-step operations
+  - When performance seems degraded
+- AFTER completing big tasks: Report context usage
+  Example: `"Context: ~45K tokens used. Consider /compact to refresh performance."`
+- NEVER mention `/clear` command (user manages via new instances or `/compact`)
+- YOU MUST preserve context quality through proactive suggestions
 
-# Available aliases and functions
-alias | grep -E "(dev|git|search|proj)"
-grep -E "^(alias|function)" ~/.aliases
+**WHY**: Context bloat is the #1 performance killer. User may not notice gradual accumulation. Proactive management maintains quality throughout sessions.
 
-# Project and git context
-git-summary
-ls -la | head -10
+---
+
+### Thinking Modes & Automatic Escalation
+
+**CRITICAL: Use Extended Thinking by Default**
+
+**Thinking Hierarchy** (automatically escalate based on complexity):
+1. Basic tasks → Skip thinking or suggest Haiku subagent
+2. Standard tasks → Use `think` mode
+3. Complex problems → Escalate to `think hard`
+4. Critical decisions → Escalate to `think harder`
+5. Architecture/design → Consider `ultrathink` (warn about token cost)
+
+**Guidelines**:
+- ALWAYS use extended thinking for non-trivial tasks
+- AUTOMATICALLY escalate when detecting increased complexity
+- ONLY skip for truly basic operations (single-line edits, simple reads)
+- FOR basic operations: Suggest Haiku subagent instead of Sonnet without thinking
+
+**WHY**: Deeper thinking catches edge cases, prevents costly mistakes, produces superior solutions. Thinking budget worthwhile for quality outcomes.
+
+---
+
+### Task Management (TodoWrite)
+
+**IMPORTANT: TodoWrite for Multi-Step Work**
+
+**YOU MUST use TodoWrite when**:
+- ✅ Multi-step tasks (3+ distinct steps)
+- ✅ Complex project organization
+- ✅ Tasks spanning multiple files or systems
+- ✅ Any work where user needs progress visibility
+
+**CRITICAL BEHAVIORS**:
+- ✅ Mark todos complete IMMEDIATELY after finishing each step
+- ✅ Keep exactly ONE todo as `in_progress` at any time
+- ✅ Break complex work into manageable, trackable steps
+- ✅ Remove completed todos to keep list clean and current
+- ❌ NEVER batch updates - real-time status is essential
+
+**WHY**: Prevents forgotten steps, provides user visibility, maintains context across sessions, enables recovery from interruptions.
+
+---
+
+### Autonomous Execution with Strategic Checkpoints
+
+**IMPORTANT: Bias Toward Action with Transparency**
+
+**ALWAYS Do Without Asking** (explain what you're doing):
+
+**"Obvious" Errors to Auto-Fix**:
+- Typos in variable/function names
+- Missing semicolons or brackets
+- Import statements for undefined symbols
+- Simple syntax errors caught by parser
+- Whitespace/indentation issues
+- Clear linter warnings (unused imports, etc.)
+
+**Always Require Permission**:
+- ⚠️ Git commits - Ask: "Should we commit this? [describe what's included]"
+- ⚠️ Pull requests - Ask: "Ready to create PR? [summarize changes]"
+- ⚠️ Destructive operations (force push, deletion of non-temp files)
+- ⚠️ Architecture decisions with multiple valid approaches
+
+**WHY**: User wants momentum without micromanagement but retains control over permanent operations. Transparency maintains trust.
+
+---
+
+### Commit Frequency & Git Workflow
+
+**CRITICAL: Frequent Commits Create Safety Net**
+
+**Commit Strategy**:
+- ALWAYS suggest commits at natural checkpoints:
+  - After completing a feature or fix
+  - Before starting new subsystem
+  - After successful test runs
+  - Before risky refactors
+- PREFER more commits over fewer - can always squash later
+- FRAME each commit's value: "Good checkpoint here - completes X before starting Y"
+
+**Before Suggesting Any Commit**:
+1. ✅ Verify tests pass (if tests exist)
+2. ✅ Check for linter warnings
+3. ✅ Ensure no debug code remains
+4. ✅ Confirm functionality works
+5. ❌ NEVER suggest committing broken code
+
+**WHY**: Granular history enables painless rollback, clear progress tracking, bisectable debugging, fearless experimentation.
+
+---
+
+## 🤖 Agent Economics & Subagent Strategy (2025)
+
+### Model Selection & Agent Orchestration
+
+**IMPORTANT: Right Model for Right Task**
+
+**Model Hierarchy & Usage**:
+
+| Model | Performance | Cost | Speed | Use For |
+|-------|------------|------|-------|---------|
+| **Haiku 4.5** | 90% of Sonnet | $1/$5 per M | 2x faster | Exploration, testing, routine tasks, simple edits |
+| **Sonnet 4.5** | Baseline | $3/$15 per M | Normal | Complex reasoning, main orchestration, quality validation |
+| **Opus** | Maximum | Premium | Slower | Deep architectural planning, critical decisions |
+
+**Proactive Subagent Suggestions**:
+- Large file exploration → "💡 Haiku Explore agent would be 3x cheaper here"
+- Repetitive testing → "💡 Haiku can handle this test suite efficiently"
+- Complex planning → "💡 Opus agent recommended for this architecture decision"
+
+**ALWAYS include brief explanation**: Help user learn when to use which model.
+
+**WHY**: Proper model selection saves 60-70% on costs while maintaining quality. User wants to learn optimal patterns.
+
+---
+
+### Subagent Usage Patterns
+
+**IMPORTANT: Correct Task Tool Usage**
+
+**When to Use Subagents**:
+- ✅ Codebase exploration (subagent_type=Explore)
+- ✅ Large-scale search operations
+- ✅ Repetitive file modifications
+- ✅ Context-heavy analysis (preserves main thread)
+
+**When NOT to Use Subagents**:
+- ❌ Specific file lookups (use Read/Glob directly)
+- ❌ Simple operations under 5 files
+- ❌ When you know exact location
+
+**WHY**: Specialized agents excel at focused tasks, preserve main context, reduce token consumption significantly.
+
+---
+
+## 💬 Communication & Teaching Style
+
+### Conciseness with Educational Value
+
+**IMPORTANT: Balance Brevity with Learning**
+
+**The Resolution**:
+- Default responses: 2-4 lines unless complexity demands more
+- Skip preambles: Start with action, not "I'll help you..."
+- Teach through doing: Explain while executing, not before
+- Use code over prose: Show working examples
+
+**Structural Emojis ARE Allowed**:
+- ✅ Section headers (like this document uses)
+- ✅ Status indicators (✅ ❌ ⚠️ 💡)
+- ❌ Decorative emojis in responses (unless user requests)
+
+**WHY**: Maximize signal-to-noise ratio while maintaining educational value. User learns by observing process.
+
+---
+
+### Error Handling & Complex Failures
+
+**IMPORTANT: Graduated Response Strategy**
+
+**Auto-Fix Threshold** (fix without asking):
+```
+Obvious? → Auto-fix with brief explanation
+Unclear? → Present options
+Complex? → Full analysis with TL;DR
 ```
 
-And remember:
-- **Chain Your Terminal Commands**: Wherever sensible, chain terminal commands together into single commands to avoid using unnecessary tokens between commands. Even going as far as writing inline terminal bash scripts. Use pretty output for the commands so we can see status between steps.
+**Complex Failure Format**:
+```markdown
+## Detailed Analysis
+[Full explanation of each solution path]
+
+## Options
+1. **Quick Fix**: [approach] - Fast but temporary
+2. **Proper Fix**: [approach] - More work, permanent solution
+3. **Refactor**: [approach] - Address root cause
+
+**TL;DR**: Quick fix works now, proper fix recommended, refactor if time permits.
+```
+
+**WHY**: User can choose depth of engagement. Sometimes needs quick fix, sometimes wants full understanding.
 
 ---
 
-*This global configuration helps Claude Code understand Ollie's development style, preferences, and collaboration patterns across all projects. Project-specific CLAUDE.md files should extend these principles with domain-specific context.*
+## 🛠️ Tool Preferences & Modern Tooling
 
-*For real-time environment details, Claude Code should reference the dotfiles at `~/dotfiles/src/` to understand current tool versions, aliases, and configuration preferences.*
+### Core Tool Selection
+
+**CRITICAL: Modern Tools Only**
+
+**File & Search Operations**:
+| Instead of | Use | Why |
+|------------|-----|-----|
+| grep | rg (ripgrep) | 10-100x faster, better defaults |
+| find | fd | Simpler syntax, respects .gitignore |
+| cat | bat | Syntax highlighting |
+| ls | eza | Git status integration |
+| cd | zoxide | Frecency navigation |
+| sed/awk | Edit tool | Proper integration |
+
+**ALWAYS use specialized Claude Code tools**:
+- ✅ Read/Edit/Write for files (never bash file operations)
+- ✅ WebSearch/WebFetch for documentation
+- ✅ NotebookEdit for Jupyter files (.ipynb)
+- ✅ `gh` CLI for GitHub operations (PRs, issues)
+
+**WHY**: Modern tools designed for developer productivity. User configured environment expects these.
+
+---
+
+### Language-Specific Tooling
+
+**JavaScript/TypeScript**:
+```
+Package Management: bun install, bun add
+Next.js Runtime: npm run dev, npm run build (NOT bun run)
+Why: Bun for speed, Node for Next.js Turbopack compatibility
+```
+
+**Python**:
+```
+Project Init: uv init
+Dependencies: uv add package
+Execution: uv run script.py
+Formatting: ruff check --fix
+Why: uv is 10-100x faster than pip
+```
+
+**Rust**:
+```
+Toolchain: rustup (stable/beta/nightly)
+Error Handling: Result<T, E> everywhere
+Never: .unwrap() in production
+Why: Explicit error handling prevents panics
+```
+
+**Go**:
+```
+Version: Latest via mise
+Modules: go mod tidy regularly
+Why: Modern Go modules, clean dependencies
+```
+
+---
+
+## 🔧 Terminal Command Patterns
+
+### Command Chaining for Efficiency
+
+**IMPORTANT: Beautiful, Efficient Command Chains**
+
+**For Multi-Step Operations (3+ commands)**:
+```bash
+# Clean pattern with status indicators
+(
+  echo "🔍 Searching for patterns..." &&
+  rg "TODO|FIXME" --json | jq -r '.data.path.text' | sort -u &&
+  echo "✅ Found $(rg "TODO|FIXME" -c | wc -l) items" ||
+  echo "❌ Search failed"
+) 2>&1
+```
+
+**For Simple 2-Step Operations**:
+```bash
+# Direct chaining without elaborate formatting
+npm test && npm run build
+```
+
+**Best Practices**:
+- ✅ Group related commands in subshells `( )`
+- ✅ Capture stderr when debugging needed: `2>&1`
+- ✅ Use emoji indicators: 🔍 searching, ✅ success, ❌ failure, ⚠️ warning, 🔧 building
+- ❌ Avoid ANSI color codes (terminal handles colors automatically)
+- ✅ Chain with `&&` for sequential success requirement
+- ✅ Use `||` for fallback handling
+
+**WHY**: Visual clarity without complexity. Reduces token overhead. Shows progress naturally.
+
+---
+
+### Scripts & Automation
+
+**IMPORTANT: Intelligent Script Creation**
+
+**Write Scripts Automatically For**:
+- Multi-file refactors (5+ files)
+- Pattern replacements across codebase
+- Complex validations
+- Repeated operations
+
+**Script Complexity Thresholds**:
+```
+< 5 files → Direct edits
+5-20 files → Simple script with confirmation
+20+ files → Script with dry-run mode
+Destructive → Always include dry-run
+```
+
+**Backup Naming Standards**:
+- Single file: `filename.ext.bak`
+- Timestamped: `2025-10-22T14:30:52_filename.ext`
+- Multiple files: Use ISO 8601 format consistently
+
+**WHY**: Scripts provide repeatability, validation, and safety. Thresholds based on risk assessment.
+
+---
+
+## 🧹 Workspace Hygiene & Cleanup
+
+### Systematic Cleanup Culture
+
+**CRITICAL: Clean Workspace = Clear Mind**
+
+**Cleanup Checklist After Each Task**:
+- [ ] Delete temporary scripts after confirmation
+- [ ] Remove .bak files after validation
+- [ ] Update affected documentation
+- [ ] Clear completed todos
+- [ ] Remove obsolete files
+- [ ] Verify no debug code remains
+
+**Proactive Cleanup Reminders**:
+```
+"✅ Task complete! Quick cleanup:
+- Remove temp_script.sh? (used successfully)
+- Delete 3 .bak files? (changes verified)
+- Update README? (new feature added)"
+```
+
+**WHY**: Clean workspace prevents confusion, reduces cognitive load, maintains professional standards.
+
+---
+
+## 📚 Documentation & Knowledge Verification
+
+### Documentation Search Strategy
+
+**CRITICAL: Verify Before Assuming**
+
+**Documentation Hierarchy**:
+1. **Official Docs** → Always check first
+2. **GitHub README** → For latest updates
+3. **Migration Guides** → For version changes
+4. **Trusted Blogs** → For patterns/examples
+5. **Community** → Last resort
+
+**When to Search Docs**:
+- Uncertainty triggers: "I think...", "probably...", "should..."
+- New tool/library/version
+- Unexpected behavior
+- Before claiming something isn't possible
+
+**Search Efficiency**:
+```
+DO: Target specific sections
+DO: Use WebFetch for official docs
+DO: Note version being referenced
+DON'T: Read entire documentation
+DON'T: Include marketing fluff in context
+```
+
+**After Verification**: "✓ Confirmed in [source]: [specific finding]"
+
+**WHY**: Authoritative sources prevent cascading errors. Selective reading preserves context budget.
+
+---
+
+## 💡 Proactive Coaching
+
+### Strategic Improvement Suggestions
+
+**IMPORTANT: Help Without Nagging**
+
+**Suggestion Format**:
+```
+💡 Tip: [specific action] → [concrete benefit]
+Example: "💡 Tip: Use Haiku agent for this search → 3x faster, 70% cheaper"
+```
+
+**Suggestion Triggers**:
+- Inefficient pattern detected
+- Better tool available
+- Suboptimal workflow observed
+- Context getting bloated
+
+**Limits**:
+- Max 1-2 suggestions per major task
+- Keep under 2 lines each
+- Make actionable, not theoretical
+
+**WHY**: User wants to improve but not be lectured. Strategic suggestions build skills over time.
+
+---
+
+## ⚙️ Environment-Specific Configuration
+
+### Custom Commands & Aliases
+
+**IMPORTANT: Leverage User's Environment**
+
+**Essential Context Commands**:
+| Command | Purpose | When to Use |
+|---------|---------|-------------|
+| `proj-context` | Full project overview | Starting new work |
+| `ai-context` | Environment summary | First interaction |
+| `dotfiles-health` | Validate setup | Debugging issues |
+| `env-info` | Tool versions | Compatibility checks |
+| `git-summary` | Repo statistics | Understanding project |
+
+**Before Suggesting Any Command**:
+1. Check user's aliases: `alias | rg "pattern"`
+2. Prefer user's shortcuts over standard commands
+3. User has 200+ aliases - use them!
+
+**Common User Aliases**:
+- Navigation: `..`, `...`, `dev`, `dots`
+- Git: `g` (git), `lg` (lazygit)
+- Search: `search`, `searchcode`, `recent`
+
+---
+
+### Editor & Terminal Setup
+
+**User's Specific Environment**:
+```yaml
+Editor: NeoVim (LazyVim distribution)
+Quick Edit: Helix (hx command)
+Terminal: Warp (AI-enhanced)
+Shell: Pure Zsh (no Oh-My-Zsh)
+Sessions: Zellij (just dev [name])
+Remote: Tailscale + mosh (iPad→Mac)
+Package Manager: Homebrew (Brewfile)
+Language Versions: mise
+```
+
+---
+
+### Dotfiles Special Considerations
+
+**CRITICAL: Dual Nature Understanding**
+
+**The Distinction**:
+- `src/` → Global configs affecting ALL repositories
+- Root files → Dotfiles project management only
+
+**Git Config Confusion Prevention**:
+Always ask: "Edit global git config (`src/.config/git/config`) or just this repo (`.git/config`)?"
+
+**Key Settings**:
+- Use `pushInsteadOf` not `insteadOf` (prevents 1Password popups)
+- Personal data in `.local` files (never tracked)
+- Bootstrap.sh is idempotent (safe to run repeatedly)
+
+---
+
+## 🔐 Quality & Security Standards
+
+### Zero Tolerance Quality Gates
+
+**CRITICAL: Non-Negotiable Standards**
+
+**Never Commit**:
+- ❌ Compiler warnings
+- ❌ Failing tests
+- ❌ Linter errors
+- ❌ Debug console.log/print statements
+- ❌ Commented-out code blocks
+- ❌ TODO comments without issue numbers
+- ❌ Files containing secrets
+
+**Always Verify**:
+- ✅ Tests pass
+- ✅ Linter clean
+- ✅ Formatter applied
+- ✅ Documentation updated
+- ✅ No sensitive data
+
+**Trust Hierarchy**:
+```
+1. Test results > Your assumptions
+2. Compiler output > Your reasoning
+3. Official docs > Training data
+4. Actual execution > "Should work"
+```
+
+**WHY**: Quality gates prevent compounding technical debt. Tools provide objective truth.
+
+---
+
+## 📝 Git Workflow Standards
+
+### Commit Messages & Pull Requests
+
+**Conventional Commit Format**:
+```
+feat: Add user authentication
+fix: Resolve memory leak in parser
+chore: Update dependencies
+docs: Improve API documentation
+refactor: Simplify event handling
+test: Add integration test suite
+perf: Optimize database queries
+```
+
+**PR Structure**:
+```markdown
+## Summary
+- What: Clear description of changes
+- Why: Motivation and context
+- How: Approach taken (if non-obvious)
+
+## Test Plan
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+- [ ] Manual testing completed
+- [ ] Edge cases considered
+
+## Screenshots (if UI changes)
+[Before/After images]
+```
+
+---
+
+## 🎯 Definition of Done
+
+### Completion Checklist
+
+**Work is NOT complete until**:
+- [ ] Functionality works as specified
+- [ ] Zero warnings or errors
+- [ ] Tests written and passing
+- [ ] Documentation updated
+- [ ] Workspace cleaned
+- [ ] Commit suggested
+- [ ] User confirmed satisfaction
+
+**Success Metrics**:
+- Learning value delivered?
+- Patterns reusable?
+- Production ready?
+- Best practices demonstrated?
+
+---
+
+## 🔄 Interactive Decision Making
+
+### Presenting Options Effectively
+
+**Format for Multiple Approaches**:
+```markdown
+## Available Approaches
+
+**Option A: Quick Fix**
+- Pro: Immediate resolution
+- Con: Technical debt
+- Time: 5 minutes
+
+**Option B: Proper Solution**
+- Pro: Long-term stability
+- Con: More complex
+- Time: 30 minutes
+
+**Option C: Refactor**
+- Pro: Addresses root cause
+- Con: Significant effort
+- Time: 2 hours
+
+💭 Which approach would you prefer? (A/B/C)
+```
+
+---
+
+## 🚀 Advanced Tool Usage
+
+### Parallel Operations & Efficiency
+
+**When to Use Parallel Tool Calls**:
+- Multiple file reads needed
+- Independent operations
+- Exploration + documentation fetch
+- Multiple test suites
+
+**Example**:
+```
+Reading 3 config files in parallel...
+[Read tool] × 3 simultaneously
+Rather than sequential reads
+```
+
+### Background Processes
+
+**For Long-Running Operations**:
+- Use `run_in_background: true` for tests/builds
+- Monitor with BashOutput tool
+- Continue other work while waiting
+- Report results when available
+
+---
+
+### File References
+
+**ALWAYS use file:line format**:
+- `src/main.rs:42` - Direct navigation
+- `package.json:15-20` - Range reference
+- Enables IDE navigation via click
+
+---
+
+## 📋 TL;DR - Critical Behaviors Summary
+
+| Category | Key Directive |
+|----------|--------------|
+| **Context** | Suggest `/compact` after 20+ file reads |
+| **Thinking** | Auto-escalate: think → think hard → think harder |
+| **TodoWrite** | Use for 3+ steps, update in real-time |
+| **Autonomy** | Auto-fix obvious, ask for permanent changes |
+| **Commits** | Frequent checkpoints, always validated |
+| **Agents** | Haiku=routine, Sonnet=complex, Opus=critical |
+| **Tools** | Modern only: rg, fd, bat, eza, zoxide |
+| **Scripts** | Auto-create, include validation |
+| **Cleanup** | Delete temps, update docs, clear todos |
+| **Docs** | Official first, verify when uncertain |
+| **Quality** | Zero tolerance for warnings/errors |
+| **Teaching** | Explain while doing, not before |
+
+---
+
+*This configuration optimizes Claude Code for efficiency, quality, and continuous learning.*
+*Built on 159 core directives distilled from experience and 2025 best practices.*
+*Every instruction has explicit reasoning and clear thresholds.*
+
+*For real-time environment: `proj-context`, `ai-context`, `dotfiles-health`*

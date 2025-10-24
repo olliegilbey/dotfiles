@@ -260,3 +260,11 @@ brew() {
 if [[ -o interactive ]] && [[ -t 0 ]] && [[ -t 1 ]]; then
     bash "$HOME/dotfiles/show-alias-tips.sh"
 fi
+
+# JASHO AI - Colored workflow DSL
+[ -f "/Users/olliegilbey/code/jasho/jai/scripts/color_runner.sh" ] && source "/Users/olliegilbey/code/jasho/jai/scripts/color_runner.sh"
+# JASHO AI - Pair notification
+[ -f "/Users/olliegilbey/code/jasho/jai/scripts/notify_pair.sh" ] && source "/Users/olliegilbey/code/jasho/jai/scripts/notify_pair.sh"
+
+# JASHO AI - Add ~/bin to PATH
+export PATH="$HOME/bin:$PATH"

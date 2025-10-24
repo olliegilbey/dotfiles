@@ -123,11 +123,13 @@ alias lt='eza --tree --level=2 --icons --all'              # Tree view (2 levels
 alias lg='lazygit'                                           # Quick git UI
 
 # Development workflow shortcuts
-alias dev='cd "$DEV_DIR"'  # Quick access to dev directory
-alias dots='cd ~/dotfiles'  # Quick access to dotfiles
+alias dev='cd "$DEV_DIR" && ls'  # Quick access to dev directory
 alias src='cd "$DEV_DIR" && ls'  # Go to code dir and list
+alias work='cd "$WORK_DIR" && ls'  # Go to work dir and list
+alias wrk='cd "$WORK_DIR" && ls'  # Go to work dir and list
+alias dots='cd ~/dotfiles'  # Quick access to dotfiles
 alias j='just'  # Quick just command runner
-alias refresh='echo "🔄 Refreshing shell configuration..." && zsh -c "source ~/.zshenv; source ~/.zshrc; source ~/.aliases; echo \"✅ Configuration loaded (ZSHRC_LOADED: \$ZSHRC_LOADED)\"; dotfiles-health"'  # Reload shell configuration and run health check
+alias refresh='echo "🔄 Refreshing shell configuration..." && source ~/.zshrc && echo "✅ Configuration refreshed (ZSHRC_LOADED: $ZSHRC_LOADED)" && dotfiles-health'  # Reload shell configuration and run health check
 alias clear-shell-cache='rm -f ~/.cache/*-completion.zsh ~/.cache/*-init.zsh && echo "🧹 Shell completion caches cleared"'  # Clear cached completions
 
 # System and tool integration
@@ -183,7 +185,7 @@ alias count='find . -type f | wc -l'                                 # Count fil
 alias search='rg --smart-case --pretty'                              # Smart case search with colors
 alias searchall='rg --smart-case --hidden --no-ignore'               # Search hidden and ignored files
 alias searchcode='rg --type-add "code:*.{rs,go,js,ts,py,rb,java,cpp,c,h}" --type code'  # Search only code files
-alias rgi='rg -i -.'                                                 # Ripgrep with ignore case and in hidden files
+alias rgi='rg --no-ignore --hidden'                                                 # Ripgrep with ignore case and in hidden files
 
 # Git diff shortcuts that leverage delta
 alias gd='git diff'                                                  # Quick git diff (uses delta)

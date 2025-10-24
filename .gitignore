@@ -12,7 +12,7 @@ src/.atom/
 !src/.atom/styles.less
 !src/.atom/init.coffee
 
-# Claude configuration - Track only CLAUDE.md and settings.json
+# Claude configuration - Track only CLAUDE.md, agents, commands, and settings.json
 src/.claude/history.jsonl
 src/.claude/settings.local.json
 src/.claude/file-history/
