@@ -1,0 +1,97 @@
+# Ghostty Terminal Configuration
+# Migrated from Warp terminal settings
+
+# ============================================================================
+# FONT CONFIGURATION
+# ============================================================================
+
+font-family = "FiraCode Nerd Font Mono"
+font-size = 15
+
+# Enable font ligatures (Fira Code's programming ligatures)
+font-feature = +calt
+font-feature = +liga
+font-feature = +dlig
+
+# ============================================================================
+# THEME & COLORS
+# ============================================================================
+
+# TokyoNight Storm - selected as best theme with CyberWave gradient
+theme = "TokyoNight Storm"
+
+# Override theme background to allow shader to show through
+background = #000000
+
+# ============================================================================
+# GRADIENT SHADER
+# ============================================================================
+
+# CyberWave gradient background (dark teal to black)
+custom-shader = /Users/olliegilbey/.config/ghostty/shaders/cyberwave-gradient.glsl
+
+# ============================================================================
+# CURSOR
+# ============================================================================
+
+cursor-style = block
+cursor-style-blink = true
+
+# ============================================================================
+# WINDOW & UI
+# ============================================================================
+
+window-decoration = true
+window-padding-x = 4
+window-padding-y = 4
+macos-titlebar-style = hidden
+
+# ============================================================================
+# BEHAVIOR
+# ============================================================================
+
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# Mouse support
+mouse-hide-while-typing = true
+
+# ============================================================================
+# CLIPBOARD
+# ============================================================================
+
+clipboard-read = allow
+clipboard-write = allow
+clipboard-trim-trailing-spaces = false
+
+# ============================================================================
+# PERFORMANCE
+# ============================================================================
+
+# Scrollback buffer
+scrollback-limit = 10000
+
+# ============================================================================
+# KEYBINDINGS
+# ============================================================================
+
+# macOS-standard keybindings
+keybind = super+c=copy_to_clipboard
+keybind = super+v=paste_from_clipboard
+keybind = super+t=new_tab
+keybind = super+w=close_surface
+keybind = super+n=new_window
+keybind = super+q=quit
+
+# Tab navigation
+keybind = super+shift+left_bracket=previous_tab
+keybind = super+shift+right_bracket=next_tab
+
+# Split panes
+keybind = super+d=new_split:right
+keybind = super+shift+d=new_split:down
+
+# Font size adjustment
+keybind = super+plus=increase_font_size:1
+keybind = super+minus=decrease_font_size:1
+keybind = super+zero=reset_font_size

@@ -6,7 +6,7 @@ theme "kanagawa"
 
 // Simplified UI
 pane_frames false
-simplified_ui true
+simplified_ui false  // Set to true to hide keybinding hints
 
 // Mouse support
 mouse_mode true

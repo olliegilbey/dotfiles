@@ -96,3 +96,6 @@ brew "codex"
 
 # --cask voiceink
 brew "--cask voiceink"
+
+# --cask ghostty
+brew "--cask ghostty"
