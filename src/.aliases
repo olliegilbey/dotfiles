@@ -106,7 +106,7 @@ alias afk="osascript -e 'tell application \"System Events\" to keystroke \"q\" u
 
 # Enhanced cat with syntax highlighting (with fallback)
 if command -v bat &> /dev/null; then
-    alias cat='bat --paging=never --style=numbers,changes --theme=Dracula'
+    alias catt='bat --paging=never --style=numbers,changes --theme=Dracula'
     alias batcat='bat'  # Keep original bat command available
 fi
 
@@ -461,3 +461,69 @@ gemini() {
 
 # 1Password Diagnostic - Capture what's triggering 1Password popups
 alias 1p-debug='echo "🔍 Capturing processes that might trigger 1Password..." && ps aux | rg "git|ssh|op " | rg -v "rg |1Password\.app" && echo "" && echo "💡 Last command: $(fc -ln -1)" && echo "📋 Saved to /tmp/1p-trigger.log" && ps aux | rg "git|ssh|op " | rg -v "rg |1Password\.app" > /tmp/1p-trigger.log'  # Diagnose 1Password authentication triggers
+
+# ==============================================================================
+# REMOTE DEVELOPMENT
+# ==============================================================================
+
+# Show Tailscale hostnames for easy SSH access
+tailscale-hosts() {
+    echo ""
+    echo "📡 Your Tailscale Network:"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    tailscale status | grep -v "^#" | while read -r line; do
+        # Extract hostname (last field before user@)
+        hostname=$(echo "$line" | awk '{print $2}')
+        status=$(echo "$line" | awk '{for(i=4;i<=NF;i++) printf "%s ", $i; print ""}')
+
+        if [[ "$status" == *"offline"* ]]; then
+            echo "  ⚫ $hostname (offline)"
+        else
+            echo "  🟢 $hostname"
+            echo "     → ssh $(whoami)@$hostname"
+        fi
+    done
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+}  # List all Tailscale devices and SSH commands
+
+# Frontend preview over Tailscale network
+# Binds dev server to 0.0.0.0 so it's accessible from all devices on Tailnet
+devserver() {
+    local port=${1:-3000}
+    local hostname=$(hostname -s)
+
+    # Get Tailscale DNS name
+    local tailscale_host=$(tailscale status --json 2>/dev/null | \
+        grep -o '"DNSName":"[^"]*"' | cut -d'"' -f4 | sed 's/\.$//' | head -n1)
+
+    if [[ -z "$tailscale_host" ]]; then
+        # Fallback to constructed hostname
+        tailscale_host="${hostname}.tail7a4b9.ts.net"
+    fi
+
+    echo "🌐 Preview URL: http://${tailscale_host}:${port}"
+    echo "📱 Access from any device on your Tailscale network"
+    echo ""
+
+    # Detect framework and use appropriate command
+    if [[ -f "package.json" ]]; then
+        if grep -q '"next"' package.json 2>/dev/null; then
+            echo "📦 Detected Next.js - using npm run dev (Turbopack compatibility)"
+            npm run dev -- --hostname 0.0.0.0 --port "$port"
+        elif command -v bun >/dev/null && grep -q '"dev"' package.json 2>/dev/null; then
+            echo "📦 Using bun run dev"
+            bun run dev --host 0.0.0.0 --port "$port"
+        elif grep -q '"dev"' package.json 2>/dev/null; then
+            echo "📦 Using npm run dev"
+            npm run dev -- --host 0.0.0.0 --port "$port"
+        else
+            echo "❌ No 'dev' script found in package.json"
+            return 1
+        fi
+    else
+        echo "❌ No package.json found in current directory"
+        echo "💡 Usage: devserver [port] - must be run in a Node.js project"
+        return 1
+    fi
+}  # Start dev server accessible over Tailscale network

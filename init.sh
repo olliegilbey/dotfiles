@@ -166,6 +166,38 @@ else
 	echo "    Run 'bash hardware/setup.sh' when ready"
 fi
 
+# Remote Development Configuration
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "⚙️  Remote Development Setup"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+echo "Configure this Mac as a remote development server?"
+echo ""
+echo "This enables:"
+echo "  • SSH auto-attachment to Zellij sessions"
+echo "  • Welcome message (MOTD) on connection"
+echo "  • Power management for always-on server mode"
+echo "  • Optimized for iPad/Android remote development"
+echo ""
+echo "Requirements: Tailscale must be installed and authenticated"
+echo ""
+read -p "Set up remote development? (y/N): " -n 1 -r
+echo ""
+
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+	echo ""
+	echo "🔧 Configuring remote development..."
+	if [[ -f "./remote/setup-server.sh" ]]; then
+		bash ./remote/setup-server.sh
+	else
+		echo "⚠️  remote/setup-server.sh not found - skipping"
+	fi
+else
+	echo "⊘ Skipped remote development setup"
+	echo "   Run './remote/setup-server.sh' later to enable"
+fi
+
 echo ""
 echo "📋 Next steps:"
 

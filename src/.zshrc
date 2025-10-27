@@ -212,6 +212,26 @@ if [[ "$TERM_PROGRAM" != "WarpTerminal" ]] && command -v starship &>/dev/null; t
 fi
 
 # ==============================================================================
+# REMOTE DEVELOPMENT: Auto-attach to Zellij on SSH
+# ==============================================================================
+
+if [[ -n "$SSH_CONNECTION" ]] && [[ -z "$ZELLIJ" ]]; then
+    # Only auto-attach if we're in an SSH session and not already in Zellij
+
+    # Show welcome message
+    if [[ -f "$HOME/.config/remote/motd.sh" ]]; then
+        "$HOME/.config/remote/motd.sh"
+        echo ""
+        echo -e "\033[2m(Press Enter to continue to Zellij session...)\033[0m"
+        read -r
+    fi
+
+    # Auto-attach to persistent "remote" session (create if doesn't exist)
+    # exec replaces the shell process, so when user detaches, SSH session ends cleanly
+    exec zellij attach --create remote
+fi
+
+# ==============================================================================
 # CUSTOM ALIASES
 # ==============================================================================
 

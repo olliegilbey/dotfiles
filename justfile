@@ -84,7 +84,7 @@ stage:
 # ============================================================================
 
 # Start new development session in zellij (auto-attaches if exists)
-dev session="main":
+code session="main":
     #!/usr/bin/env bash
     if command -v zellij &>/dev/null; then
         zellij attach {{session}} || zellij -s {{session}}
@@ -92,6 +92,9 @@ dev session="main":
         echo "⚠️  zellij not installed yet - run 'just packages' first"
         exit 1
     fi
+
+# Backwards compatibility alias (temporary - remove after adjustment period)
+alias dev := code
 
 # Attach to existing zellij session
 attach session="main":
@@ -217,3 +220,28 @@ new-next name:
 new-python name:
     uv init {{name}}
     @echo "✨ Created Python project: {{name}}"
+
+# ============================================================================
+# Remote Development
+# ============================================================================
+
+# Set up this Mac as a remote development server
+setup-remote:
+    @./remote/setup-server.sh
+
+# Show Tailscale connection status
+remote-status:
+    @tailscale status
+
+# Show all Tailscale devices with SSH commands
+remote-hosts:
+    @bash -c 'source ~/.aliases && tailscale-hosts'
+
+# Show MOTD (welcome message)
+remote-motd:
+    @~/.config/remote/motd.sh || echo "⚠️  MOTD not installed - run 'just setup-remote' first"
+
+# Test remote connection (loopback)
+remote-test:
+    @echo "🧪 Testing loopback SSH connection..."
+    @ssh -o ConnectTimeout=5 $(hostname -s).tail7a4b9.ts.net "echo '✅ Connection successful!'" || echo "❌ Connection failed"

@@ -1,5 +1,5 @@
 {
-  "absolute_exposure_time": 156,
+  "absolute_exposure_time": 20,
   "absolute_focus": 0,
   "absolute_pan_tilt": [
     0,
@@ -17,5 +17,5 @@
   "power_line_frequency": 2,
   "saturation": 128,
   "sharpness": 147,
-  "white_balance_temperature": 5500
+  "white_balance_temperature": 4480
 }
