@@ -1,6 +1,15 @@
 # Environment variables loaded by all shell sessions
 # This file should be kept minimal and fast.
 
+# Homebrew PATH (required for SSH sessions)
+# Apple Silicon Macs (M1/M2/M3)
+if [[ -d "/opt/homebrew/bin" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+# Intel Macs
+elif [[ -d "/usr/local/bin/brew" ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+
 # Set the default editor
 export EDITOR='nvim'
 
