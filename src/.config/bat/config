@@ -1,0 +1,6 @@
+# bat configuration
+# Enable italic text in syntax highlighting (requires terminal support)
+--italic-text=always
+
+# Optional: Set default theme (uncomment to use)
+# --theme="TwoDark"

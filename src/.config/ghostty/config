@@ -5,8 +5,17 @@
 # FONT CONFIGURATION
 # ============================================================================
 
-font-family = "FiraCode Nerd Font Mono"
+font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 15
+font-style = Regular
+font-style-bold = Bold
+font-style-italic = Italic
+font-style-bold-italic = Bold Italic
+
+# Font rendering
+font-thicken = true
+# font-thicken = false
+adjust-cell-height = 10%
 
 # Enable font ligatures (Fira Code's programming ligatures)
 font-feature = +calt

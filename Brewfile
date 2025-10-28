@@ -71,8 +71,9 @@ cask "tailscale"        # Zero-config mesh VPN for secure remote access (iPad de
 cask "raycast"          # Spotlight replacement with extensible functionality
 
 # Fonts
-cask "font-fira-code-nerd-font"  # Programming font with ligatures and icons
-cask "font-hack-nerd-font"  # Programming font with ligatures and icons
+cask "font-jetbrains-mono-nerd-font"   # Primary: Excellent ligatures with true italics
+cask "font-fira-code-nerd-font"        # Alternative: Ligatures only (no italics)
+cask "font-hack-nerd-font"             # Alternative: Clean fallback option
 
 # macOS-specific tools
 if OS.mac?
