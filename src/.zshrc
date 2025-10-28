@@ -217,7 +217,7 @@ fi
 if [[ -n "$SSH_CONNECTION" ]] && [[ -z "$ZELLIJ" ]]; then
     # Only auto-attach if we're in an SSH session and not already in Zellij
 
-    # Show welcome message
+    # Show welcome message before entering Zellij
     if [[ -f "$HOME/.config/remote/motd.sh" ]]; then
         "$HOME/.config/remote/motd.sh"
         echo ""
@@ -228,6 +228,18 @@ if [[ -n "$SSH_CONNECTION" ]] && [[ -z "$ZELLIJ" ]]; then
     # Auto-attach to persistent "remote" session (create if doesn't exist)
     # exec replaces the shell process, so when user detaches, SSH session ends cleanly
     exec zellij attach --create remote
+fi
+
+# Show MOTD inside Zellij session (after auto-attach)
+if [[ -n "$SSH_CONNECTION" ]] && [[ -n "$ZELLIJ" ]]; then
+    # Only show once per pane using a flag file based on ZELLIJ_PANE_ID
+    MOTD_FLAG="/tmp/.zellij_motd_shown_${ZELLIJ_PANE_ID:-unknown}"
+    if [[ ! -f "$MOTD_FLAG" ]] && [[ -f "$HOME/.config/remote/motd.sh" ]]; then
+        "$HOME/.config/remote/motd.sh"
+        touch "$MOTD_FLAG"
+        # Clean up flag file when shell exits
+        trap "rm -f $MOTD_FLAG" EXIT
+    fi
 fi
 
 # ==============================================================================
