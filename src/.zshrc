@@ -203,10 +203,9 @@ if command -v zoxide &>/dev/null; then
 fi
 
 # ==============================================================================
-# STARSHIP PROMPT (Conditional: Only for SSH or non-Warp sessions)
+# STARSHIP PROMPT (for Ghostty and other terminals, disabled in Warp)
 # ==============================================================================
 
-# Detect if we're in Warp terminal
 if [[ "$TERM_PROGRAM" != "WarpTerminal" ]] && command -v starship &>/dev/null; then
   eval "$(starship init zsh)"
 fi

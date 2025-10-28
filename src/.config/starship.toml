@@ -1,0 +1,78 @@
+# Starship Prompt - Clean style similar to Warp
+command_timeout = 500
+
+format = """$directory$git_branch$git_status$git_metrics$fill$time
+$character"""
+
+[character]
+success_symbol = "[→](bold green)"
+error_symbol = "[→](bold red)"
+
+[directory]
+style = "bold cyan"
+format = "[$path]($style) "
+truncation_length = 4
+truncate_to_repo = false
+home_symbol = "~"
+
+[directory.substitutions]
+"~/code" = "~/code"
+"~/code/jasho" = "~/jasho"
+"~/dotfiles" = "~/dotfiles"
+
+[git_branch]
+symbol = ""
+style = "bold yellow"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold white"
+format = '([$all_status$ahead_behind]($style) )'
+conflicted = "${count}⚔ "
+ahead = "⇡${count} "
+behind = "⇣${count} "
+diverged = "⇕${ahead_count}⇣${behind_count} "
+untracked = "?${count} "
+stashed = "📦${count} "
+modified = "!${count} "
+staged = "+${count} "
+renamed = "»${count} "
+deleted = "✘${count} "
+
+[git_metrics]
+disabled = false
+added_style = "bold green"
+deleted_style = "bold red"
+only_nonzero_diffs = false
+format = '([+$added]($added_style) [-$deleted]($deleted_style) )'
+
+[username]
+style_user = "bold yellow"
+format = "[$user]($style)"
+show_always = false
+
+[hostname]
+ssh_only = true
+style = "bold green"
+format = "[@$hostname]($style) "
+
+[time]
+disabled = false
+style = "bold dimmed white"
+format = "[$time]($style)"
+time_format = "%H:%M"
+
+[fill]
+symbol = " "
+
+[package]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[python]
+disabled = true
+
+[rust]
+disabled = true

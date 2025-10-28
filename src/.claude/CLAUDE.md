@@ -105,13 +105,19 @@
 - FRAME each commit's value: "Good checkpoint here - completes X before starting Y"
 
 **Before Suggesting Any Commit**:
-1. ✅ Verify tests pass (if tests exist)
-2. ✅ Check for linter warnings
-3. ✅ Ensure no debug code remains
-4. ✅ Confirm functionality works
-5. ❌ NEVER suggest committing broken code
+1. ✅ **VERIFY functionality works** - Actually test the changes yourself
+2. ✅ **Run validation commands** - For config files (TOML/YAML/JSON), run parsers/validators
+3. ✅ **Check tests pass** (if tests exist)
+4. ✅ **Check for linter warnings**
+5. ✅ **Ensure no debug code remains**
+6. ❌ **NEVER commit broken/unverified code**
 
-**WHY**: Granular history enables painless rollback, clear progress tracking, bisectable debugging, fearless experimentation.
+**If you cannot verify**:
+- Ask user to test: "Can you verify [specific thing] works before I commit?"
+- Suggest pre-commit hooks for automated validation
+- Be explicit about what you couldn't verify
+
+**WHY**: Commits should always be working checkpoints. Broken commits waste time and break git bisect. User should not have to check your work - you verify first.
 
 ---
 
