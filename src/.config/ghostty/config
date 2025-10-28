@@ -51,8 +51,9 @@ macos-titlebar-style = hidden
 # ============================================================================
 
 shell-integration = zsh
-# SSH features added to fix double keypress over SSH (see GH issue #3335)
-shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo
+# NOTE: cursor feature removed - causes double keypress over SSH even with ssh-env/ssh-terminfo
+# SSH features kept for terminfo compatibility (GH issue #3335)
+shell-integration-features = sudo,title,ssh-env,ssh-terminfo
 
 # Mouse support
 mouse-hide-while-typing = true
