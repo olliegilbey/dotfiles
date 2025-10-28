@@ -88,9 +88,20 @@ echo "  • Battery: Normal sleep (preserves battery when traveling)"
 echo "  • Auto-restart after power failure"
 echo "  • Wake on network access"
 echo ""
-read -p "Configure server power management? (Y/n): " -n 1 -r
-echo ""
-if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+
+# Check if running interactively
+CONFIGURE_POWER="y"
+if [[ -t 0 ]]; then
+    read -p "Configure server power management? (Y/n): " -n 1 -r
+    echo ""
+    CONFIGURE_POWER="$REPLY"
+else
+    echo -e "${YELLOW}ℹ️  Non-interactive mode: Skipping power management setup${NC}"
+    echo -e "${YELLOW}   Run './remote/setup-server.sh' manually to configure${NC}"
+    CONFIGURE_POWER="n"
+fi
+
+if [[ ! $CONFIGURE_POWER =~ ^[Nn]$ ]]; then
     # Server mode (AC power - plugged in at home)
     sudo pmset -c sleep 0          # Never sleep on AC
     sudo pmset -c displaysleep 10  # Display can sleep after 10 min
@@ -127,8 +138,7 @@ fi
 # Get Tailscale hostname
 echo ""
 echo -e "${CYAN}Getting Tailscale network information...${NC}"
-TAILSCALE_HOST=$(tailscale status --json 2>/dev/null | \
-    grep -o '"DNSName":"[^"]*"' | cut -d'"' -f4 | sed 's/\.$//' | head -n1)
+TAILSCALE_HOST=$(tailscale status --json 2>/dev/null | jq -r '.Self.DNSName // empty' | sed 's/\.$//')
 
 if [[ -z "$TAILSCALE_HOST" ]]; then
     TAILSCALE_HOST="$(hostname -s).tail7a4b9.ts.net"

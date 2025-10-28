@@ -94,8 +94,6 @@ brew "curl"
 # codex
 brew "codex"
 
-# --cask voiceink
-brew "--cask voiceink"
+cask "voiceink"    # Voice input application
 
-# --cask ghostty
-brew "--cask ghostty"
+cask "ghostty"     # GPU-accelerated terminal emulator

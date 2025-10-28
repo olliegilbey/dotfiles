@@ -245,16 +245,60 @@ fi
 brew_install_with_tracking() {
     command brew install "$@"
     if [ $? -eq 0 ]; then
+        # Parse arguments to detect cask installs
+        local is_cask=false
+        local package_name=""
+
+        for arg in "$@"; do
+            if [[ "$arg" == "--cask" ]]; then
+                is_cask=true
+            elif [[ ! "$arg" =~ ^- ]]; then
+                package_name="$arg"
+            fi
+        done
+
+        if [[ -z "$package_name" ]]; then
+            echo "⚠️  Could not determine package name"
+            return
+        fi
+
         echo ""
-        echo "📝 Would you like to add '$*' to your Brewfile? (y/n)"
+        echo "📝 Would you like to add '$package_name' to your Brewfile? (y/n)"
         read -r response
         if [[ "$response" =~ ^[Yy]$ ]]; then
             brewfile_path="$HOME/dotfiles/Brewfile"
             if [ -f "$brewfile_path" ]; then
+                # Get description from brew info
+                local desc=""
+                if $is_cask; then
+                    desc=$(brew info --json=v2 "$package_name" 2>/dev/null | jq -r '.casks[0].desc // empty')
+                else
+                    desc=$(brew info --json=v2 "$package_name" 2>/dev/null | jq -r '.formulae[0].desc // empty')
+                fi
+
+                # Format Brewfile entry
+                local entry=""
+                if $is_cask; then
+                    entry="cask \"$package_name\""
+                else
+                    entry="brew \"$package_name\""
+                fi
+
+                # Add description if available
+                if [[ -n "$desc" ]]; then
+                    # Pad to align descriptions (3-15 spaces to reach roughly column 25)
+                    local spaces=$((25 - ${#entry}))
+                    if [[ $spaces -lt 3 ]]; then
+                        spaces=3
+                    fi
+                    local padding=$(printf '%*s' $spaces '')
+                    entry="${entry}${padding}# ${desc}"
+                fi
+
+                # Append to Brewfile
                 echo "" >> "$brewfile_path"
-                echo "# $*" >> "$brewfile_path"
-                echo "brew \"$*\"" >> "$brewfile_path"
-                echo "✅ Added 'brew \"$*\"' to Brewfile"
+                echo "$entry" >> "$brewfile_path"
+                echo "✅ Added to Brewfile: $entry"
             else
                 echo "⚠️  Brewfile not found at $brewfile_path"
             fi
