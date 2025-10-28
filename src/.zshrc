@@ -230,18 +230,6 @@ if [[ -n "$SSH_CONNECTION" ]] && [[ -z "$ZELLIJ" ]]; then
     exec zellij attach --create remote
 fi
 
-# Show MOTD inside Zellij session (after auto-attach)
-if [[ -n "$SSH_CONNECTION" ]] && [[ -n "$ZELLIJ" ]]; then
-    # Only show once per pane using a flag file based on ZELLIJ_PANE_ID
-    MOTD_FLAG="/tmp/.zellij_motd_shown_${ZELLIJ_PANE_ID:-unknown}"
-    if [[ ! -f "$MOTD_FLAG" ]] && [[ -f "$HOME/.config/remote/motd.sh" ]]; then
-        "$HOME/.config/remote/motd.sh"
-        touch "$MOTD_FLAG"
-        # Clean up flag file when shell exits
-        trap "rm -f $MOTD_FLAG" EXIT
-    fi
-fi
-
 # ==============================================================================
 # CUSTOM ALIASES
 # ==============================================================================

@@ -527,3 +527,10 @@ devserver() {
         return 1
     fi
 }  # Start dev server accessible over Tailscale network
+
+# ==============================================================================
+# ZELLIJ
+# ==============================================================================
+
+alias zjhelp='cat ~/dotfiles/remote/ZELLIJ_CHEATSHEET.md'  # Show Zellij keybindings and tips
+alias zjinfo='[[ -f ~/.config/remote/motd.sh ]] && ~/.config/remote/motd.sh || echo "⚠️  Remote MOTD not installed"'  # Show remote development info
