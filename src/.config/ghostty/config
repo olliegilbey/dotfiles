@@ -97,3 +97,6 @@ keybind = super+shift+d=new_split:down
 keybind = super+plus=increase_font_size:1
 keybind = super+minus=decrease_font_size:1
 keybind = super+zero=reset_font_size
+
+# Multi-line command support
+keybind = shift+enter=text:\n
