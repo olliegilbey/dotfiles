@@ -5,5 +5,5 @@
     "context-management@claude-code-workflows": true,
     "agent-orchestration@claude-code-workflows": true
   },
-  "alwaysThinkingEnabled": false
+  "alwaysThinkingEnabled": true
 }
