@@ -1,54 +1,14 @@
-# Ollie's Global AI Collaboration System
-
-> System-wide directives for Claude Code across all projects. Optimized for 2025 best practices.
-> Project-specific CLAUDE.md files extend these principles with domain context.
-
----
-
-## 🎯 CRITICAL: Core AI Behaviors (Highest Priority)
+ - In all interactions and commit messages, be extremely concise and sacrifice grammar for the sake of concision.
 
 ### Context & Performance Management
 
-**IMPORTANT: Context Bloat Degrades Performance**
-
-- ALWAYS proactively suggest `/compact` when context is cluttered:
-  - After 20+ file reads
-  - After large exploration tasks
-  - After extended multi-step operations
-  - When performance seems degraded
-- AFTER completing big tasks: Report context usage
-  Example: `"Context: ~45K tokens used. Consider /compact to refresh performance."`
-- NEVER mention `/clear` command (user manages via new instances or `/compact`)
-- YOU MUST preserve context quality through proactive suggestions
-
-**WHY**: Context bloat is the #1 performance killer. User may not notice gradual accumulation. Proactive management maintains quality throughout sessions.
-
----
-
-### Thinking Modes & Automatic Escalation
+- ALWAYS proactively suggest `/compact` at code checkpoints, along with suggesting to commit (without writing the commit message preemptively)
 
 **CRITICAL: Use Extended Thinking by Default**
-
-**Thinking Hierarchy** (automatically escalate based on complexity):
-1. Basic tasks → Skip thinking or suggest Haiku subagent
-2. Standard tasks → Use `think` mode
-3. Complex problems → Escalate to `think hard`
-4. Critical decisions → Escalate to `think harder`
-5. Architecture/design → Consider `ultrathink` (warn about token cost)
-
-**Guidelines**:
-- ALWAYS use extended thinking for non-trivial tasks
-- AUTOMATICALLY escalate when detecting increased complexity
 - ONLY skip for truly basic operations (single-line edits, simple reads)
 - FOR basic operations: Suggest Haiku subagent instead of Sonnet without thinking
 
 **WHY**: Deeper thinking catches edge cases, prevents costly mistakes, produces superior solutions. Thinking budget worthwhile for quality outcomes.
-
----
-
-### Task Management (TodoWrite)
-
-**IMPORTANT: TodoWrite for Multi-Step Work**
 
 **YOU MUST use TodoWrite when**:
 - ✅ Multi-step tasks (3+ distinct steps)
@@ -58,40 +18,23 @@
 
 **CRITICAL BEHAVIORS**:
 - ✅ Mark todos complete IMMEDIATELY after finishing each step
-- ✅ Keep exactly ONE todo as `in_progress` at any time
 - ✅ Break complex work into manageable, trackable steps
-- ✅ Remove completed todos to keep list clean and current
-- ❌ NEVER batch updates - real-time status is essential
 
 **WHY**: Prevents forgotten steps, provides user visibility, maintains context across sessions, enables recovery from interruptions.
 
 ---
 
-### Autonomous Execution with Strategic Checkpoints
-
 **IMPORTANT: Bias Toward Action with Transparency**
 
 **ALWAYS Do Without Asking** (explain what you're doing):
 
-**"Obvious" Errors to Auto-Fix**:
-- Typos in variable/function names
-- Missing semicolons or brackets
-- Import statements for undefined symbols
-- Simple syntax errors caught by parser
-- Whitespace/indentation issues
-- Clear linter warnings (unused imports, etc.)
+**"Obvious" Errors to Auto-Fix**: Any simple error that's obvious to a first year university software engineer.
 
 **Always Require Permission**:
 - ⚠️ Git commits - Ask: "Should we commit this? [describe what's included]"
 - ⚠️ Pull requests - Ask: "Ready to create PR? [summarize changes]"
 - ⚠️ Destructive operations (force push, deletion of non-temp files)
 - ⚠️ Architecture decisions with multiple valid approaches
-
-**WHY**: User wants momentum without micromanagement but retains control over permanent operations. Transparency maintains trust.
-
----
-
-### Commit Frequency & Git Workflow
 
 **CRITICAL: Frequent Commits Create Safety Net**
 
@@ -102,7 +45,6 @@
   - After successful test runs
   - Before risky refactors
 - PREFER more commits over fewer - can always squash later
-- FRAME each commit's value: "Good checkpoint here - completes X before starting Y"
 
 **Before Suggesting Any Commit**:
 1. ✅ **VERIFY functionality works** - Actually test the changes yourself
@@ -111,6 +53,7 @@
 4. ✅ **Check for linter warnings**
 5. ✅ **Ensure no debug code remains**
 6. ❌ **NEVER commit broken/unverified code**
+7. ❌ **NEVER write the commit message before checking with the human**
 
 **If you cannot verify**:
 - Ask user to test: "Can you verify [specific thing] works before I commit?"
@@ -232,50 +175,12 @@ Complex? → Full analysis with TL;DR
 
 **ALWAYS use specialized Claude Code tools**:
 - ✅ Read/Edit/Write for files (never bash file operations)
-- ✅ WebSearch/WebFetch for documentation
-- ✅ NotebookEdit for Jupyter files (.ipynb)
+- ✅ WebSearch/WebFetch for documentation - preferably curl and directly pipe to rg - to save tokens.
 - ✅ `gh` CLI for GitHub operations (PRs, issues)
 
+- ❌ Don't use 'grep' for searches - use 'rg' (ripgrep) - much faster, better UX
+
 **WHY**: Modern tools designed for developer productivity. User configured environment expects these.
-
----
-
-### Language-Specific Tooling
-
-**JavaScript/TypeScript**:
-```
-Package Management: bun install, bun add
-Next.js Runtime: npm run dev, npm run build (NOT bun run)
-Why: Bun for speed, Node for Next.js Turbopack compatibility
-```
-
-**Python**:
-```
-Project Init: uv init
-Dependencies: uv add package
-Execution: uv run script.py
-Formatting: ruff check --fix
-Why: uv is 10-100x faster than pip
-```
-
-**Rust**:
-```
-Toolchain: rustup (stable/beta/nightly)
-Error Handling: Result<T, E> everywhere
-Never: .unwrap() in production
-Why: Explicit error handling prevents panics
-```
-
-**Go**:
-```
-Version: Latest via mise
-Modules: go mod tidy regularly
-Why: Modern Go modules, clean dependencies
-```
-
----
-
-## 🔧 Terminal Command Patterns
 
 ### Command Chaining for Efficiency
 
@@ -302,29 +207,20 @@ npm test && npm run build
 - ✅ Group related commands in subshells `( )`
 - ✅ Capture stderr when debugging needed: `2>&1`
 - ✅ Use emoji indicators: 🔍 searching, ✅ success, ❌ failure, ⚠️ warning, 🔧 building
-- ❌ Avoid ANSI color codes (terminal handles colors automatically)
 - ✅ Chain with `&&` for sequential success requirement
 - ✅ Use `||` for fallback handling
 
 **WHY**: Visual clarity without complexity. Reduces token overhead. Shows progress naturally.
 
----
-
-### Scripts & Automation
-
-**IMPORTANT: Intelligent Script Creation**
-
 **Write Scripts Automatically For**:
-- Multi-file refactors (5+ files)
+- Multi-file refactors
 - Pattern replacements across codebase
 - Complex validations
-- Repeated operations
+- Repeated operations of any sort
 
-**Script Complexity Thresholds**:
+**Write a script whenever sensible for the task at hand**:
 ```
-< 5 files → Direct edits
-5-20 files → Simple script with confirmation
-20+ files → Script with dry-run mode
+< 3 files → Direct edits
 Destructive → Always include dry-run
 ```
 
@@ -334,10 +230,6 @@ Destructive → Always include dry-run
 - Multiple files: Use ISO 8601 format consistently
 
 **WHY**: Scripts provide repeatability, validation, and safety. Thresholds based on risk assessment.
-
----
-
-## 🧹 Workspace Hygiene & Cleanup
 
 ### Systematic Cleanup Culture
 
@@ -356,25 +248,15 @@ Destructive → Always include dry-run
 "✅ Task complete! Quick cleanup:
 - Remove temp_script.sh? (used successfully)
 - Delete 3 .bak files? (changes verified)
-- Update README? (new feature added)"
+- Update docs/README? Each doc file should have unique information - the same information in multiple places causes divergence.
+- Ask the human: 'would be a good time to commit' - rather than wasting tokens on the commit message prematurely"
 ```
 
 **WHY**: Clean workspace prevents confusion, reduces cognitive load, maintains professional standards.
 
----
-
 ## 📚 Documentation & Knowledge Verification
 
-### Documentation Search Strategy
-
-**CRITICAL: Verify Before Assuming**
-
-**Documentation Hierarchy**:
-1. **Official Docs** → Always check first
-2. **GitHub README** → For latest updates
-3. **Migration Guides** → For version changes
-4. **Trusted Blogs** → For patterns/examples
-5. **Community** → Last resort
+**Use the Official Docs** → Always check first using curl piped to rg, to save tokens.
 
 **When to Search Docs**:
 - Uncertainty triggers: "I think...", "probably...", "should..."
@@ -385,8 +267,7 @@ Destructive → Always include dry-run
 **Search Efficiency**:
 ```
 DO: Target specific sections
-DO: Use WebFetch for official docs
-DO: Note version being referenced
+DO: Note version being referenced against our version
 DON'T: Read entire documentation
 DON'T: Include marketing fluff in context
 ```
@@ -400,8 +281,6 @@ DON'T: Include marketing fluff in context
 ## 💡 Proactive Coaching
 
 ### Strategic Improvement Suggestions
-
-**IMPORTANT: Help Without Nagging**
 
 **Suggestion Format**:
 ```
@@ -422,70 +301,24 @@ Example: "💡 Tip: Use Haiku agent for this search → 3x faster, 70% cheaper"
 
 **WHY**: User wants to improve but not be lectured. Strategic suggestions build skills over time.
 
----
-
-## ⚙️ Environment-Specific Configuration
-
-### Custom Commands & Aliases
-
 **IMPORTANT: Leverage User's Environment**
-
-**Essential Context Commands**:
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `proj-context` | Full project overview | Starting new work |
-| `ai-context` | Environment summary | First interaction |
-| `dotfiles-health` | Validate setup | Debugging issues |
-| `env-info` | Tool versions | Compatibility checks |
-| `git-summary` | Repo statistics | Understanding project |
 
 **Before Suggesting Any Command**:
 1. Check user's aliases: `alias | rg "pattern"`
 2. Prefer user's shortcuts over standard commands
 3. User has 200+ aliases - use them!
 
-**Common User Aliases**:
-- Navigation: `..`, `...`, `dev`, `dots`
-- Git: `g` (git), `lg` (lazygit)
-- Search: `search`, `searchcode`, `recent`
-
----
-
 ### Editor & Terminal Setup
 
 **User's Specific Environment**:
 ```yaml
 Editor: NeoVim (LazyVim distribution)
-Quick Edit: Helix (hx command)
-Terminal: Warp (AI-enhanced)
-Shell: Pure Zsh (no Oh-My-Zsh)
-Sessions: Zellij (just dev [name])
-Remote: Tailscale + mosh (iPad→Mac)
+Shell: Pure Zsh with Starship
+Sessions: Zellij
+Remote: Tailscale
 Package Manager: Homebrew (Brewfile)
 Language Versions: mise
 ```
-
----
-
-### Dotfiles Special Considerations
-
-**CRITICAL: Dual Nature Understanding**
-
-**The Distinction**:
-- `src/` → Global configs affecting ALL repositories
-- Root files → Dotfiles project management only
-
-**Git Config Confusion Prevention**:
-Always ask: "Edit global git config (`src/.config/git/config`) or just this repo (`.git/config`)?"
-
-**Key Settings**:
-- Use `pushInsteadOf` not `insteadOf` (prevents 1Password popups)
-- Personal data in `.local` files (never tracked)
-- Bootstrap.sh is idempotent (safe to run repeatedly)
-
----
-
-## 🔐 Quality & Security Standards
 
 ### Zero Tolerance Quality Gates
 
@@ -525,35 +358,9 @@ Always ask: "Edit global git config (`src/.config/git/config`) or just this repo
 
 **Conventional Commit Format**:
 ```
-feat: Add user authentication
-fix: Resolve memory leak in parser
-chore: Update dependencies
-docs: Improve API documentation
-refactor: Simplify event handling
-test: Add integration test suite
-perf: Optimize database queries
+feat, fix, chore, docs, refactor, test, perf
 ```
 
-**PR Structure**:
-```markdown
-## Summary
-- What: Clear description of changes
-- Why: Motivation and context
-- How: Approach taken (if non-obvious)
-
-## Test Plan
-- [ ] Unit tests pass
-- [ ] Integration tests pass
-- [ ] Manual testing completed
-- [ ] Edge cases considered
-
-## Screenshots (if UI changes)
-[Before/After images]
-```
-
----
-
-## 🎯 Definition of Done
 
 ### Completion Checklist
 
@@ -563,7 +370,7 @@ perf: Optimize database queries
 - [ ] Tests written and passing
 - [ ] Documentation updated
 - [ ] Workspace cleaned
-- [ ] Commit suggested
+- [ ] Commit suggested, without writing message preemptively
 - [ ] User confirmed satisfaction
 
 **Success Metrics**:
@@ -575,36 +382,11 @@ perf: Optimize database queries
 ---
 
 ## 🔄 Interactive Decision Making
-
-### Presenting Options Effectively
-
-**Format for Multiple Approaches**:
-```markdown
-## Available Approaches
-
-**Option A: Quick Fix**
-- Pro: Immediate resolution
-- Con: Technical debt
-- Time: 5 minutes
-
-**Option B: Proper Solution**
-- Pro: Long-term stability
-- Con: More complex
-- Time: 30 minutes
-
-**Option C: Refactor**
-- Pro: Addresses root cause
-- Con: Significant effort
-- Time: 2 hours
-
-💭 Which approach would you prefer? (A/B/C)
-```
+Use the interactive survey tool to ask the human for input.
 
 ---
 
 ## 🚀 Advanced Tool Usage
-
-### Parallel Operations & Efficiency
 
 **When to Use Parallel Tool Calls**:
 - Multiple file reads needed
@@ -645,20 +427,16 @@ Rather than sequential reads
 | **Context** | Suggest `/compact` after 20+ file reads |
 | **Thinking** | Auto-escalate: think → think hard → think harder |
 | **TodoWrite** | Use for 3+ steps, update in real-time |
-| **Autonomy** | Auto-fix obvious, ask for permanent changes |
-| **Commits** | Frequent checkpoints, always validated |
+| **Autonomy** | Auto-fix obvious while sharing logic, ask for permanent changes |
+| **Commits** | Frequent checkpoints, always validated, suggest commits often, don't write commit messages preemptively |
 | **Agents** | Haiku=routine, Sonnet=complex, Opus=critical |
 | **Tools** | Modern only: rg, fd, bat, eza, zoxide |
 | **Scripts** | Auto-create, include validation |
 | **Cleanup** | Delete temps, update docs, clear todos |
 | **Docs** | Official first, verify when uncertain |
 | **Quality** | Zero tolerance for warnings/errors |
-| **Teaching** | Explain while doing, not before |
+| **Teaching** | Explain while doing|
 
----
+## Plans
 
-*This configuration optimizes Claude Code for efficiency, quality, and continuous learning.*
-*Built on 159 core directives distilled from experience and 2025 best practices.*
-*Every instruction has explicit reasoning and clear thresholds.*
-
-*For real-time environment: `proj-context`, `ai-context`, `dotfiles-health`*
+- At the end of each plan, give me a list of unresolved questions to answer, if any. Make the questions extremely concise. Sacrifice grammar for the sake of concision.

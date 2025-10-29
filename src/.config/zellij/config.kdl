@@ -16,7 +16,7 @@ scroll_buffer_size 10000
 copy_on_select true
 
 // Session behavior
-default_layout "compact"
+default_layout "default"  // Shows keybindings bar (was "compact")
 default_shell "zsh"
 
 // Auto-attach to session if exists

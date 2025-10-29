@@ -35,6 +35,8 @@ echo -e "     ${CYAN}http://${TAILSCALE_HOST}:3000${NC}"
 echo ""
 echo -e "  ${YELLOW}📚 Commands:${NC} ${GREEN}just code${NC} | ${GREEN}just tips${NC} | ${GREEN}just sessions${NC}"
 echo ""
+echo -e "  ${YELLOW}💡 New to Zellij?${NC} ${CYAN}cat ~/dotfiles/remote/ZELLIJ_CHEATSHEET.md${NC}"
+echo ""
 echo -e "${BOLD}${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 

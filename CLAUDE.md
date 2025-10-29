@@ -1,8 +1,4 @@
-# CLAUDE.md - Dotfiles Repository
-
-# Expert Context - Dotfiles System
-
-**You are a shell scripting expert working on a meta-configuration system.**
+**You are a linux greybeard, a veteran in the shell and with dev environment setups**
 
 This is a dotfiles repository that manages global development environment configurations via symlinks. It's uniquely confusing because it's BOTH a git repository AND the system that creates global configurations for all other repositories.
 
@@ -134,17 +130,10 @@ just tips              # Show random alias tips
 # Symlink Architecture
 
 **Bootstrap process:**
-```bash
-bootstrap.sh:
-  src/.zshrc → ~/.zshrc
-  src/.config/nvim/ → ~/.config/nvim/
-  src/.aliases → ~/.aliases
-  src/.config/git/config → ~/.config/git/config
-```
+`bootstrap.sh`: Contents of each file and directory in src/ are symlinked to ~/
 
 **Backup strategy:**
 - Existing files moved to `replaced_files/` with timestamp
-- Example: `.zshrc.backup.20250915_153234`
 - Preserves existing symlinks that are already correct
 - Completely idempotent (run multiple times safely)
 
@@ -164,25 +153,13 @@ bootstrap.sh:
 └── allowed_signers.*   # SSH signing configuration
 ```
 
-**Critical 1Password popup fix:**
-- Uses `pushInsteadOf` (NOT `insteadOf`) for GitHub/GitLab URLs
-- **Rationale:** Fetches/pulls use HTTPS (no auth needed for public repos), pushes use SSH (authenticated)
-- **Impact:** Eliminates constant 1Password popups during Lazy.nvim plugin updates
-- **Config:** `[url "git@github.com:"] pushInsteadOf = https://github.com/`
-
 **Security separation:**
-- Public settings tracked in repo
+- Public settings tracked in repo - the repo is public!
 - Personal details (name, email, SSH signing key) in `config.local` (gitignored)
-- Templates provided for easy setup: `config.local.template`
 
 # Shell Configuration
 
-**Loading order:**
-1. `.zshenv` - Environment variables, PATH setup (loaded first)
-2. `.zshrc` - Pure zsh with manual plugins, mise activation, cached completions
-3. `.aliases` - Custom commands (sourced by .zshrc)
-
-**Plugin management (no Oh-My-Zsh):**
+**Plugin management:**
 - Installed via Homebrew: `zsh-autosuggestions`, `zsh-syntax-highlighting`
 - Git/Golang/Rust aliases extracted and maintained manually in `.zshrc`
 
@@ -198,7 +175,6 @@ bootstrap.sh:
 
 # Anti-Pattern List
 
-```
 - ❌ Don't use 'grep' for searches - use 'rg' (ripgrep) - much faster, better UX
 - ❌ Don't edit root CLAUDE.md for global preferences - use src/.config/claude/CLAUDE.md
 - ❌ Don't commit personal git details - use config.local (NOT tracked)
@@ -206,39 +182,25 @@ bootstrap.sh:
 - ❌ Don't use 'bun run dev' for Next.js - use 'npm run dev' (Turbopack compatibility)
 - ❌ Don't use 'bun run build' for Next.js - use 'npm run build' (runtime issues)
 - ❌ Don't edit README.md after <!-- GENERATED_CONTENT_STARTS_HERE --> marker
-- ❌ Don't use Oh-My-Zsh patterns - pure zsh with manual plugin management
 - ❌ Don't use 'insteadOf' for GitHub URLs - use 'pushInsteadOf' (prevents 1Password popups)
-```
 
-**Bun + Next.js hybrid approach:**
 - ✅ **DO** use `bun install` and `bun add <package>` (6x faster than npm, fully compatible)
-- ✅ **DO** use `npm run dev` and `npm run build` (Node.js runtime for Turbopack compatibility)
-- 🔮 Full Bun runtime support for Next.js expected late 2025/early 2026
 
 # Workflow
 
-```
 1. Edit files in src/ (or root project files)
-2. Run 'just bootstrap' (or './bootstrap.sh') to update symlinks
+2. Run 'just bootstrap' to update symlinks
 3. Run 'source ~/.zshrc' or open new terminal to test
 4. Run 'just health' to validate environment
-5. Commit with descriptive message (pre-commit hooks scan for secrets)
-```
+5. Commit with concise message (pre-commit hooks scan for secrets)
 
 **Git workflow:**
 - Conventional commits: `feat:`, `fix:`, `chore:`
-- Pre-commit hooks: Triple-layer secret scanning (gitleaks + trufflehog + ripsecrets)
+- Pre-commit hooks: Triple-layer secret scanning
 - SSH signing enabled (1Password integration)
 - HTTPS for fetches, SSH for pushes (prevents popups)
 
 # Common Tasks
-
-### Add new Homebrew package
-```bash
-brew install package-name
-# Prompted to add to Brewfile (override function in .zshrc)
-# Or manually: echo 'brew "package-name"' >> Brewfile
-```
 
 ### Add custom alias with startup tip
 ```bash
@@ -253,33 +215,16 @@ mise install
 # Or: just languages
 ```
 
-### Create new project from template
-```bash
-just new-rust myproject    # cargo new
-just new-go myproject      # go mod init
-just new-next myproject    # Next.js with bun
-just new-python myproject  # uv init
-```
-
-### Remote development (iPad → Mac)
-```bash
-# Mac: Ensure Tailscale running
-# iPad Blink Shell:
-ssh mac
-just dev main  # Attach to persistent zellij session
-# See IPAD_SETUP.md for complete configuration
-```
+### Remote development:
+- Read remote development docs if we are working on optimising.
 
 # Environment
 
-```
 - Package manager: Homebrew (Brewfile-driven)
 - Shell: Zsh (pure, manual plugin management)
 - Editor: NeoVim (LazyVim) + Helix (lightweight)
-- Terminal: Warp (native prompting, no starship)
 - Git: XDG config (~/.config/git/), SSH signing, 1Password integration
-- Remote: Tailscale + Zellij + mosh (see IPAD_SETUP.md)
-```
+- Remote: Tailscale + Zellij
 
 # Critical Notes
 
@@ -294,11 +239,6 @@ just dev main  # Attach to persistent zellij session
 - Symlinks can break if src/ files are deleted - run 'just bootstrap' to repair
 ```
 
-# Working Practices
-
-**COPY THIS SECTION VERBATIM INTO THE CLAUDE.MD FILE:**
-
-```markdown
 # Working Practices
 
 **Pair programming mindset:**
@@ -338,32 +278,6 @@ You are collaborating with a human pair-programming, and watching your work. Mak
 - Colors: `\033[36m` cyan (===), `\033[34m` blue (---), `\033[32m` green (✓), `\033[31m` red (✗), `\033[33m` yellow (⚠), `\033[0m` reset
 - Bookend symbols: `✓ pass ✓`, `✗ error ✗`, `⚠ warn ⚠`
 - Commands indent 2 spaces, pipes +2 per level
-
-**Full chained-command example:**
-
-```bash
-(                                                 echo $'\033[36m
-=== DEPENDENCY UPDATE ===                         \033[0m' && echo $'\033[34m
---- Backup current state ---                      \033[0m' &&
-  cp package.json package.json.backup             && echo $'\033[32m
-✓ Backup created ✓                                \033[0m' || echo $'\033[31m
-✗ Backup failed ✗                                 \033[0m' && echo $'\033[34m
---- Update dependencies ---                       \033[0m' &&
-  npm update |
-    grep -E "added|removed|changed"               && echo $'\033[32m
-✓ Dependencies updated ✓                          \033[0m' || echo $'\033[33m
-⚠ No changes detected ⚠                           \033[0m' && echo $'\033[34m
---- Run tests ---                                 \033[0m' &&
-  npm test 2>&1 |
-    tail -20                                      && echo $'\033[32m
-✓ Tests passed ✓                                  \033[0m' || echo $'\033[31m
-✗ Tests failed ✗                                  \033[0m' && echo $'\033[34m
---- Commit changes ---                            \033[0m' &&
-  git add package.json package-lock.json &&
-  git commit -m "chore: update dependencies"      && echo $'\033[32m
-✓ Update complete ✓                               \033[0m'
-) 2>&1
-```
 
 Write scripts for programmatic operations, such as refactors.
 Use scripts to make deliberate changes in codified ways.

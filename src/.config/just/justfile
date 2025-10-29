@@ -1,0 +1,155 @@
+# Global Justfile - Available from any directory
+# Symlinked from ~/dotfiles/src/.config/just/justfile → ~/.config/just/justfile
+# Commands here work globally, dotfiles-specific commands stay in ~/dotfiles/justfile
+
+# Default recipe - show all available commands
+default:
+    @just --list
+
+# ============================================================================
+# Zellij Session Management
+# ============================================================================
+
+# Start/attach to zellij session (auto-creates if doesn't exist)
+code session="main":
+    #!/usr/bin/env bash
+    if command -v zellij &>/dev/null; then
+        zellij attach {{session}} --create
+    else
+        echo "⚠️  zellij not installed - install via: brew install zellij"
+        exit 1
+    fi
+
+# Attach to existing zellij session (fails if doesn't exist)
+attach session="main":
+    #!/usr/bin/env bash
+    if command -v zellij &>/dev/null; then
+        zellij attach {{session}}
+    else
+        echo "⚠️  zellij not installed - install via: brew install zellij"
+        exit 1
+    fi
+
+# List all active zellij sessions
+sessions:
+    #!/usr/bin/env bash
+    if command -v zellij &>/dev/null; then
+        echo "📋 Active Zellij Sessions:"
+        zellij list-sessions || echo "   No active sessions"
+    else
+        echo "⚠️  zellij not installed - install via: brew install zellij"
+    fi
+
+# Kill a specific zellij session
+kill session:
+    #!/usr/bin/env bash
+    if command -v zellij &>/dev/null; then
+        zellij delete-session {{session}}
+    else
+        echo "⚠️  zellij not installed"
+    fi
+
+# Kill all zellij sessions
+kill-all:
+    #!/usr/bin/env bash
+    if command -v zellij &>/dev/null; then
+        zellij list-sessions 2>/dev/null | while read -r session; do
+            zellij delete-session "$session" 2>/dev/null || true
+        done
+        echo "✅ All zellij sessions killed"
+    else
+        echo "⚠️  zellij not installed"
+    fi
+
+# ============================================================================
+# Editor Shortcuts
+# ============================================================================
+
+# Open file with helix (lightweight editor)
+hx file:
+    #!/usr/bin/env bash
+    if command -v helix &>/dev/null; then
+        helix {{file}}
+    else
+        echo "⚠️  helix not installed - install via: brew install helix"
+        exit 1
+    fi
+
+# Open current directory in NeoVim
+vim:
+    nvim ./
+
+# ============================================================================
+# Project Templates
+# ============================================================================
+
+# Create new Rust project
+new-rust name:
+    cargo new {{name}}
+    @echo "✨ Created Rust project: {{name}}"
+
+# Create new Go project
+new-go name:
+    mkdir -p {{name}} && cd {{name}} && go mod init {{name}}
+    @echo "✨ Created Go project: {{name}}"
+
+# Create new Next.js project (with bun for packages)
+new-next name:
+    bunx create-next-app {{name}}
+    @echo "✨ Created Next.js project: {{name}}"
+    @echo "💡 Use 'bun install' for deps, 'npm run dev' for runtime"
+
+# Create new Python project (with uv)
+new-python name:
+    uv init {{name}}
+    @echo "✨ Created Python project: {{name}}"
+
+# ============================================================================
+# Benchmarking
+# ============================================================================
+
+# Benchmark a command (requires hyperfine)
+bench command:
+    #!/usr/bin/env bash
+    if command -v hyperfine &>/dev/null; then
+        hyperfine "{{command}}"
+    else
+        echo "⚠️  hyperfine not installed - install via: brew install hyperfine"
+        exit 1
+    fi
+
+# Compare shell startup time
+bench-startup:
+    #!/usr/bin/env bash
+    if command -v hyperfine &>/dev/null; then
+        echo "Benchmarking shell startup..."
+        hyperfine --warmup 3 'zsh -i -c exit'
+    else
+        echo "⚠️  hyperfine not installed - install via: brew install hyperfine"
+        exit 1
+    fi
+
+# ============================================================================
+# Utilities
+# ============================================================================
+
+# Show random alias tips (requires dotfiles)
+tips:
+    #!/usr/bin/env bash
+    if [[ -f ~/dotfiles/show-alias-tips.sh ]]; then
+        ~/dotfiles/show-alias-tips.sh
+    else
+        echo "⚠️  Alias tips not available - requires dotfiles setup"
+    fi
+
+# Quick git status summary
+git-status:
+    @git status --short --branch
+
+# Quick commit with message
+commit message:
+    git add -A && git commit -m "{{message}}"
+
+# Stage all changes and show status
+stage:
+    git add -A && git status

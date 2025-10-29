@@ -29,9 +29,9 @@ readonly BRIO_PRODUCT=2155  # 0x086b
 # Configuration - ABSOLUTE target values (idempotent - safe to run repeatedly)
 readonly BRIGHTNESS_TARGET=109  # Absolute brightness value (original 115, reduced by ~5%)
 readonly GAIN_TARGET=96         # Set gain for low-light (0-255, 96 = strong boost)
-readonly CONTRAST_TARGET=134    # Absolute contrast value (original 128, increased by ~5%)
-readonly SHARPNESS_TARGET=147   # Absolute sharpness value (original 140, increased by ~5%)
-readonly FOCUS_TARGET=0         # Manual focus position (0=close, 255=far)
+readonly CONTRAST_TARGET=130    # Absolute contrast value (original 128, increased by ~5%)
+readonly SHARPNESS_TARGET=145   # Absolute sharpness value (original 140, increased by ~5%)
+readonly FOCUS_TARGET=0         # Manual focus position (0=infinity, 255=close - confusing I know)
 
 # Flags
 DRY_RUN=false
