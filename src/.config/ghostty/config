@@ -6,6 +6,7 @@
 # ============================================================================
 
 font-family = "JetBrainsMono Nerd Font Mono"
+# font-family = "Hack"
 font-size = 15
 font-style = Regular
 font-style-bold = Bold
@@ -15,7 +16,7 @@ font-style-bold-italic = Bold Italic
 # Font rendering
 font-thicken = true
 # font-thicken = false
-adjust-cell-height = 10%
+adjust-cell-height = 5%
 
 # Enable font ligatures (Fira Code's programming ligatures)
 font-feature = +calt
@@ -26,11 +27,12 @@ font-feature = +dlig
 # THEME & COLORS
 # ============================================================================
 
-# TokyoNight Storm - selected as best theme with CyberWave gradient
-theme = "TokyoNight Storm"
+theme = "Kanagawa Wave"
 
 # Override theme background to allow shader to show through
+# background = #0B2430
 background = #000000
+background-opacity = 0.97
 
 # ============================================================================
 # GRADIENT SHADER
@@ -53,7 +55,15 @@ cursor-style-blink = true
 window-decoration = true
 window-padding-x = 4
 window-padding-y = 4
+
 macos-titlebar-style = hidden
+window-theme = ghostty
+macos-titlebar-proxy-icon = hidden
+macos-icon = holographic
+window-titlebar-background = #0B2430
+window-titlebar-foreground = #0B2430
+# window-show-tab-bar = always
+window-new-tab-position = current
 
 # ============================================================================
 # BEHAVIOR

@@ -20,7 +20,7 @@ extract_aliases_with_descriptions() {
                 alias_name=$(echo "$line" | sed -E 's/^[[:space:]]*alias ([^=]*)=.*/\1/')
                 # Extract description (everything after the last #)
                 description=$(echo "$line" | sed 's/.*#[[:space:]]*//')
-                
+
                 # Only include if description is not empty
                 if [[ -n "$description" && "$description" != "" ]]; then
                     echo "$alias_name::$description"
@@ -87,7 +87,7 @@ NC='\033[0m' # No Color
 # Show the tips
 echo ""
 echo -e "${BLUE}💡 Alias Tips${NC}"
-echo -e "${BLUE}════════════${NC}"
+echo -e "${BLUE}═══════════════${NC}"
 
 for i in "${selected_indices[@]}"; do
     line="${aliases_with_descriptions[$i]}"

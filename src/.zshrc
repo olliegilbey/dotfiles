@@ -66,7 +66,7 @@ setopt append_history         # Append rather than overwrite
 # Completion system
 autoload -Uz compinit
 # Only regenerate .zcompdump once a day for faster startup
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
   compinit
 else
   compinit -C
