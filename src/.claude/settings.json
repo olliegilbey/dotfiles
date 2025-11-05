@@ -1,6 +1,39 @@
 {
   "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(dotfiles-health:*)",
+      "Bash(source ~/.aliases)",
+      "Bash(brew list:*)",
+      "Bash(brew:*)",
+      "Bash(source:*)",
+      "Bash(nvim:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(echo $TERM)",
+      "Bash(defaults read:*)",
+      "Bash(mkdir:*)",
+      "Bash(./show-alias-tips.sh:*)",
+      "Bash(git-aliases:*)",
+      "Bash(timeout 10s nvim:*)",
+      "Bash(git diff:*)",
+      "Bash(timer)",
+      "Bash(alias ..)",
+      "Bash(alias ...)",
+      "Bash(alias g)",
+      "Bash(zoxide query:*)",
+      "WebFetch(domain:docs.warp.dev)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  },
   "model": "sonnet",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline-starship.sh"
+  },
   "enabledPlugins": {
     "context-management@claude-code-workflows": true,
     "agent-orchestration@claude-code-workflows": true

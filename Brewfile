@@ -64,6 +64,9 @@ brew "zellij"           # Modern terminal multiplexer (Rust, persistent sessions
 brew "mosh"             # Mobile shell for unreliable connections (better than SSH for mobile)
 
 # Security and authentication
+brew "gitleaks"          # Fast secret scanner for git repositories
+brew "trufflehog"        # Secret scanner with verification
+brew "ripsecrets"        # Rust-based secret scanner
 cask "1password-cli"    # 1Password command-line interface, access with "op"
 cask "tailscale"        # Zero-config mesh VPN for secure remote access (iPad development)
 

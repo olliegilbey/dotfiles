@@ -45,7 +45,9 @@ FAILED=0
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 echo -e "${YELLOW}[1/3] Running gitleaks...${NC}"
 if ! command -v gitleaks &> /dev/null; then
-    echo -e "${YELLOW}    ⚠️  gitleaks not installed - skipping${NC}"
+    echo -e "${RED}    ✗ gitleaks not installed!${NC}"
+    echo -e "${RED}    Install: brew install gitleaks${NC}"
+    FAILED=1
     echo ""
 else
     GITLEAKS_OUTPUT=$(gitleaks detect --source "$TEMP_DIR" --no-git --no-banner 2>&1 || true)
@@ -71,7 +73,9 @@ fi
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 echo -e "${YELLOW}[2/3] Running trufflehog...${NC}"
 if ! command -v trufflehog &> /dev/null; then
-    echo -e "${YELLOW}    ⚠️  trufflehog not installed - skipping${NC}"
+    echo -e "${RED}    ✗ trufflehog not installed!${NC}"
+    echo -e "${RED}    Install: brew install trufflehog${NC}"
+    FAILED=1
     echo ""
 else
     # Run trufflehog and capture output
@@ -118,7 +122,9 @@ fi
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 echo -e "${YELLOW}[3/3] Running ripsecrets...${NC}"
 if ! command -v ripsecrets &> /dev/null; then
-    echo -e "${YELLOW}    ⚠️  ripsecrets not installed - skipping${NC}"
+    echo -e "${RED}    ✗ ripsecrets not installed!${NC}"
+    echo -e "${RED}    Install: cargo install ripsecrets${NC}"
+    FAILED=1
     echo ""
 else
     RIPSECRETS_OUTPUT=$(ripsecrets "$TEMP_DIR" 2>&1 || true)
