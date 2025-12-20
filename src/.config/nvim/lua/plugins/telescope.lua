@@ -69,6 +69,10 @@ return {
             return { "--hidden", "--glob=!.git/" }
           end,
         },
+        -- Separate picker for ALL files (including gitignored)
+        git_files = {
+          find_command = { "fd", "--type", "f", "--strip-cwd-prefix", "--hidden", "--no-ignore", "--exclude", ".git" },
+        },
         buffers = {
           show_all_buffers = true,
           sort_lastused = true,

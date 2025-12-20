@@ -23,6 +23,7 @@ return {
           explorer = {
             layout = { preset = "sidebar", preview = false },
             hidden = true, -- Show hidden files by default
+            ignored = true, -- Show gitignored files by default
           },
         },
       },

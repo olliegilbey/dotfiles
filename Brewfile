@@ -101,3 +101,5 @@ brew "codex"
 cask "voiceink"    # Voice input application
 
 cask "ghostty"     # GPU-accelerated terminal emulator
+
+cask "temurin@21"        # JDK from the Eclipse Foundation (Adoptium)

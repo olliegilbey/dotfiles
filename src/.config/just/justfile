@@ -10,14 +10,35 @@ default:
 # Zellij Session Management
 # ============================================================================
 
-# Start/attach to zellij session (auto-creates if doesn't exist)
+# Start/attach to zellij session with themed layouts
+# Known sessions get distinct themes, unknown sessions get random themes
 code session="main":
     #!/usr/bin/env bash
-    if command -v zellij &>/dev/null; then
-        zellij attach {{session}} --create
-    else
-        echo "⚠️  zellij not installed - install via: brew install zellij"
+    if ! command -v zellij &>/dev/null; then
+        echo "⚠️  zellij not installed yet - run 'just packages' first"
         exit 1
+    fi
+
+    # Map session names to themes and layouts
+    case "{{session}}" in
+        main)   theme="kanagawa"; layout="main" ;;
+        jasho)  theme="menace"; layout="jasho" ;;
+        *)      echo "⚠️  Unknown session: {{session}}. Use 'main' or 'jasho'"; exit 1 ;;
+    esac
+
+    # Check if already in the target session
+    if [[ "$ZELLIJ_SESSION_NAME" == "{{session}}" ]]; then
+        echo "✓ Already in session: {{session}}"
+        exit 0
+    fi
+
+    # Launch or attach
+    if zellij list-sessions 2>/dev/null | grep -q "^{{session}}$"; then
+        # Session exists - just attach (preserves customizations)
+        zellij attach {{session}}
+    else
+        # New session - create with layout and theme
+        zellij attach "{{session}}" --create options --theme "$theme" --default-layout "$layout"
     fi
 
 # Attach to existing zellij session (fails if doesn't exist)

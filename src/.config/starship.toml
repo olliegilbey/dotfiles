@@ -7,18 +7,21 @@ $character"""
 [character]
 success_symbol = "[→](bold green)"
 error_symbol = "[→](bold red)"
+vimcmd_symbol = "[❮](bold blue)"
+vimcmd_replace_one_symbol = "[❮](bold purple)"
+vimcmd_replace_symbol = "[❮](bold purple)"
+vimcmd_visual_symbol = "[❮](bold yellow)"
 
 [directory]
 style = "bold cyan"
 format = "[$path]($style) "
-truncation_length = 4
+truncation_length = 8  # Increased to show more context
 truncate_to_repo = false
 home_symbol = "~"
 
 [directory.substitutions]
-"~/code" = "~/code"
-"~/code/jasho" = "~/jasho"
-"~/dotfiles" = "~/dotfiles"
+# Removed ambiguous substitutions that hide path structure
+# "~/code/jasho" -> "~/jasho" was hiding the intermediate "code" directory
 
 [git_branch]
 symbol = ""

@@ -61,7 +61,8 @@ window-theme = ghostty
 macos-titlebar-proxy-icon = hidden
 macos-icon = holographic
 window-titlebar-background = #0B2430
-window-titlebar-foreground = #0B2430
+# Light foreground for visibility on dark teal
+window-titlebar-foreground = #C0CAF5
 # window-show-tab-bar = always
 window-new-tab-position = current
 
@@ -76,6 +77,9 @@ shell-integration-features = sudo,title,ssh-env,ssh-terminfo
 
 # Mouse support
 mouse-hide-while-typing = true
+
+bell-features = attention,title
+desktop-notifications = true
 
 # ============================================================================
 # CLIPBOARD
@@ -95,6 +99,13 @@ scrollback-limit = 10000
 # ============================================================================
 # KEYBINDINGS
 # ============================================================================
+
+# Enable Option key as Alt for terminal applications (Zellij, etc.)
+macos-option-as-alt = true
+
+# Pass Alt+arrow keys through to terminal (for Zellij focus navigation)
+keybind = alt+left=unbind
+keybind = alt+right=unbind
 
 # macOS-standard keybindings
 keybind = super+c=copy_to_clipboard

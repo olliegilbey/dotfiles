@@ -82,103 +82,14 @@ stage:
 # ============================================================================
 # Development Workflow (requires zellij)
 # ============================================================================
-
-# Start new development session in zellij (auto-attaches if exists)
-code session="main":
-    #!/usr/bin/env bash
-    if command -v zellij &>/dev/null; then
-        zellij attach {{session}} || zellij -s {{session}}
-    else
-        echo "⚠️  zellij not installed yet - run 'just packages' first"
-        exit 1
-    fi
-
-# Backwards compatibility alias (temporary - remove after adjustment period)
-alias dev := code
-
-# Attach to existing zellij session
-attach session="main":
-    #!/usr/bin/env bash
-    if command -v zellij &>/dev/null; then
-        zellij attach {{session}}
-    else
-        echo "⚠️  zellij not installed yet - run 'just packages' first"
-        exit 1
-    fi
-
-# List all active zellij sessions
-sessions:
-    #!/usr/bin/env bash
-    if command -v zellij &>/dev/null; then
-        echo "📋 Active Zellij Sessions:"
-        zellij list-sessions || echo "   No active sessions"
-    else
-        echo "⚠️  zellij not installed yet - run 'just packages' first"
-    fi
-
-# Kill a zellij session
-kill session:
-    #!/usr/bin/env bash
-    if command -v zellij &>/dev/null; then
-        zellij delete-session {{session}}
-    else
-        echo "⚠️  zellij not installed yet"
-    fi
-
-# Kill all zellij sessions
-kill-all:
-    #!/usr/bin/env bash
-    if command -v zellij &>/dev/null; then
-        zellij list-sessions 2>/dev/null | while read -r session; do
-            zellij delete-session "$session" 2>/dev/null || true
-        done
-        echo "✅ All zellij sessions killed"
-    else
-        echo "⚠️  zellij not installed yet"
-    fi
+# Note: Zellij session commands (code, attach, sessions, kill, kill-all)
+# are in global justfile (~/.config/just/justfile) and work from any directory
 
 # ============================================================================
-# Editor Shortcuts
+# Editor & Benchmarking
 # ============================================================================
-
-# Open file with helix (lightweight editor)
-hx file:
-    #!/usr/bin/env bash
-    if command -v helix &>/dev/null; then
-        helix {{file}}
-    else
-        echo "⚠️  helix not installed yet - run 'just packages' first"
-        exit 1
-    fi
-
-# Open current directory in NeoVim
-vim:
-    nvim ./
-
-# ============================================================================
-# Testing & Benchmarking
-# ============================================================================
-
-# Benchmark a command (requires hyperfine)
-bench command:
-    #!/usr/bin/env bash
-    if command -v hyperfine &>/dev/null; then
-        hyperfine "{{command}}"
-    else
-        echo "⚠️  hyperfine not installed yet - run 'just packages' first"
-        exit 1
-    fi
-
-# Compare shell startup time (old vs new config)
-bench-startup:
-    #!/usr/bin/env bash
-    if command -v hyperfine &>/dev/null; then
-        echo "Benchmarking shell startup..."
-        hyperfine --warmup 3 'zsh -i -c exit'
-    else
-        echo "⚠️  hyperfine not installed yet - run 'just packages' first"
-        exit 1
-    fi
+# Note: Editor shortcuts (vim, hx) and benchmarking (bench, bench-startup)
+# are in global justfile and work from any directory
 
 # ============================================================================
 # Cleanup & Maintenance
@@ -198,28 +109,10 @@ clean: clean-brew clean-shell
     @echo "✨ Cleanup complete!"
 
 # ============================================================================
-# Project Templates (Future expansion)
+# Project Templates
 # ============================================================================
-
-# Create new Rust project
-new-rust name:
-    cargo new {{name}}
-    @echo "✨ Created Rust project: {{name}}"
-
-# Create new Go project
-new-go name:
-    mkdir -p {{name}} && cd {{name}} && go mod init {{name}}
-    @echo "✨ Created Go project: {{name}}"
-
-# Create new Next.js project (with bun)
-new-next name:
-    bunx create-next-app {{name}}
-    @echo "✨ Created Next.js project: {{name}}"
-
-# Create new Python project (with uv)
-new-python name:
-    uv init {{name}}
-    @echo "✨ Created Python project: {{name}}"
+# Note: Project templates (new-rust, new-go, new-next, new-python)
+# are in global justfile and work from any directory
 
 # ============================================================================
 # Remote Development

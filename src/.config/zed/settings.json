@@ -9,5 +9,22 @@
 {
     "theme": "One Dark",
     "buffer_font_size": 15,
-    "vim_mode": true
+    "vim_mode": true,
+    "context_servers": {
+      "posthog": {
+        "enabled": true,
+        "source": "custom",
+        "command": "npx",
+        "args": [
+          "-y",
+          "mcp-remote@latest",
+          "https://mcp.posthog.com/sse",
+          "--header",
+          "Authorization:${POSTHOG_AUTH_HEADER}"
+        ],
+        "env": {
+          "POSTHOG_AUTH_HEADER": "Bearer phx_ekvn4udHKLQrFXHifSP2gLPs6LAQ1w4Z0m3lhEc2ULSSiBX"
+        }
+      }
+    }
 }

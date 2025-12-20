@@ -14,7 +14,15 @@ keymap("n", "<leader><leader>", "<cmd>Telescope commands<cr>", { desc = "Command
 -- ============================================================================
 
 keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
+keymap("n", "<leader>fF", function()
+  require("telescope.builtin").find_files({
+    find_command = { "fd", "--type", "f", "--strip-cwd-prefix", "--hidden", "--no-ignore", "--exclude", ".git" }
+  })
+end, { desc = "Find ALL files (incl gitignored)" })
 keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep (search text)" })
+keymap("n", "<leader>fG", function()
+  require("telescope.builtin").live_grep({ additional_args = { "--hidden", "--no-ignore", "--glob=!.git/" } })
+end, { desc = "Grep ALL files (incl gitignored)" })
 keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find buffers" })
 keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Find help tags" })
 keymap("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })

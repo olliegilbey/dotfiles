@@ -29,14 +29,17 @@
       "WebFetch(domain:raw.githubusercontent.com)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus",
   "statusLine": {
     "type": "command",
-    "command": "~/.claude/statusline-starship.sh"
+    "command": "bash ~/.claude/statusline-starship.sh"
   },
   "enabledPlugins": {
     "context-management@claude-code-workflows": true,
     "agent-orchestration@claude-code-workflows": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "preferredNotifChannel": "ghostty",
+  "verbose": true,
+  "editorMode": "vim"
 }

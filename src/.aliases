@@ -13,6 +13,11 @@ alias ...="cd ../.."  # Go up two directories
 alias ....="cd ../../.."  # Go up three directories
 alias .....="cd ../../../.."  # Go up four directories
 
+# Terminal clearing
+alias c='clear'  # Quick screen clear (keeps scrollback)
+alias cl='clear'  # Alternate clear shortcut
+alias cc='clear && printf "\033[3J"'  # Full clear with scrollback purge
+
 # Vim
 # alias vim='mvim '
 
@@ -39,7 +44,7 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 alias sudo='sudo '
 
 # Just wrapper - auto-fallback to global justfile
-# Tries local justfile first, falls back to global if none found
+# Tries local justfile first, falls back to global if recipe not found
 just() {
     if command -v /opt/homebrew/bin/just &>/dev/null; then
         local just_bin="/opt/homebrew/bin/just"
@@ -48,8 +53,15 @@ just() {
         if $just_bin --justfile justfile --evaluate &>/dev/null || \
            $just_bin --justfile Justfile --evaluate &>/dev/null || \
            $just_bin --justfile .justfile --evaluate &>/dev/null; then
-            # Local justfile exists, use it
+            # Local justfile exists, try it first
             $just_bin "$@"
+            local exit_code=$?
+            # If recipe not found (exit 101), try global justfile
+            if [[ $exit_code -eq 101 ]]; then
+                $just_bin --global-justfile "$@"
+            else
+                return $exit_code
+            fi
         else
             # No local justfile, use global
             $just_bin --global-justfile "$@"
@@ -124,7 +136,8 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && k
 alias chromekill="ps ux | rg '[C]hrome Helper --type=renderer' | rg -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"  # Kill Chrome helper processes
 
 # Lock the screen (when going AFK)
-alias afk="osascript -e 'tell application \"System Events\" to keystroke \"q\" using {command down, control down}' && pmset sleepnow"  # Lock screen and sleep
+alias afk='killall WhatsApp 2>/dev/null; shortcuts run "Lock Screen"; pmset sleepnow'  # Kill WhatsApp, lock, sleep
+alias sleep-blockers="pmset -g assertions | rg 'PreventUserIdleSystemSleep|PreventSystemSleep' | rg -v 'Powerd.*display is on'"  # Show apps blocking sleep
 
 # Enhanced cat with syntax highlighting (with fallback)
 if command -v bat &> /dev/null; then
@@ -194,6 +207,31 @@ alias pip3='pip'  # Same interactive function for pip3
 alias git-aliases='git config --get-regexp "^alias\." | sed "s/^alias\.//"'  # Show all git aliases
 alias npm-aliases='npm run --silent'  # Show npm script aliases
 alias docker-aliases='echo "Docker aliases are in: docker --help"'  # Docker command reference
+
+# Fuzzy alias search with descriptions
+alias-search() {
+    if ! command -v fzf &>/dev/null; then
+        echo "⚠️  fzf not installed - install via: brew install fzf"
+        return 1
+    fi
+
+    # Extract aliases with descriptions from this file
+    rg "^alias [^=]+='[^']+'\s+#" ~/.aliases | \
+        sed -E "s/^alias ([^=]+)='([^']+)'\s+# (.+)$/\1 → \2  # \3/" | \
+        fzf --preview 'echo {}' \
+            --preview-window=up:3:wrap \
+            --height=50% \
+            --layout=reverse \
+            --border \
+            --prompt='🔍 Alias: ' \
+            --header='↑↓ navigate | Enter: copy command | Esc: exit' | \
+        awk -F' → ' '{print $2}' | \
+        awk -F' #' '{print $1}' | \
+        tr -d '\n' | \
+        pbcopy && \
+        echo "✅ Copied to clipboard: $(pbpaste)"
+}
+alias fa='alias-search'  # Quick fuzzy alias search
 
 # Quick environment info for AI context
 alias env-info='echo "🖥️  Environment Info:"; echo "Shell: $SHELL ($ZSH_VERSION)"; echo "OS: $(uname -s) $(uname -r)"; echo "Node: $(node --version 2>/dev/null || echo "not installed")"; echo "Go: $(go version 2>/dev/null | cut -d" " -f3 || echo "not installed")"; echo "Rust: $(rustc --version 2>/dev/null | cut -d" " -f2 || echo "not installed")"; echo "Python: $(python3 --version 2>/dev/null || echo "not installed")"; echo "Editor: $EDITOR"; echo "PWD: $(pwd)"'  # Show development environment summary
@@ -368,6 +406,32 @@ function td() {
     cat ~/todo.txt | rg -v "^x " | nl
 }
 
+# Shell diagnostics for completion conflicts
+shell-diagnostics() {
+    echo "🔍 Shell Completion Diagnostics"
+    echo "══════════════════════════════════════"
+    echo ""
+    echo "📌 Vim Mode: $(bindkey -lL | rg viins &>/dev/null && echo "ENABLED" || echo "DISABLED")"
+    echo "📌 Starship: $(command -v starship &>/dev/null && echo "ENABLED" || echo "DISABLED")"
+    echo "📌 zsh-autosuggestions: $(typeset -f _zsh_autosuggest_bind_widgets &>/dev/null && echo "ENABLED" || echo "DISABLED")"
+    echo "📌 zsh-syntax-highlighting: $(typeset -f _zsh_highlight &>/dev/null && echo "ENABLED" || echo "DISABLED")"
+    echo ""
+    echo "🔧 Autosuggestions Config:"
+    echo "   Strategy: $ZSH_AUTOSUGGEST_STRATEGY"
+    echo "   Async: $ZSH_AUTOSUGGEST_USE_ASYNC"
+    echo "   Manual Rebind: $ZSH_AUTOSUGGEST_MANUAL_REBIND"
+    echo ""
+    echo "💡 Known Issues:"
+    echo "   • Multiple 'i' presses → Disable async: ZSH_AUTOSUGGEST_USE_ASYNC=false"
+    echo "   • Starship cursor issues → Update starship: brew upgrade starship"
+    echo "   • Key conflicts → Check: bindkey | rg <problematic-key>"
+    echo ""
+    echo "📝 Test Steps:"
+    echo "   1. Type partial command, wait for suggestion"
+    echo "   2. Press Tab vs Right Arrow (should be different behavior)"
+    echo "   3. Check cursor position after Ctrl+C"
+}
+
 # Dotfiles health check function
 function dotfiles-health() {
     echo "🏥 Dotfiles Health Check"
@@ -479,6 +543,14 @@ gemini() {
     export GEMINI_API_KEY=$(op read "op://Private/gemini_api_key/credential" --account my.1password.com)
   fi
   command gemini "$@"
+}
+
+# Lazily load the JIRA API token from 1Password on first use
+jira() {
+  if [[ -z "$JIRA_API_TOKEN" ]]; then
+    export JIRA_API_TOKEN=$(op item get "Atlassian - Jira + Trello" --vault "Employee" --account jasho.1password.com --fields "CLI_READ_COMMENT - Exp2026-11-24" --reveal)
+  fi
+  command jira "$@"
 }
 
 # 1Password Diagnostic - Capture what's triggering 1Password popups
