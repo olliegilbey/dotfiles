@@ -2,6 +2,7 @@
 # NOTE: This requires `just` to be installed (via brew.sh)
 # For fresh machine setup, run ./init.sh directly first
 # Run `just` or `just --list` to see all available commands
+# This Justfile is specifically for the dotfiles repo, which in turn sets up global just which has its own justfile at ~/.config/just/justfile after .config is symlinked in with the scripts of this repo
 
 # Default recipe - show all available commands
 default:

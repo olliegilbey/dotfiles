@@ -108,8 +108,8 @@ if [[ ! $CONFIGURE_POWER =~ ^[Nn]$ ]]; then
     sudo pmset -c disksleep 0      # Disk never sleeps
 
     # Portable mode (Battery - when traveling)
-    sudo pmset -b sleep 15         # Sleep after 15 min on battery
-    sudo pmset -b displaysleep 5   # Display sleeps after 5 min
+    sudo pmset -b sleep 3          # Sleep after 3 min on battery
+    sudo pmset -b displaysleep 2   # Display sleeps after 2 min
     sudo pmset -b disksleep 10     # Disk sleeps after 10 min
 
     # All power modes (reliability features)

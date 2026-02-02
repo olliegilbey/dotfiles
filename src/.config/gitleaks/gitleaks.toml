@@ -1,0 +1,31 @@
+# Custom gitleaks config - extends default with additional patterns
+# See: https://github.com/gitleaks/gitleaks
+
+title = "Custom Gitleaks Config"
+
+[extend]
+useDefault = true
+
+# PostHog API tokens (phx_ prefix)
+[[rules]]
+id = "posthog-api-token"
+description = "PostHog API Token"
+regex = '''phx_[0-9a-zA-Z]{30,}'''
+entropy = 3
+keywords = ["phx_"]
+
+# PostHog personal API key (phk_ prefix)
+[[rules]]
+id = "posthog-personal-key"
+description = "PostHog Personal API Key"
+regex = '''phk_[0-9a-zA-Z]{30,}'''
+entropy = 3
+keywords = ["phk_"]
+
+# Linear API key
+[[rules]]
+id = "linear-api-key"
+description = "Linear API Key"
+regex = '''lin_api_[0-9a-zA-Z]{30,}'''
+entropy = 3
+keywords = ["lin_api_"]

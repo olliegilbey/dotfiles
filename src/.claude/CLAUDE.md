@@ -4,19 +4,12 @@
 
 - ALWAYS proactively suggest `/compact` at code checkpoints, along with suggesting to commit (without writing the commit message preemptively)
 
-- ONLY skip extended thinking for truly basic operations (single-line edits, simple reads)
-- FOR basic operations: Suggest Haiku subagent instead of Sonnet without thinking
-
-**WHY**: Deeper thinking catches edge cases, prevents costly mistakes, produces superior solutions. Thinking budget worthwhile for quality outcomes.
-
 **YOU MUST use TodoWrite and UpdateTodo for**:
 - ✅ Multi-step tasks (3+ distinct steps)
 - ✅ Complex project organization
 - ✅ Tasks spanning multiple files or systems
 - ✅ Any work where user needs progress visibility
 - ✅ Break complex work into manageable, trackable steps
-
-**WHY**: Prevents forgotten steps, provides user visibility, maintains context across sessions, enables recovery from interruptions.
 
 ---
 
@@ -35,10 +28,6 @@
 
 **Commit Strategy**:
 - ALWAYS suggest commits at natural checkpoints:
-  - After completing a feature or fix
-  - Before starting new subsystem
-  - After successful test runs
-  - Before risky refactors
 - PREFER more commits over fewer - can always squash later
 
 **Before Any Commit**:
@@ -65,7 +54,6 @@
 - ✅ Context-heavy analysis (preserves main thread)
 
 **When NOT to Use Subagents**:
-- ❌ Specific file lookups (use Read/Glob directly)
 - ❌ Simple operations under 5 files
 - ❌ When you know exact location
 
@@ -101,20 +89,7 @@ Unclear? → Present options
 Complex? → Full analysis with TL;DR
 ```
 
-**Complex Failure Format**:
-```markdown
-1. **Quick Fix**: [approach] - Fast but temporary
-2. **Proper Fix**: [approach] - More work, permanent solution
-3. **Refactor**: [approach] - Address root cause
-
-**TL;DR**: Quick fix works now, proper fix recommended, refactor if time permits.
-```
-
-**WHY**: User can choose depth of engagement. Sometimes needs quick fix, sometimes wants full understanding.
-
 ---
-
-## 🛠️ Tool Preferences & Modern Tooling
 
 ### Core Tool Selection
 
@@ -292,4 +267,9 @@ Ask your human pair for input where decisions can be made, use the interactive s
 | **Teaching** | Explain while doing|
 
 ## Plans
-- At the end of each plan, give me a list of unresolved questions to answer, if any. Make the questions extremely concise. Sacrifice grammar for the sake of concision.
+- At the end of each plan, give me a list of unresolved questions to answer, if any. Make the questions extremely concise.
+
+---
+
+General Rule:
+Sacrifice grammar for the sake of concision.

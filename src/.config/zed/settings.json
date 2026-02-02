@@ -22,9 +22,8 @@
           "--header",
           "Authorization:${POSTHOG_AUTH_HEADER}"
         ],
-        "env": {
-          "POSTHOG_AUTH_HEADER": "Bearer phx_ekvn4udHKLQrFXHifSP2gLPs6LAQ1w4Z0m3lhEc2ULSSiBX"
-        }
+        // Set POSTHOG_AUTH_HEADER env var: export POSTHOG_AUTH_HEADER="Bearer phx_..."
+        "env": {}
       }
     }
 }

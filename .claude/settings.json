@@ -29,6 +29,5 @@
       "WebFetch(domain:raw.githubusercontent.com)"
     ]
   },
-  "enableAllProjectMcpServers": false,
-	"model": "sonnet"
+  "enableAllProjectMcpServers": false
 }

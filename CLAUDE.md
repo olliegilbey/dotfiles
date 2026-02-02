@@ -57,29 +57,6 @@ This is a dotfiles repository that manages global development environment config
 - Modern CLI: eza, bat, delta, ripgrep, fd, zoxide, starship
 ```
 
-# Project Structure
-
-```
-dotfiles/
-├── init.sh                    # Master orchestration script
-├── bootstrap.sh               # Symlink creation (idempotent)
-├── brew.sh                    # Brewfile installation
-├── language_installs.sh       # Rust/mise toolchain setup
-├── update-readme.sh           # Dynamic README generation
-├── show-alias-tips.sh         # Random alias reminders
-├── justfile                   # Task runner (220 lines)
-├── Brewfile                   # Declarative packages (96 lines)
-├── .mise.toml                 # Language versions
-├── src/                       # Symlinked to ~/
-│   ├── .zshrc                 # Pure zsh (262 lines)
-│   ├── .zshenv                # Environment variables
-│   ├── .aliases               # Custom commands (461 lines)
-│   ├── .config/git/           # XDG git config
-│   ├── .config/nvim/          # LazyVim configuration
-│   └── .config/helix/         # Helix editor config
-└── replaced_files/            # Backup during bootstrap
-```
-
 # Commands
 
 ```bash
@@ -179,8 +156,6 @@ just tips              # Show random alias tips
 - ❌ Don't edit root CLAUDE.md for global preferences - use src/.config/claude/CLAUDE.md
 - ❌ Don't commit personal git details - use config.local (NOT tracked)
 - ❌ Don't use 'npm' for JS packages - use 'bun install' (6x faster, fully compatible)
-- ❌ Don't use 'bun run dev' for Next.js - use 'npm run dev' (Turbopack compatibility)
-- ❌ Don't use 'bun run build' for Next.js - use 'npm run build' (runtime issues)
 - ❌ Don't edit README.md after <!-- GENERATED_CONTENT_STARTS_HERE --> marker
 - ❌ Don't use 'insteadOf' for GitHub URLs - use 'pushInsteadOf' (prevents 1Password popups)
 
@@ -257,25 +232,13 @@ You are collaborating with a human pair-programming, and watching your work. Mak
 - Complex multi-step: Write a script
 - Repetitive refactor: Write script with dry-run mode
 
-**Use command chaining with clear output where necessary to avoid wasted reasoning and tokens between steps. Use multi-line commands for visual clarity:**
-
-```bash
-(                                                 echo $'\033[36m
-=== SECTION ===                                   \033[0m' && echo $'\033[34m
---- Sub-section ---                               \033[0m' &&
-  command |
-    pipe_stage                                    && echo $'\033[32m
-✓ Success ✓                                       \033[0m' || echo $'\033[31m
-✗ Failure ✗                                       \033[0m'
-) 2>&1
-```
+**Use command chaining with clear output where necessary to avoid wasted reasoning and tokens between steps. Use multi-line commands for visual clarity**
 
 **Rules:**
 - Wrap in `( ) 2>&1` - captures all output
 - NO backslashes - bash continues after `&&`, `||`, `|`
 - Align content left, formatting right at column 50
 - Use `$'...'` for multi-line strings with colors
-- Colors: `\033[36m` cyan (===), `\033[34m` blue (---), `\033[32m` green (✓), `\033[31m` red (✗), `\033[33m` yellow (⚠), `\033[0m` reset
 - Bookend symbols: `✓ pass ✓`, `✗ error ✗`, `⚠ warn ⚠`
 - Commands indent 2 spaces, pipes +2 per level
 
@@ -304,5 +267,3 @@ Use scripts to make deliberate changes in codified ways.
 ```
 
 Be friendly to your human pair programmer, allow them to understand process through your outputs.
-
-

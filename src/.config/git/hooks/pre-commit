@@ -50,7 +50,12 @@ if ! command -v gitleaks &> /dev/null; then
     FAILED=1
     echo ""
 else
-    GITLEAKS_OUTPUT=$(gitleaks detect --source "$TEMP_DIR" --no-git --no-banner 2>&1 || true)
+    # Use custom config if available (adds PostHog, Linear patterns)
+    GITLEAKS_CONFIG=""
+    if [ -f "$HOME/.config/gitleaks/gitleaks.toml" ]; then
+        GITLEAKS_CONFIG="--config $HOME/.config/gitleaks/gitleaks.toml"
+    fi
+    GITLEAKS_OUTPUT=$(gitleaks detect --source "$TEMP_DIR" --no-git --no-banner $GITLEAKS_CONFIG 2>&1 || true)
 
     if echo "$GITLEAKS_OUTPUT" | grep -q "no leaks found"; then
         echo -e "${GREEN}    ✓ No leaks found${NC}"

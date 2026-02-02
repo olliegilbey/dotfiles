@@ -38,6 +38,7 @@ brew_dependency_tree.txt
 # Editor temporary files
 **/.tmp*
 **/*.tmp
+**/*.bak
 
 # Tool cache and state files
 src/.config/configstore/
