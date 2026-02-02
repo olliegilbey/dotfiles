@@ -28,7 +28,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
     vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
-    vim.api.nvim_set_hl(0, "SignColumn", { bg = "#0B2430" })  -- Dark teal gutter (matches Ghostty titlebar)
+    -- Dark teal gutter (matches Ghostty gradient top / titlebar)
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = "#0E2C3A" })
+    vim.api.nvim_set_hl(0, "LineNr", { bg = "#0E2C3A" })
+    vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "#0E2C3A" })
+    vim.api.nvim_set_hl(0, "CursorLine", { bg = "#123242" })
   end,
 })
 
