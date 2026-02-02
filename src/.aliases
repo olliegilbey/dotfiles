@@ -164,7 +164,7 @@ alias work='cd "$WORK_DIR" && ls'  # Go to work dir and list
 alias wrk='cd "$WORK_DIR" && ls'  # Go to work dir and list
 alias dots='cd ~/dotfiles'  # Quick access to dotfiles
 alias j='just'  # Quick just command runner
-alias refresh='echo "🔄 Refreshing shell configuration..." && source ~/.zshenv && source ~/.zshrc && echo "✅ Configuration refreshed (ZSHRC_LOADED: $ZSHRC_LOADED)" && dotfiles-health'  # Reload shell configuration and run health check
+alias refresh='echo "🔄 Refreshing shell configuration..." && source ~/.zshenv && source ~/.zshrc && dotfiles-health && _now=$(date +%s) && _diff=$((_now - ZSHRC_LOADED)) && if [[ $_diff -le 5 ]]; then echo "✅ Refresh verified (loaded ${_diff}s ago)"; else echo "❌ Refresh FAILED - loaded ${_diff}s ago (expected ≤5s)"; fi'  # Reload shell configuration with verification and health check
 alias clear-shell-cache='rm -f ~/.cache/*-completion.zsh ~/.cache/*-init.zsh && echo "🧹 Shell completion caches cleared"'  # Clear cached completions
 
 # System and tool integration

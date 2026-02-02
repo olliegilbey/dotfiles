@@ -1,9 +1,6 @@
 # Pure Zsh Configuration - Modernized October 2025
 # Optimized for speed, clarity, and Warp terminal compatibility
 
-# Debug marker for troubleshooting
-export ZSHRC_LOADED="$(date +%s)"
-
 # ==============================================================================
 # PATH MANAGEMENT
 # ==============================================================================
@@ -336,3 +333,6 @@ export PATH="$HOME/bin:$PATH"
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+# Debug marker - set at END to verify full .zshrc loaded
+export ZSHRC_LOADED="$(date +%s)"
