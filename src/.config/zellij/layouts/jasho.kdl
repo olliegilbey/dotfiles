@@ -1,0 +1,103 @@
+layout {
+    cwd "/Users/olliegilbey/code/jasho"
+
+    // Floating pane swap layouts - cycle with Alt ] / Alt [
+    // "BASE" overrides built-in default size
+    swap_floating_layout name="BASE" {
+        floating_panes {
+            pane x="5%" y="5%" width="90%" height="90%"
+        }
+    }
+
+    swap_floating_layout name="centered" {
+        floating_panes {
+            pane x="20%" y="15%" width="60%" height="70%"
+        }
+    }
+
+    swap_floating_layout name="right" {
+        floating_panes {
+            pane x="55%" y="10%" width="45%" height="80%"
+        }
+    }
+
+    tab name="BEND" focus=true hide_floating_panes=true cwd="/Users/olliegilbey/code/jasho/jasho_ts" {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="vertical" {
+            pane size="50%"
+            pane size="50%" {
+                pane size="20%"
+                pane size="80%"
+            }
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="MOB" hide_floating_panes=true cwd="/Users/olliegilbey/code/jasho/jasho_mobile" {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="vertical" {
+            pane size="50%"
+            pane size="50%" {
+                pane size="20%"
+                pane size="80%"
+            }
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="SITE" hide_floating_panes=true cwd="/Users/olliegilbey/code/jasho/jasho_marketing" {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="vertical" {
+            pane size="50%"
+            pane size="50%" {
+                pane size="20%"
+                pane size="80%"
+            }
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="JAI" hide_floating_panes=true cwd="/Users/olliegilbey/code/jasho/jai" {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="vertical" {
+            pane size="50%"
+            pane size="50%" {
+                pane size="20%"
+                pane size="80%"
+            }
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="PLAYGROUND" hide_floating_panes=true cwd="/Users/olliegilbey/code/jasho" {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="vertical" {
+            pane size="50%"
+            pane size="50%" {
+                pane size="20%"
+                pane size="80%"
+            }
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+}

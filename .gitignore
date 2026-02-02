@@ -12,21 +12,19 @@ src/.atom/
 !src/.atom/styles.less
 !src/.atom/init.coffee
 
-# Claude configuration - Track only CLAUDE.md, agents, commands, and settings.json
-src/.claude/history.jsonl
-src/.claude/settings.local.json
-src/.claude/file-history/
-src/.claude/projects/
-src/.claude/shell-snapshots/
-src/.claude/todos/
-src/.claude/statsig/
-src/.claude/ide/
-src/.claude/plugins/
-src/.claude/temp-*
-src/.claude/debug/
+# Claude global config (src/.claude/) - block all, whitelist safe files
+src/.claude/*
+!src/.claude/CLAUDE.md
+!src/.claude/DIRECTIVES_FULL.md
+!src/.claude/settings.json
+!src/.claude/agents/
+!src/.claude/commands/
+!src/.claude/statusline-starship.sh
 
-# Project-specific Claude settings (local only)
-.claude/settings.local.json
+# Claude project config (.claude/) - block all, whitelist safe files
+.claude/*
+!.claude/settings.json
+!.claude/agents/
 # Ignore Raycast extensions (auto-generated/managed by Raycast)
 src/.config/raycast/extensions/
 
@@ -51,6 +49,7 @@ src/.config/uv/uv-receipt.json
 .cache/*-init.zsh
 
 # Application secrets and tokens
+src/.config/.jira/
 src/.config/github-copilot/hosts.json
 src/.config/raycast/config.json
 src/.config/raycast/ai/
@@ -61,3 +60,7 @@ src/.config/git/allowed_signers.local
 
 # JGit configuration
 src/.config/jgit/
+
+# Diagnostic/debug logs
+voiceink-debug-*.log
+voiceink-backup-*
