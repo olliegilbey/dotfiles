@@ -200,6 +200,26 @@ if command -v zoxide &>/dev/null; then
 fi
 
 # ==============================================================================
+# VI-MODE CURSOR SHAPE
+# ==============================================================================
+# Bar cursor for insert mode, block for normal mode (DECSCUSR sequences)
+# Required for zellij compatibility - ghostty handles this natively but zellij needs explicit sequences
+
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+    echo -ne '\e[2 q'  # Steady block
+  elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ $1 = 'beam' ]]; then
+    echo -ne '\e[6 q'  # Steady bar
+  fi
+}
+zle -N zle-keymap-select
+
+function zle-line-init {
+  echo -ne '\e[6 q'  # Steady bar (default to insert mode cursor)
+}
+zle -N zle-line-init
+
+# ==============================================================================
 # STARSHIP PROMPT (for Ghostty and other terminals, disabled in Warp)
 # ==============================================================================
 
